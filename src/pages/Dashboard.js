@@ -2,6 +2,7 @@ import React from 'react'
 import TrayekPie from '../components/TrayekPie'
 import AbsenPie from '../components/AbsenPie'
 import PendapatanGraph from '../components/PendapatanGraph'
+import KaryawanTable from '../components/KaryawanTable'
 
 function Dashboard() {
   return (
@@ -13,6 +14,7 @@ function Dashboard() {
         </div>
         <div className='d-flex flex-row'>
             <PendapatanGraph />
+            <KaryawanTable />
         </div>
     </div>
     
