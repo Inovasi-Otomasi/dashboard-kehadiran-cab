@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom'
 
 function Navbar() {
   return (
-    <div className='dashboadrd-header mb-5'>
-        <nav className="navbar navbar-expand-lg bg-body-tertiary sticky-top bg-dark border-bottom border-bottom-dark mb-2 px-2" data-bs-theme="dark">
+    <div className='dashboadrd-header'>
+        <nav className="navbar navbar-expand-lg bg-body-tertiary sticky-top bg-dark border-bottom border-bottom-dark px-2" data-bs-theme="dark">
             <div className="container-fluid">
                 <Link className="navbar-brand" to="/">
                     CAB
