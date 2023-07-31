@@ -1,12 +1,38 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import DataTable from "react-data-table-component";
+import axios from "../api/axios";
+import Spinner from "../components/Spinner";
+
+const GET_URL = "/1.0.0/shifts"
 
 function Shift() {
+
+    const navigate = useNavigate();
+
+    var bodyFormData = new FormData();
+
+    bodyFormData.append("draw", 1);
+    bodyFormData.append("length", 10);
+    bodyFormData.append("order[0][column]", 0);
+    bodyFormData.append("order[0][dir]", "desc");
+    bodyFormData.append("start", 0);
+    bodyFormData.append("search[value]", "");
+    bodyFormData.append("columns[0][search][value]", "");
+
+    const [page, setPage] = useState(1);
+    const countPerPage = 10;
+
+    const [isLoading, setIsLoading] = useState(false);
+    const [shifts, setShifts] = useState([]);
+    const [filterShifts, setFilterShifts] = useState([]);
+
   const columns = [
-    { name: "Nomor ID", selector: (row) => row.id },
-    { name: "Nama Shitft", selector: (row) => row.nama_shift },
-    { name: "Waktu Mulai", selector: (row) => row.waktu_mulai },
-    { name: "Waktu Selesai", selector: (row) => row.waktu_selesai },
+    { name: "Nomor ID", selector: (row) => row[0] },
+    { name: "Nomor Shift", selector: (row) => row[1] },
+    { name: "Nama Shift", selector: (row) => row[2] },
+    { name: "Waktu Mulai", selector: (row) => row[3] },
+    { name: "Waktu Selesai", selector: (row) => row[4] },
     {
       name: "Detail",
       cell: (row) => (
@@ -33,29 +59,62 @@ function Shift() {
     },
   ];
 
-  const data = [
-    {
-      id: 1,
-      nama_shift: "Shift Trayek A",
-      waktu_mulai: "08:00:00",
-      waktu_selesai: "17:00:00",
-    },
-    {
-      id: 2,
-      nama_shift: "Shift Trayek B",
-      waktu_mulai: "12:00:00",
-      waktu_selesai: "23:00:00",
-    },
-    {
-      id: 3,
-      nama_shift: "Shift Trayek C",
-      waktu_mulai: "18:00:00",
-      waktu_selesai: "05:00:00",
-    },
-  ];
+  
 
-  return <div className="p-4">
-     <DataTable columns={columns} data={data} pagination />
+  const getData = async() => {
+    try {
+        setIsLoading(true);
+        await axios({
+          method: "post",
+          url: "/1.0.0/shifts_datatables",
+          data: bodyFormData,
+          headers: { "Content-Type": "multipart/form-data" },
+        }).then((response) => {
+          setShifts(response.data.data);
+          setFilterShifts(response.data.data);
+          console.log(response.data.data)
+          setIsLoading(false);
+        });
+      } catch (error) {
+        setIsLoading(false);
+      }
+  }
+
+  useEffect(() => {
+    getData();
+  }, [page])
+
+
+  const handleFilter = (e) => {
+    const newShifts = filterShifts.filter((row) =>
+      row[2].toLowerCase().includes(e.target.value.toLowerCase())
+    );
+    setShifts(newShifts);
+  };
+
+  const renderTable = (
+    <div className="p-4">
+        <div>
+            <input type="text" placeholder="Search" onChange={handleFilter} />
+            <DataTable
+                columns={columns}
+                data={shifts}
+                pagination
+                highlightOnHover
+                paginationServer
+                paginationTotalRows={countPerPage}
+                paginationComponentOptions={{
+                  noRowsPerPage: true,
+                }}
+                onChangePage={(page) => setPage(page)}
+            />
+         </div>
+    </div>
+  )
+
+
+  return <div>
+     {isLoading ? <Spinner /> : renderTable}
   </div>;
 }
 
