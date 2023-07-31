@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import DataTable from "react-data-table-component";
 import axios from "../api/axios";
 import Spinner from "../components/Spinner";
+import AddShift from "../components/AddShift";
 
 const GET_URL = "/1.0.0/shifts"
 
@@ -28,11 +29,11 @@ function Shift() {
     const [filterShifts, setFilterShifts] = useState([]);
 
   const columns = [
-    { name: "Nomor ID", selector: (row) => row[0] },
-    { name: "Nomor Shift", selector: (row) => row[1] },
-    { name: "Nama Shift", selector: (row) => row[2] },
-    { name: "Waktu Mulai", selector: (row) => row[3] },
-    { name: "Waktu Selesai", selector: (row) => row[4] },
+    { name: "Nomor ID", selector: (row) => row[0] , sortable: true},
+    { name: "Nomor Shift", selector: (row) => row[1], sortable: true },
+    { name: "Nama Shift", selector: (row) => row[2], sortable: true },
+    { name: "Waktu Mulai", selector: (row) => row[3], sortable: true },
+    { name: "Waktu Selesai", selector: (row) => row[4], sortable: true },
     {
       name: "Detail",
       cell: (row) => (
@@ -93,7 +94,7 @@ function Shift() {
   };
 
   const renderTable = (
-    <div>
+    <div className="my-4">
         <div>
             <input type="text" placeholder="Search" onChange={handleFilter} />
          </div>
@@ -114,6 +115,7 @@ function Shift() {
 
 
   return <div className="p-4">
+    <AddShift />
      {isLoading ? <Spinner /> : renderTable}
   </div>;
 }
