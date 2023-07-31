@@ -1,3 +1,4 @@
+import "bootstrap/dist/css/bootstrap.min.css";
 import { BrowserRouter as Router, Routes, Route} from "react-router-dom"
 import Navbar from "./components/Navbar";
 import Sidebar from "./components/Sidebar";
@@ -5,6 +6,7 @@ import Sidebar from "./components/Sidebar";
 
 import Dashboard from "./pages/Dashboard";
 import Error from "./pages/Error";
+
 
 function App() {
   return (
