@@ -47,6 +47,7 @@ function KaryawanTable() {
   return (
     <div className="p-4">
       <DataTable columns={columns} data={data} pagination />
+      
       {/* Modal Detail */}
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>

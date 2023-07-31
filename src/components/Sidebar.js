@@ -20,13 +20,13 @@ function Sidebar() {
                                 <i class="fs-4 bi-speedometer2"></i> <span class="ms-1 d-none d-sm-inline">Data Karyawan</span> </a>
                             <ul class="collapse show nav flex-column ms-1" id="submenu1" data-bs-parent="#menu">
                                 <li class="w-100">
-                                    <a href="#" class="nav-link px-0"> <span class="d-none d-sm-inline"></span> Time Management </a>
+                                    <a href="/shift" class="nav-link px-0"> <span class="d-none d-sm-inline"></span> Shift Management </a>
                                 </li>
                                 <li>
-                                    <a href="#" class="nav-link px-0"> <span class="d-none d-sm-inline"></span> Human Management </a>
+                                    <a href="/driver" class="nav-link px-0"> <span class="d-none d-sm-inline"></span> Driver Management </a>
                                 </li>
                                 <li>
-                                    <a href="#" class="nav-link px-0"> <span class="d-none d-sm-inline"></span> Location Management </a>
+                                    <a href="/location" class="nav-link px-0"> <span class="d-none d-sm-inline"></span> Location Management </a>
                                 </li>
                             </ul>
                         </li>
