@@ -1,16 +1,36 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import DataTable from "react-data-table-component";
+import axios from "../api/axios";
+import Spinner from "../components/Spinner";
+
+const GET_URL = "/1.0.0/drivers_datatables"
 
 function Driver() {
+
+    const navigate = useNavigate();
+
+    var bodyFormData = new FormData();
+
+    bodyFormData.append("draw", 1);
+    bodyFormData.append("length", 10);
+    bodyFormData.append("order[0][column]", 0);
+    bodyFormData.append("order[0][dir]", "desc");
+    bodyFormData.append("start", 0);
+    bodyFormData.append("search[value]", "");
+    bodyFormData.append("columns[0][search][value]", "");
+
+    const [page, setPage] = useState(1);
+    const countPerPage = 10;
+
+    const [isLoading, setIsLoading] = useState(false);
+    const [drivers, setDrivers] = useState([]);
+    const [filterDrivers, setFilterDrivers] = useState([]);
+
   const columns = [
-    { name: "Nomor ID", selector: (row) => row.id },
-    { name: "Nama", selector: (row) => row.nama },
-    { name: "NIK", selector: (row) => row.nik },
-    { name: "RFID", selector: (row) => row.rfid },
-    { name: "Waktu Shift", selector: (row) => row.waktu_shift },
-    { name: "Performansi Waktu Kerja", selector: (row) => row.performansi },
-    { name: "Waktu Kerja", selector: (row) => row.waktu_kerja },
-    { name: "Performansi Pendapatan", selector: (row) => row.pendapatan },
+    { name: "NIK", selector: (row) => row[3]},
+    { name: "RFID", selector: (row) => row[4] },
+    { name: "ID Shift", selector: (row) => row[5] },
     {
       name: "Detail",
       cell: (row) => (
@@ -37,42 +57,58 @@ function Driver() {
     },
   ];
 
-  const data = [
-    {
-      id: 1,
-      nama: "Joni",
-      nik: "32141241291",
-      rfid: "RF123123",
-      waktu_shift: "9 Jam",
-      performansi: "A",
-      waktu_kerja: "08:00:00",
-      pendapatan: "Rp. 5000000",
-    },
-    {
-      id: 1,
-      nama: "Jasun",
-      nik: "32141241123",
-      rfid: "RF123456",
-      waktu_shift: "12 Jam",
-      performansi: "B",
-      waktu_kerja: "00:00:00",
-      pendapatan: "Rp. 4500000",
-    },
-    {
-      id: 1,
-      nama: "Bambang",
-      nik: "32141241297",
-      rfid: "RF123678",
-      waktu_shift: "8 Jam",
-      performansi: "C",
-      waktu_kerja: "12:00:00",
-      pendapatan: "Rp. 3000000",
-    },
-  ];
+  const getData = async() => {
+    try {
+        setIsLoading(true);
+        await axios({
+          method: "post",
+          url: GET_URL,
+          data: bodyFormData,
+          headers: { "Content-Type": "multipart/form-data" },
+        }).then((response) => {
+          setDrivers(response.data.data);
+          setFilterDrivers(response.data.data);
+          setIsLoading(false);
+        });
+      } catch (error) {
+        setIsLoading(false);
+      }
+  }
+
+  useEffect(() => {
+    getData();
+  }, [page])
+
+  const handleFilter = (e) => {
+    const newDrivers = filterDrivers.filter((row) => 
+    row[2].toLowerCase().includes(e.target.value.toLowerCase())
+    )
+    setDrivers(newDrivers)
+  }
+
+  const renderTable = (
+    <div>
+        <div>
+            <input type="text" placeholder="Search" onChange={handleFilter} />
+        </div>
+        <DataTable
+            columns={columns}
+            data={drivers}
+            pagination
+            highlightOnHover
+            paginationServer
+            paginationTotalRows={countPerPage}
+            paginationComponentOptions={{
+            noRowsPerPage: true,
+            }}
+            onChangePage={(page) => setPage(page)}
+        />
+    </div>
+  )
 
   return (
     <div className="p-4">
-      <DataTable columns={columns} data={data} pagination />
+      {isLoading ? <Spinner /> : renderTable}
     </div>
   );
 }

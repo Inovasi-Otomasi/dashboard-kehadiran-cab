@@ -1,13 +1,39 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import DataTable from "react-data-table-component";
+import axios from "../api/axios";
+import Spinner from "../components/Spinner";
+
+const GET_URL = "/1.0.0/routes_datatables"
 
 function Location() {
+
+    const navigate = useNavigate();
+
+    var bodyFormData = new FormData();
+
+    bodyFormData.append("draw", 1);
+    bodyFormData.append("length", 10);
+    bodyFormData.append("order[0][column]", 0);
+    bodyFormData.append("order[0][dir]", "desc");
+    bodyFormData.append("start", 0);
+    bodyFormData.append("search[value]", "");
+    bodyFormData.append("columns[0][search][value]", "");
+
+    const [page, setPage] = useState(1);
+    const countPerPage = 10;
+
+    const [isLoading, setIsLoading] = useState(false);
+    const [locations, setLocations] = useState([]);
+    const [filterLocations, setFilterLocations] = useState([]);
+
   const columns = [
-    { name: "Nomor ID", selector: (row) => row.id },
-    { name: "Nama Trayek", selector: (row) => row.trayek },
-    { name: "Titik Awal Trayek", selector: (row) => row.lokasi_awal },
-    { name: "Titik Akhir Trayek", selector: (row) => row.lokasi_akhir },
-    { name: "Total Pendapatan Trayek", selector: (row) => row.pendapatan },
+    { name: "ID", selector: (row) => row[0]},
+    { name: "Nomor", selector: (row) => row[1] },
+    { name: "Kode", selector: (row) => row[2] },
+    { name: "Titik Awal", selector: (row) => row[3] },
+    { name: "Titik Akhir", selector: (row) => row[4] },
+    { name: "Total pendapatan", selector: (row) => row[5] },
     {
       name: "Detail",
       cell: (row) => (
@@ -34,19 +60,58 @@ function Location() {
     },
   ];
 
-  const data = [
-    {
-      id: 1,
-      trayek: "A",
-      lokasi_awal: "Depok",
-      lokasi_akhir: "Senopati",
-      pendapatan: "Rp. 30000000",
-    },
-  ];
+  const getData = async() => {
+    try {
+        setIsLoading(true);
+        await axios({
+          method: "post",
+          url: GET_URL,
+          data: bodyFormData,
+          headers: { "Content-Type": "multipart/form-data" },
+        }).then((response) => {
+          setLocations(response.data.data);
+          setFilterLocations(response.data.data);
+          setIsLoading(false);
+        });
+      } catch (error) {
+        setIsLoading(false);
+      }
+  }
+
+  useEffect(() => {
+    getData();
+  }, [page])
+
+  const handleFilter = (e) => {
+    const newLocations = filterLocations.filter((row) => 
+    row[2].toLowerCase().includes(e.target.value.toLowerCase())
+    )
+    setLocations(newLocations)
+  }
+
+  const renderTable = (
+    <div>
+        <div>
+            <input type="text" placeholder="Search" onChange={handleFilter} />
+        </div>
+        <DataTable
+            columns={columns}
+            data={locations}
+            pagination
+            highlightOnHover
+            paginationServer
+            paginationTotalRows={countPerPage}
+            paginationComponentOptions={{
+            noRowsPerPage: true,
+            }}
+            onChangePage={(page) => setPage(page)}
+        />
+    </div>
+  )
 
   return (
     <div className="p-4">
-      <DataTable columns={columns} data={data} pagination />
+      {isLoading ? <Spinner /> : renderTable}
     </div>
   );
 }

@@ -93,10 +93,11 @@ function Shift() {
   };
 
   const renderTable = (
-    <div className="p-4">
+    <div>
         <div>
             <input type="text" placeholder="Search" onChange={handleFilter} />
-            <DataTable
+         </div>
+         <DataTable
                 columns={columns}
                 data={shifts}
                 pagination
@@ -108,12 +109,11 @@ function Shift() {
                 }}
                 onChangePage={(page) => setPage(page)}
             />
-         </div>
     </div>
   )
 
 
-  return <div>
+  return <div className="p-4">
      {isLoading ? <Spinner /> : renderTable}
   </div>;
 }
