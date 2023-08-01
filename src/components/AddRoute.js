@@ -3,17 +3,18 @@ import axios from '../api/axios';
 import { useNavigate } from 'react-router-dom';
 
 
-const BASE_URL= "/1.0.0/shifts"
+const BASE_URL= "/1.0.0/routes"
 
-function AddShift() { 
+function AddRoute() { 
 
     const navigate = useNavigate()
     
     const [state, setState] = useState({
         number: null,
-        name: "",
-        shift_start: "",
-        shift_end: "",
+        code: "",
+        start_point: "",
+        end_point: "",
+        total_income: null
     })
 
     const handleChange = (e) => {
@@ -26,20 +27,22 @@ function AddShift() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const shiftData = {
+        const routeData = {
             number: state.number,
-            name: state.name,
-            shift_start: state.shift_start,
-            shift_end: state.shift_end,
+            code: state.code,
+            start_point: state.start_point,
+            end_point: state.end_point,
+            total_income: state.total_income
         };
         try{
-            const response = await axios.post(BASE_URL, shiftData);
+            const response = await axios.post(BASE_URL, routeData);
             console.log(response.status, response.data)
             setState({
                 number: 0,
-                name: "",
-                shift_start: "",
-                shift_end: "",
+                code: "",
+                start_point: "",
+                end_point: "",
+                total_income: 0
             })
             setTimeout(function(){
                 window.location.reload();
@@ -55,7 +58,7 @@ function AddShift() {
 
     <div className='container-fluid pt-4 text-lg-start'>
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-            Daftar Data Shift
+            Daftar Data Route
         </button>
 
 
@@ -63,7 +66,7 @@ function AddShift() {
             <div class="modal-dialog modal-dialog-scrollable modal-xl modal-fullscreen-md-down">
                 <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Data Shift</h1>
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Data Route</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -74,20 +77,26 @@ function AddShift() {
                             placeholder="123456" name='number' value={state.number} onChange={handleChange} required/>
                         </div>
                         <div class="col-md-6">
-                            <label for="validationCustom02" class="form-label">Nama</label>
+                            <label for="validationCustom02" class="form-label">Kode</label>
                             <input type="text" class="form-control" id="validationCustom02" 
-                            placeholder="Axxxxx" name='name' value={state.name} onChange={handleChange} required/>
+                            placeholder="Axxxxx" name='code' value={state.code} onChange={handleChange} required/>
                         </div>
                         
                         <div class="col-md-6">
-                            <label for="validationCustom03" class="form-label">Jam Mulai Shift</label>
-                            <input type="time" class="form-control" id="validationCustom03" 
-                            placeholder='06:00:00' name='shift_start' value={state.shift_start} onChange={handleChange} required/>
+                            <label for="validationCustom03" class="form-label">Titik Awal Rute</label>
+                            <input type="text" class="form-control" id="validationCustom03" 
+                            placeholder='Depok' name='start_point' value={state.start_point} onChange={handleChange} required/>
                         </div>
                         <div class="col-md-6">
-                            <label for="validationCustom04" class="form-label">Jam Selesai Shift</label>
-                            <input type="time" class="form-control" id="validationCustom03" 
-                            placeholder='18:00:00' name='shift_end' value={state.shift_end} onChange={handleChange} required/>
+                            <label for="validationCustom04" class="form-label">Titik Akhir Rute</label>
+                            <input type="text" class="form-control" id="validationCustom03" 
+                            placeholder='Kemanggisan' name='end_point' value={state.end_point} onChange={handleChange} required/>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="validationCustom03" class="form-label">Total Pendapatan</label>
+                            <input type="text" class="form-control" id="validationCustom03" 
+                            placeholder='1xxxxxxx' name='total_income' value={state.total_income} onChange={handleChange} required/>
                         </div>
                         
                         <div class="col-12 text-lg-end">
@@ -105,4 +114,4 @@ function AddShift() {
   )
 }
 
-export default AddShift
+export default AddRoute

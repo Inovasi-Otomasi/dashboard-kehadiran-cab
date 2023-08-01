@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import DataTable from "react-data-table-component";
 import axios from "../api/axios";
 import Spinner from "../components/Spinner";
+import AddRoute from "../components/AddRoute";
 
 const GET_URL = "/1.0.0/routes_datatables"
 
@@ -90,7 +91,7 @@ function Location() {
   }
 
   const renderTable = (
-    <div>
+    <div className="my-4">
         <div>
             <input type="text" placeholder="Search" onChange={handleFilter} />
         </div>
@@ -111,6 +112,7 @@ function Location() {
 
   return (
     <div className="p-4">
+        <AddRoute />
       {isLoading ? <Spinner /> : renderTable}
     </div>
   );
