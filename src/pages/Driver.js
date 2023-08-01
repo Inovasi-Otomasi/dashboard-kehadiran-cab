@@ -28,9 +28,21 @@ function Driver() {
     const [filterDrivers, setFilterDrivers] = useState([]);
 
   const columns = [
+    { name: "ID", selector: (row) => row[0]},
+    { name: "Username", selector: (row) => row[14]},
+    { name: "Nomor", selector: (row) => row[1]},
+    { name: "Shift ID", selector: (row) => row[6]},
+    { name: "Shift", selector: (row) => row[2]},
     { name: "NIK", selector: (row) => row[3]},
-    { name: "RFID", selector: (row) => row[4] },
-    { name: "ID Shift", selector: (row) => row[5] },
+    { name: "Nomor Sim", selector: (row) => row[4]},
+    { name: "RFID", selector: (row) => row[5]},
+    { name: "Mulai Shift", selector: (row) => row[7]},
+    { name: "Akhir Shift", selector: (row) => row[8]},
+    { name: "Alamat", selector: (row) => row[9]},
+    { name: "Mulai Bekerja", selector: (row) => row[10]},
+    { name: "Jabatan", selector: (row) => row[11]},
+    { name: "Level Menu", selector: (row) => row[12]},
+    { name: "Status", selector: (row) => row[13]},
     {
       name: "Detail",
       cell: (row) => (
