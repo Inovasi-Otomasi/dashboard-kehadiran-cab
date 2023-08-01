@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import DataTable from "react-data-table-component";
 import axios from "../api/axios";
 import Spinner from "../components/Spinner";
+import AddDriver from "../components/AddDriver";
 
 const GET_URL = "/1.0.0/drivers_datatables"
 
@@ -99,7 +100,7 @@ function Driver() {
   }
 
   const renderTable = (
-    <div>
+    <div className="my-2">
         <div>
             <input type="text" placeholder="Search" onChange={handleFilter} />
         </div>
@@ -120,6 +121,7 @@ function Driver() {
 
   return (
     <div className="p-4">
+        <AddDriver />
       {isLoading ? <Spinner /> : renderTable}
     </div>
   );
