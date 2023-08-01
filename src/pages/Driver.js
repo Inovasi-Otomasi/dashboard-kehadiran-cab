@@ -63,7 +63,8 @@ function Driver() {
     {
       name: "Hapus Data",
       cell: (row) => (
-        <button className="btn btn-danger btn-sm">
+        <button className="btn btn-danger btn-sm" onClick={(e) => {if (window.confirm('Apakah anda yakin ingin menghapus data ini'))deleteData(row[0], e)}}
+        id={row[0]}>
           <i className="fa fa-trash"></i>
         </button>
       ),
@@ -86,6 +87,17 @@ function Driver() {
       } catch (error) {
         setIsLoading(false);
       }
+  }
+
+  const deleteData = async (id) => {
+    try{
+        await axios.delete(`/1.0.0/drivers/${id}`).then((response) => {
+            console.log(response)
+            getData();
+        })
+    } catch (error){
+        console.log(error)
+    }
   }
 
   useEffect(() => {
