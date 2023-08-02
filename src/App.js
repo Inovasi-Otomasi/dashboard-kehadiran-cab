@@ -1,10 +1,10 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import { BrowserRouter as Router, Routes, Route} from "react-router-dom"
-import Navbar from "./components/Navbar";
-import Sidebar from "./components/Sidebar";
+import Sidenav from "./components/Sidenav";
 import Shift from "./pages/Shift";
 import Driver from "./pages/Driver";
 import Location from "./pages/Location";
+import './App.css'
 
 
 import Dashboard from "./pages/Dashboard";
@@ -17,8 +17,7 @@ function App() {
   return (
     <Router>
       <div className="main-wrapper ">
-        <Navbar />
-        <Sidebar />
+        <Sidenav />
         <Routes>
           <Route exact path="/" element={<Dashboard/>}/>
           <Route exact path="/shift" element={<Shift/>}/>
