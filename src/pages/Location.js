@@ -29,12 +29,12 @@ function Location() {
     const [filterLocations, setFilterLocations] = useState([]);
 
   const columns = [
-    { name: "ID", selector: (row) => row[0]},
-    { name: "Nomor", selector: (row) => row[1] },
-    { name: "Kode", selector: (row) => row[2] },
-    { name: "Titik Awal", selector: (row) => row[3] },
-    { name: "Titik Akhir", selector: (row) => row[4] },
-    { name: "Total pendapatan", selector: (row) => row[5] },
+    { name: "ID", selector: (row) => row[0], sortable: true},
+    { name: "Nomor", selector: (row) => row[1], sortable: true },
+    { name: "Kode", selector: (row) => row[2], sortable: true },
+    { name: "Titik Awal", selector: (row) => row[3], sortable: true },
+    { name: "Titik Akhir", selector: (row) => row[4], sortable: true },
+    { name: "Total pendapatan", selector: (row) => row[5], sortable: true },
     {
       name: "Detail",
       cell: (row) => (
@@ -127,7 +127,8 @@ function Location() {
 
   return (
     <div className="p-4">
-        <AddRoute />
+      <h1>Data Rute CAB</h1>
+      <AddRoute />
       {isLoading ? <Spinner /> : renderTable}
     </div>
   );

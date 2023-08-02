@@ -16,7 +16,7 @@ import EditRoute from "./components/EditRoute";
 function App() {
   return (
     <Router>
-      <div className="main-wrapper ">
+      <div className="main-wrapper d-flex flex-row">
         <Sidenav />
         <Routes>
           <Route exact path="/" element={<Dashboard/>}/>

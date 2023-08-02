@@ -160,6 +160,7 @@ function Shift() {
 
   return (
     <div className="p-4">
+      <h1>Data Shift CAB</h1>
       <AddShift />
       {isLoading ? <Spinner /> : renderTable}
     </div>
