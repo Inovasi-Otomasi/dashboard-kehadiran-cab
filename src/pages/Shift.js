@@ -45,7 +45,10 @@ function Shift() {
     {
       name: "Edit Data",
       cell: (row) => (
-        <button className="btn btn-success btn-sm">
+        <button className="btn btn-success btn-sm"
+          onClick={() => navigate(`/shift/edit/${row[0]}`)}
+          id={row[0]}
+        >
           <i className="fa fa-edit"></i>
         </button>
       ),

@@ -9,6 +9,7 @@ import Location from "./pages/Location";
 
 import Dashboard from "./pages/Dashboard";
 import Error from "./pages/Error";
+import EditShift from "./components/EditShift";
 
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
         <Routes>
           <Route exact path="/" element={<Dashboard/>}/>
           <Route exact path="/shift" element={<Shift/>}/>
+          <Route exact path="/shift/edit/:id" element={<EditShift/>}/>
           <Route exact path="/driver" element={<Driver/>}/>
           <Route exact path="/location" element={<Location/>}/>
           <Route exact path="*" element={<Error/>} />
