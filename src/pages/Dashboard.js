@@ -6,7 +6,7 @@ import KaryawanTable from '../components/KaryawanTable'
 
 function Dashboard() {
   return (
-    <div className='dashboard-wrapper px-4'>
+    <div className='dashboard-wrapper p-4'>
         <div className='d-flex flex-row'>
             <TrayekPie />
             <AbsenPie />

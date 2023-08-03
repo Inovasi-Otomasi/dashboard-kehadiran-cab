@@ -114,6 +114,7 @@ function Driver() {
 
   useEffect(() => {
     getData();
+    getExcel();
   }, [page])
 
   const handleFilter = (e) => {

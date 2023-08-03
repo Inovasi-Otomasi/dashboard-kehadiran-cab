@@ -7,51 +7,46 @@ function AbsenPie() {
 
     const option = {
         title: {
-            text: 'Data Absen Shift',
-            subtext: 'Absen Shift Juli 2023',
+            text: 'Data Performa Driver',
+            subtext: 'Performa Driver Juli 2023',
             left: 'center'
-        },
-        legend: {
+          },
+          tooltip: {
+            trigger: 'item'
+          },
+          legend: {
             orient: 'vertical',
-            left: 'left',
-        },
-        toolbox: {
-            show:true,
-            feature: {
-                mark: {show: true},
-                dataView: {show: true, readOnly: false},
-                restore: {show: true},
-                saveAsImage: {show: true}
-            }
-        },
-        series: [
+            left: 'left'
+          },
+          series: [
             {
-                name: "Nightingale Chart",
-                type: "pie",
-                radius: [50, 250],
-                center: ['50%', '50%'],
-                roseType: 'area',
-                itemStye: {
-                    borderRadius: 8
-                },
-                data: trayekData
+              name: 'Data',
+              type: 'pie',
+              radius: '50%',
+              data: [
+                { value: 100, name: 'Masuk' },
+                { value: 20, name: 'Absen' },
+                { value: 5, name: 'Alpha' },
+                { value: 10, name: 'Cuti' },
+              ],
+              emphasis: {
+                itemStyle: {
+                  shadowBlur: 10,
+                  shadowOffsetX: 0,
+                  shadowColor: 'rgba(0, 0, 0, 0.5)'
+                }
+              }
             }
-        ]
+          ]
     }
   return (
     <EChartsReact 
         option={option}
-        style={{height: 600, width: 700}}
+        style={{height: 500, width: 500}}
     
     />
   )
 }
 
-const trayekData = [
-    {value: 100, name: 'Shift 1'},
-    {value: 70, name: 'Shift 2'},
-    {value: 80, name: 'Shift 3'},
-    {value: 50, name: 'Shift 4'},
-]
 
 export default AbsenPie;
