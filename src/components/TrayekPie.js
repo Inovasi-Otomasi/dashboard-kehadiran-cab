@@ -30,6 +30,12 @@ function TrayekPie() {
             orient: 'vertical',
             left: 'left'
           },
+          toolbox: {
+            feature: {
+                 saveAsImage: {},
+                 restore: {}
+             }
+          },
           series: [
             {
               name: 'Data',

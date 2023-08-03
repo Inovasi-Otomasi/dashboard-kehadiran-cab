@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import DataTable from "react-data-table-component";
+import DataTable, {createTheme} from "react-data-table-component";
 import axios from "../api/axios";
 import Spinner from "../components/Spinner";
 import AddDriver from "../components/AddDriver";
@@ -30,6 +30,28 @@ function Driver() {
     const [filterDrivers, setFilterDrivers] = useState([]);
     const [driversExcel, setDriversExcel] = useState([])
 
+    createTheme('solarized', {
+      text: {
+        primary: '#FFFFFF',
+        secondary: '#FFFFFF',
+      },
+      background: {
+        default: '#0A1929',
+      },
+      context: {
+        background: '#cb4b16',
+        text: '#FFFFFF',
+      },
+      divider: {
+        default: '#FFFFFF',
+      },
+      action: {
+        button: 'rgba(0,0,0,.54)',
+        hover: 'rgba(0,0,0,.08)',
+        disabled: 'rgba(0,0,0,.12)',
+      },
+    }, 'dark');
+
   const columns = [
     { name: "ID", selector: (row) => row[0], sortable: true},
     { name: "Username", selector: (row) => row[14], sortable: true},
@@ -37,7 +59,7 @@ function Driver() {
     { name: "Shift ID", selector: (row) => row[6], sortable: true},
     { name: "Shift", selector: (row) => row[2], sortable: true},
     { name: "NIK", selector: (row) => row[3], sortable: true},
-    { name: "Nomor Sim", selector: (row) => row[4], sortable: true},
+    { name: "Nomor SIM", selector: (row) => row[4], sortable: true},
     { name: "RFID", selector: (row) => row[5], sortable: true},
     { name: "Mulai Shift", selector: (row) => row[7], sortable: true},
     { name: "Akhir Shift", selector: (row) => row[8], sortable: true},
@@ -127,7 +149,7 @@ function Driver() {
   const renderTable = (
     <div className="my-2">
         <div>
-            <input type="text" placeholder="Search" onChange={handleFilter} />
+            <input type="text" placeholder="Search" onChange={handleFilter} className="mb-3"/>
         </div>
         <DataTable
             columns={columns}
@@ -135,6 +157,7 @@ function Driver() {
             pagination
             highlightOnHover
             paginationServer
+            theme="solarized"
             paginationTotalRows={countPerPage}
             paginationComponentOptions={{
             noRowsPerPage: true,
@@ -147,6 +170,7 @@ function Driver() {
   return (
     <div className="p-4">
       <h1>Data Driver CAB</h1>
+      <hr />
       <div className="d-flex flex-row">
         <AddDriver />
         <ExportExcel excelData={driversExcel} fileName={"Laporan Drivers CAB"}/>

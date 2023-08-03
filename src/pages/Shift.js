@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import DataTable from "react-data-table-component";
+import DataTable, {createTheme} from "react-data-table-component";
 import axios from "../api/axios";
 import Spinner from "../components/Spinner";
 import AddShift from "../components/AddShift";
@@ -31,6 +31,29 @@ function Shift() {
   const [isLoading, setIsLoading] = useState(false);
   const [shifts, setShifts] = useState([]);
   const [filterShifts, setFilterShifts] = useState([]);
+
+  // createTheme creates a new theme named solarized that overrides the build in dark theme
+  createTheme('solarized', {
+    text: {
+      primary: '#FFFFFF',
+      secondary: '#FFFFFF',
+    },
+    background: {
+      default: '#0A1929',
+    },
+    context: {
+      background: '#cb4b16',
+      text: '#FFFFFF',
+    },
+    divider: {
+      default: '#FFFFFF',
+    },
+    action: {
+      button: 'rgba(0,0,0,.54)',
+      hover: 'rgba(0,0,0,.08)',
+      disabled: 'rgba(0,0,0,.12)',
+    },
+  }, 'dark');
 
   const columns = [
     { name: "Nomor ID", selector: (row) => row[0], sortable: true },
@@ -117,7 +140,7 @@ function Shift() {
   const renderTable = (
     <div className="my-4">
       <div>
-        <input type="text" placeholder="Search" onChange={handleFilter} />
+        <input type="text" placeholder="Search" onChange={handleFilter} className="mb-3"/>
       </div>
       <DataTable
         columns={columns}
@@ -125,6 +148,7 @@ function Shift() {
         pagination
         highlightOnHover
         paginationServer
+        theme="solarized"
         paginationTotalRows={countPerPage}
         paginationComponentOptions={{
           noRowsPerPage: true,
@@ -161,6 +185,7 @@ function Shift() {
   return (
     <div className="p-4">
       <h1>Data Shift CAB</h1>
+      <hr/>
       <AddShift />
       {isLoading ? <Spinner /> : renderTable}
     </div>

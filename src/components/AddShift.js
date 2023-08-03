@@ -53,7 +53,7 @@ function AddShift() {
 
   return (  
 
-    <div className='container-fluid pt-4 text-lg-start'>
+    <div className='container-fluid text-lg-start'>
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
             Daftar Data Shift
         </button>

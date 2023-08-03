@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import DataTable from "react-data-table-component";
+import DataTable, {createTheme} from "react-data-table-component";
 import axios from "../api/axios";
 import Spinner from "../components/Spinner";
 import AddRoute from "../components/AddRoute";
@@ -28,13 +28,36 @@ function Location() {
     const [locations, setLocations] = useState([]);
     const [filterLocations, setFilterLocations] = useState([]);
 
+    createTheme('solarized', {
+      text: {
+        primary: '#FFFFFF',
+        secondary: '#FFFFFF',
+      },
+      background: {
+        default: '#0A1929',
+      },
+      context: {
+        background: '#cb4b16',
+        text: '#FFFFFF',
+      },
+      divider: {
+        default: '#FFFFFF',
+      },
+      action: {
+        button: 'rgba(0,0,0,.54)',
+        hover: 'rgba(0,0,0,.08)',
+        disabled: 'rgba(0,0,0,.12)',
+      },
+    }, 'dark');
+
+
   const columns = [
     { name: "ID", selector: (row) => row[0], sortable: true},
     { name: "Nomor", selector: (row) => row[1], sortable: true },
     { name: "Kode", selector: (row) => row[2], sortable: true },
     { name: "Titik Awal", selector: (row) => row[3], sortable: true },
     { name: "Titik Akhir", selector: (row) => row[4], sortable: true },
-    { name: "Total pendapatan", selector: (row) => row[5], sortable: true },
+    { name: "Total Pendapatan", selector: (row) => row[5], sortable: true },
     {
       name: "Detail",
       cell: (row) => (
@@ -108,7 +131,7 @@ function Location() {
   const renderTable = (
     <div className="my-4">
         <div>
-            <input type="text" placeholder="Search" onChange={handleFilter} />
+            <input type="text" placeholder="Search" onChange={handleFilter} className="mb-3"/>
         </div>
         <DataTable
             columns={columns}
@@ -116,6 +139,7 @@ function Location() {
             pagination
             highlightOnHover
             paginationServer
+            theme="solarized"
             paginationTotalRows={countPerPage}
             paginationComponentOptions={{
             noRowsPerPage: true,
@@ -128,6 +152,7 @@ function Location() {
   return (
     <div className="p-4">
       <h1>Data Rute CAB</h1>
+      <hr />
       <AddRoute />
       {isLoading ? <Spinner /> : renderTable}
     </div>

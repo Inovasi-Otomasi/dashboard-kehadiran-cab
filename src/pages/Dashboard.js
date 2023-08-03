@@ -7,12 +7,14 @@ import KaryawanTable from '../components/KaryawanTable'
 function Dashboard() {
   return (
     <div className='dashboard-wrapper p-4'>
-        <div className='d-flex flex-row'>
+        <h1>Dashboard</h1>
+        <hr/>
+        <div className='d-flex flex-row justify-content-between'>
             <TrayekPie />
             <AbsenPie />
        
         </div>
-        <div className='d-flex flex-row'>
+        <div className='d-flex flex-row justify-content-between'>
             <PendapatanGraph />
             <KaryawanTable />
         </div>
