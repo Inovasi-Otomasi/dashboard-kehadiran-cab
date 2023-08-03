@@ -9,15 +9,12 @@ function Dashboard() {
     <div className='dashboard-wrapper p-4'>
         <h1>Dashboard</h1>
         <hr/>
-        <div className='d-flex flex-row justify-content-between'>
+        <div className='d-md-flex flex-row justify-content-around'>
             <TrayekPie />
             <AbsenPie />
-       
         </div>
-        <div className='d-flex flex-row justify-content-between'>
-            <PendapatanGraph />
-            <KaryawanTable />
-        </div>
+        <PendapatanGraph />
+        <KaryawanTable />
     </div>
     
   )

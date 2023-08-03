@@ -16,17 +16,20 @@ import EditRoute from "./components/EditRoute";
 function App() {
   return (
     <Router>
-      <div className="main-wrapper d-flex flex-row">
-        <Sidenav />
-        <Routes>
-          <Route exact path="/" element={<Dashboard/>}/>
-          <Route exact path="/shift" element={<Shift/>}/>
-          <Route exact path="/shift/edit/:id" element={<EditShift/>}/>
-          <Route exact path="/driver" element={<Driver/>}/>
-          <Route exact path="/location" element={<Location/>}/>
-          <Route exact path="location/edit/:id" element={<EditRoute />}/>
-          <Route exact path="*" element={<Error/>} />
-        </Routes>
+      <div className="App">
+        <Sidenav/>
+        <main className="container-fluid">
+          <Routes>
+            <Route exact path="/" element={<Dashboard/>}/>
+            <Route exact path="/shift" element={<Shift/>}/>
+            <Route exact path="/shift/edit/:id" element={<EditShift/>}/>
+            <Route exact path="/driver" element={<Driver/>}/>
+            <Route exact path="/location" element={<Location/>}/>
+            <Route exact path="location/edit/:id" element={<EditRoute />}/>
+            <Route exact path="*" element={<Error/>} />
+          </Routes>
+        </main>
+        
       </div>
     </Router>
     

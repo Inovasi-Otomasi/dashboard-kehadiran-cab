@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import DataTable from "react-data-table-component";
+import DataTable, {createTheme} from "react-data-table-component";
 import { Modal, Button, Col, Container, Row } from "react-bootstrap";
 
 function KaryawanTable() {
@@ -8,11 +8,43 @@ function KaryawanTable() {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
+  const customStyles = {
+    columns: {
+      style: {
+        minWidth: '100px',
+      }
+    }
+  }
+
+  createTheme('solarized', {
+    text: {
+      primary: '#FFFFFF',
+      secondary: '#FFFFFF',
+    },
+    background: {
+      default: '#0A1929',
+    },
+    context: {
+      background: '#cb4b16',
+      text: '#FFFFFF',
+    },
+    divider: {
+      default: '#FFFFFF',
+    },
+    action: {
+      button: 'rgba(0,0,0,.54)',
+      hover: 'rgba(0,0,0,.08)',
+      disabled: 'rgba(0,0,0,.12)',
+    },
+  }, 'dark');
+
   const columns = [
     { name: "Nomor ID", selector: (row) => row.id },
     { name: "Nama", selector: (row) => row.nama },
     { name: "Trayek", selector: (row) => row.trayek },
     { name: "Total Penghasilan", selector: (row) => row.penghasilan },
+    { name: "Jam Operasional Kerja", selector: (row) => row.jam_operasional },
+    { name: "Penggajian", selector: (row) => row.penggajian },
     {
       name: "Detail",
       cell: (row) => (
@@ -29,24 +61,14 @@ function KaryawanTable() {
       nama: "Joni",
       trayek: "A",
       penghasilan: "Rp. 5000000",
-    },
-    {
-      id: 2,
-      nama: "Jasun",
-      trayek: "B",
-      penghasilan: "Rp. 4000000",
-    },
-    {
-      id: 3,
-      nama: "Jafar",
-      trayek: "C",
-      penghasilan: "Rp. 5500000",
+      jam_operasional: '30 Hari',
+      penggajian: 'Rp.5000000'
     },
   ];
 
   return (
     <div className="p-4">
-      <DataTable columns={columns} data={data} pagination />
+      <DataTable columns={columns} data={data} theme="solarized" pagination title="Detail Performa Driver" customStyles={customStyles} />
       
       {/* Modal Detail */}
       <Modal show={show} onHide={handleClose}>
