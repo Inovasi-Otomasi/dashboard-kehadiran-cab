@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import axios from '../api/axios';
 import { useNavigate } from 'react-router-dom';
 import { use } from 'echarts';
+import Swal from 'sweetalert2';
 
 
 const BASE_URL= "/1.0.0/drivers"
@@ -86,13 +87,22 @@ function AddDriver() {
                 username: "",
                 password: "",
             })
+            Swal.fire({
+                icon: 'success',
+                title: 'Menambahkan Data Shift',
+                text: 'Sukses menambahkan shift!',
+            })
             setTimeout(function(){
                 window.location.reload();
             }, 500);
 
 
         } catch (error) {
-            console.log(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Menambahkan Data Shift',
+                text: 'Gagal menambahkan shift!',
+            })
         }
     }
 

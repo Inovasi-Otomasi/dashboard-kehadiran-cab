@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import axios from '../api/axios';
 import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 
 const BASE_URL= "/1.0.0/routes"
@@ -44,13 +45,22 @@ function AddRoute() {
                 end_point: "",
                 total_income: 0
             })
+            Swal.fire({
+                icon: 'success',
+                title: 'Menambahkan Data Rute',
+                text: 'Sukses menambahkan rute!',
+            })
             setTimeout(function(){
                 window.location.reload();
             }, 500);
 
 
         } catch (error) {
-            console.log(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Menambahkan Data Rute',
+                text: 'Gagal menambahkan rute!',
+            })
         }
     }
 

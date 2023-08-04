@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "../api/axios";
+import Swal from "sweetalert2";
 
 function EditRoute() {
   const { id } = useParams();
@@ -43,11 +44,20 @@ function EditRoute() {
         end_point: "",
         total_income: 0,
       });
+      Swal.fire({
+        icon: "success",
+        title: "Edit Data Rute",
+        text: "Sukses mengedit rute!",
+      });
       setTimeout(function () {
         navigate(-1);
       }, 500);
     } catch (error) {
-      console.log(error);
+      Swal.fire({
+        icon: "error",
+        title: "Edit Data Rute",
+        text: "Gagal mengedit rute!",
+      });
     }
   };
 

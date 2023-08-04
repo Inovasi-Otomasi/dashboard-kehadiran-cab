@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import axios from '../api/axios';
 import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 
 const BASE_URL= "/1.0.0/shifts"
@@ -34,12 +35,16 @@ function AddShift() {
         };
         try{
             const response = await axios.post(BASE_URL, shiftData);
-            console.log(response.status, response.data)
             setState({
                 number: 0,
                 name: "",
                 shift_start: "",
                 shift_end: "",
+            })
+            Swal.fire({
+                icon: 'success',
+                title: 'Menambahkan Data Shift',
+                text: 'Sukses menambahkan shift!',
             })
             setTimeout(function(){
                 window.location.reload();
@@ -47,7 +52,11 @@ function AddShift() {
 
 
         } catch (error) {
-            console.log(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Menambahkan Data Shift',
+                text: 'Gagal menambahkan shift!',
+            })
         }
     }
 

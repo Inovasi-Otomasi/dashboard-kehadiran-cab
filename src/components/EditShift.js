@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "../api/axios";
+import Swal from "sweetalert2";
 
 function EditShift() {
   const { id } = useParams();
@@ -40,11 +41,20 @@ function EditShift() {
         shift_start: "",
         shift_end: "",
       });
+      Swal.fire({
+        icon: "success",
+        title: "Edit Data Shift",
+        text: "Sukses mengedit shift!",
+      });
       setTimeout(function () {
         navigate(-1);
       }, 500);
     } catch (error) {
-      console.log(error);
+      Swal.fire({
+        icon: "error",
+        title: "Edit Data Shift",
+        text: "Gagal mengedit shift!",
+      });
     }
   };
 
