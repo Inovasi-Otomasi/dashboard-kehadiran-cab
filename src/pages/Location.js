@@ -4,6 +4,7 @@ import DataTable, {createTheme} from "react-data-table-component";
 import axios from "../api/axios";
 import Spinner from "../components/Spinner";
 import AddRoute from "../components/AddRoute";
+import Swal from "sweetalert2";
 
 const GET_URL = "/1.0.0/routes_datatables"
 
@@ -80,8 +81,7 @@ function Location() {
     {
       name: "Hapus Data",
       cell: (row) => (
-        <button className="btn btn-danger btn-sm" onClick={(e) => {if (window.confirm('Apakah anda yakin ingin menghapus data ini'))deleteData(row[0], e)}}
-        id={row[0]}>
+        <button className="btn btn-danger btn-sm" onClick={() => deleteData(row[0])}>
           <i className="fa fa-trash"></i>
         </button>
       ),
@@ -107,15 +107,32 @@ function Location() {
   }
 
   const deleteData = async (id) => {
-    try{
-        await axios.delete(`/1.0.0/routes/${id}`).then((response) => {
-            console.log(response)
+    await Swal.fire({
+      title: "Penghapusan Data Rute",
+      text: "Apakah anda yakin ingin menghapus data ini?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Hapus Data!",
+    }).then((result) => {
+      try {
+        if (result.isConfirmed) {
+          Swal.fire("Terhapus!", "Data telah dihapus.", "success");
+          axios.delete(`/1.0.0/routes/${id}`).then((response) => {
+            console.log(response);
             getData();
-        })
-    } catch (error){
-        console.log(error)
-    }
-  }
+          });
+        }
+      } catch (error) {
+        Swal.fire({
+          title: "Penghapusan Data Rute",
+          icon: "error",
+          text: "Gagal menghapus data",
+        });
+      }
+    });
+  };
 
   useEffect(() => {
     getData();

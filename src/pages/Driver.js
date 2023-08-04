@@ -5,6 +5,7 @@ import axios from "../api/axios";
 import Spinner from "../components/Spinner";
 import AddDriver from "../components/AddDriver";
 import ExportExcel from "../components/ExcelExport";
+import Swal from "sweetalert2";
 
 const GET_URL = "/1.0.0/drivers_datatables"
 
@@ -87,8 +88,7 @@ function Driver() {
     {
       name: "Hapus Data",
       cell: (row) => (
-        <button className="btn btn-danger btn-sm" onClick={(e) => {if (window.confirm('Apakah anda yakin ingin menghapus data ini'))deleteData(row[0], e)}}
-        id={row[0]}>
+        <button className="btn btn-danger btn-sm" onClick={() => deleteData(row[0])}>
           <i className="fa fa-trash"></i>
         </button>
       ),
@@ -124,15 +124,32 @@ function Driver() {
   }
 
   const deleteData = async (id) => {
-    try{
-        await axios.delete(`/1.0.0/drivers/${id}`).then((response) => {
-            console.log(response)
+    await Swal.fire({
+      title: "Penghapusan Data Driver",
+      text: "Apakah anda yakin ingin menghapus data ini?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Hapus Data!",
+    }).then((result) => {
+      try {
+        if (result.isConfirmed) {
+          Swal.fire("Terhapus!", "Data telah dihapus.", "success");
+          axios.delete(`/1.0.0/drivers/${id}`).then((response) => {
+            console.log(response);
             getData();
-        })
-    } catch (error){
-        console.log(error)
-    }
-  }
+          });
+        }
+      } catch (error) {
+        Swal.fire({
+          title: "Penghapusan Data Driver",
+          icon: "error",
+          text: "Gagal menghapus data",
+        });
+      }
+    });
+  };
 
   useEffect(() => {
     getData();

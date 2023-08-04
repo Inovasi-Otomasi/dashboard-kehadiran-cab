@@ -1,17 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import DataTable, {createTheme} from "react-data-table-component";
+import DataTable, { createTheme } from "react-data-table-component";
 import axios from "../api/axios";
 import Spinner from "../components/Spinner";
 import AddShift from "../components/AddShift";
-import { Modal, Button, Col, Container, Row } from "react-bootstrap";
-
-const GET_URL = "/1.0.0/shifts";
+import Swal from "sweetalert2";
 
 function Shift() {
-  const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
 
   const navigate = useNavigate();
 
@@ -33,27 +28,31 @@ function Shift() {
   const [filterShifts, setFilterShifts] = useState([]);
 
   // createTheme creates a new theme named solarized that overrides the build in dark theme
-  createTheme('solarized', {
-    text: {
-      primary: '#FFFFFF',
-      secondary: '#FFFFFF',
+  createTheme(
+    "solarized",
+    {
+      text: {
+        primary: "#FFFFFF",
+        secondary: "#FFFFFF",
+      },
+      background: {
+        default: "#0A1929",
+      },
+      context: {
+        background: "#cb4b16",
+        text: "#FFFFFF",
+      },
+      divider: {
+        default: "#FFFFFF",
+      },
+      action: {
+        button: "rgba(0,0,0,.54)",
+        hover: "rgba(0,0,0,.08)",
+        disabled: "rgba(0,0,0,.12)",
+      },
     },
-    background: {
-      default: '#0A1929',
-    },
-    context: {
-      background: '#cb4b16',
-      text: '#FFFFFF',
-    },
-    divider: {
-      default: '#FFFFFF',
-    },
-    action: {
-      button: 'rgba(0,0,0,.54)',
-      hover: 'rgba(0,0,0,.08)',
-      disabled: 'rgba(0,0,0,.12)',
-    },
-  }, 'dark');
+    "dark"
+  );
 
   const columns = [
     { name: "Nomor ID", selector: (row) => row[0], sortable: true },
@@ -85,11 +84,7 @@ function Shift() {
       cell: (row) => (
         <button
           className="btn btn-danger btn-sm"
-          onClick={(e) => {
-            if (window.confirm("Apakah anda yakin ingin menghapus data ini"))
-              deleteData(row[0], e);
-          }}
-          id={row[0]}>
+          onClick={() => deleteData(row[0])}>
           <i className="fa fa-trash"></i>
         </button>
       ),
@@ -116,14 +111,31 @@ function Shift() {
   };
 
   const deleteData = async (id) => {
-    try {
-      await axios.delete(`/1.0.0/shifts/${id}`).then((response) => {
-        console.log(response);
-        getData();
-      });
-    } catch (error) {
-      console.log(error);
-    }
+    await Swal.fire({
+      title: "Penghapusan Data Shift",
+      text: "Apakah anda yakin ingin menghapus data ini?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Hapus Data!",
+    }).then((result) => {
+      try {
+        if (result.isConfirmed) {
+          Swal.fire("Terhapus!", "Data telah dihapus.", "success");
+          axios.delete(`/1.0.0/shifts/${id}`).then((response) => {
+            console.log(response);
+            getData();
+          });
+        }
+      } catch (error) {
+        Swal.fire({
+          title: "Penghapusan Data Shift",
+          icon: "error",
+          text: "Gagal menghapus data",
+        });
+      }
+    });
   };
 
   useEffect(() => {
@@ -140,7 +152,12 @@ function Shift() {
   const renderTable = (
     <div className="my-4">
       <div>
-        <input type="text" placeholder="Search" onChange={handleFilter} className="mb-3"/>
+        <input
+          type="text"
+          placeholder="Search"
+          onChange={handleFilter}
+          className="mb-3"
+        />
       </div>
       <DataTable
         columns={columns}
@@ -187,7 +204,7 @@ function Shift() {
   return (
     <div className="p-4">
       <h1>Data Shift CAB</h1>
-      <hr/>
+      <hr />
       <AddShift />
       {isLoading ? <Spinner /> : renderTable}
     </div>
