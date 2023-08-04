@@ -147,7 +147,7 @@ function Driver() {
   }
 
   const renderTable = (
-    <div className="my-2">
+    <div className="">
         <div>
             <input type="text" placeholder="Search" onChange={handleFilter} className="mb-3"/>
         </div>
@@ -158,6 +158,8 @@ function Driver() {
             highlightOnHover
             paginationServer
             theme="solarized"
+            fixedHeader
+            fixedHeaderScrollHeight="300px"
             paginationTotalRows={countPerPage}
             paginationComponentOptions={{
             noRowsPerPage: true,

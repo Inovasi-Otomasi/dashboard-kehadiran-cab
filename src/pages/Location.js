@@ -140,6 +140,8 @@ function Location() {
             highlightOnHover
             paginationServer
             theme="solarized"
+            fixedHeader
+            fixedHeaderScrollHeight="300px"
             paginationTotalRows={countPerPage}
             paginationComponentOptions={{
             noRowsPerPage: true,
