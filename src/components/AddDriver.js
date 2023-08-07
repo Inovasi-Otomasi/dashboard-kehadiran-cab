@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import axios from '../api/axios';
 import { useNavigate } from 'react-router-dom';
-import { use } from 'echarts';
 import Swal from 'sweetalert2';
 
 
@@ -10,6 +9,20 @@ const BASE_URL= "/1.0.0/drivers"
 function AddDriver() { 
 
     const navigate = useNavigate()
+
+    const status_options = [
+        {value: "A", label: "A"},
+        {value: "B", label: "B"},
+        {value: "C", label: "C"},
+        {value: "D", label: "D"},
+    ]
+
+    const lvlmenu_options = [
+        {value: "Aktif", label: "Aktif"},
+        {value: "Non-Aktif", label: "Non-Aktif"},
+        {value: "Mengundurkan diri", label: "Mengundurkan diri"},
+        {value: "Dipecat", label: "Dipecat"},
+    ]
     
     const [shifts, setShifts] = useState([]);
 
@@ -158,8 +171,6 @@ function AddDriver() {
                                     <option value={state.shift_id}>{shift.id}</option>
                                 )}
                             </select>
-                            {/* <input type="text" class="form-control" id="validationCustom03" 
-                            placeholder='1xxxxxxx' name='shift_id' value={state.shift_id} onChange={handleChange} required/> */}
                         </div>
 
                         <div class="col-md-6">
@@ -181,23 +192,21 @@ function AddDriver() {
                         
                         <div class="col-md-6">
                             <label for="validationCustom03" class="form-label">Level Menu</label>
-                            <select class="form-select" aria-label="Default select example" required onChange={value => handleChange(value)} name='level_menu'>
+                            <select class="form-select" aria-label="Default select example" required onChange={value => handleChange(value)} value={state.level_menu} name='level_menu'>
                                 <option selected disabled>Pilih Level Menu</option>
-                                <option value={state.level_menu == "A" } >A</option>
-                                <option value={state.level_menu == "B" } >B</option>
-                                <option value={state.level_menu == "C" } >C</option>
-                                <option value={state.level_menu == "D" } >D</option>
+                                {lvlmenu_options.map((level) => 
+                                    <option value={level.value}>{level.label}</option>
+                                )}
                             </select>
                             
                         </div>
                         <div class="col-md-6">
                             <label for="validationCustom04" class="form-label">Status</label>
-                            <select class="form-select" aria-label="Default select example" required onChange={value => handleChange(value)} name='status'>
-                                <option selected disabled>Pilih Level Menu</option>
-                                <option value={state.status == "Aktif" } >Aktif</option>
-                                <option value={state.status == "Non-Aktif" } >Non-Aktif</option>
-                                <option value={state.status == "Mengundurkan diri" } >Mengundurkan diri</option>
-                                <option value={state.status == "Dipecat" } >Dipecat</option>
+                            <select class="form-select" aria-label="Default select example" required onChange={value => handleChange(value)} value={state.status} name='status'>
+                                <option selected disabled>Pilih Status</option>
+                                {status_options.map((stats) => 
+                                    <option value={stats.value}>{stats.label}</option>
+                                )}
                             </select>
                             
                         </div>
