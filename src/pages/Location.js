@@ -118,8 +118,8 @@ function Location() {
     }).then((result) => {
       try {
         if (result.isConfirmed) {
-          Swal.fire("Terhapus!", "Data telah dihapus.", "success");
           axios.delete(`/1.0.0/routes/${id}`).then((response) => {
+            Swal.fire("Terhapus!", "Data telah dihapus.", "success");
             console.log(response);
             getData();
           });
@@ -169,7 +169,7 @@ function Location() {
   )
 
   return (
-    <div className="p-4">
+    <div className="p-4 vh-100 vw-90">
       <h1>Data Rute CAB</h1>
       <hr />
       <AddRoute />

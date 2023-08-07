@@ -122,8 +122,8 @@ function Shift() {
     }).then((result) => {
       try {
         if (result.isConfirmed) {
-          Swal.fire("Terhapus!", "Data telah dihapus.", "success");
           axios.delete(`/1.0.0/shifts/${id}`).then((response) => {
+            Swal.fire("Terhapus!", "Data telah dihapus.", "success");
             console.log(response);
             getData();
           });
@@ -202,7 +202,7 @@ function Shift() {
   );
 
   return (
-    <div className="p-4">
+    <div className="p-4 vh-100 vw-90">
       <h1>Data Shift CAB</h1>
       <hr />
       <AddShift />

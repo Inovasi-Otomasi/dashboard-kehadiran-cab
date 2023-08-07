@@ -135,17 +135,18 @@ function Driver() {
     }).then((result) => {
       try {
         if (result.isConfirmed) {
-          Swal.fire("Terhapus!", "Data telah dihapus.", "success");
           axios.delete(`/1.0.0/drivers/${id}`).then((response) => {
+            Swal.fire("Terhapus!", "Data telah dihapus.", "success");
             console.log(response);
             getData();
           });
         }
       } catch (error) {
+        console.log(error)
         Swal.fire({
           title: "Penghapusan Data Driver",
           icon: "error",
-          text: "Gagal menghapus data",
+          text: error,
         });
       }
     });
@@ -187,7 +188,7 @@ function Driver() {
   )
 
   return (
-    <div className="p-4">
+    <div className="p-4 vh-100 vw-90">
       <h1>Data Driver CAB</h1>
       <hr />
       <div className="d-flex flex-row">
