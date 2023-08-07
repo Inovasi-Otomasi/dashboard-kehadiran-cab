@@ -155,7 +155,7 @@ function AddDriver() {
                         <div class="col-md-6">
                             <label for="validationCustom04" class="form-label">Nomor SIM</label>
                             <input type="text" class="form-control" id="validationCustom03" 
-                            placeholder='2xxxxxxxxxxx' name='no_sim' value={state.end_point} onChange={handleChange} required/>
+                            placeholder='2xxxxxxxxxxx' name='no_sim' value={state.no_sim} onChange={handleChange} required/>
                         </div>
 
                         <div class="col-md-6">
