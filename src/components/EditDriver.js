@@ -138,7 +138,7 @@ function EditDriver() {
   };
 
   return (
-    <div className="container-fluid text-lg-start">
+    <div className="container-fluid text-lg-start mb-2">
       <form
         class="row g-3 needs-validation px-5"
         novalidate

@@ -13,7 +13,7 @@ const Sidebar = () => {
           </div>
         </header>
   
-        <aside className={`sidebar ${show ? 'show' : null}`}>
+        <aside className={`sidebar ${show ? 'show_sidebar' : null}`}>
           <nav className='nav'>
             <div>
               <NavLink to='/' className='nav-logo'>

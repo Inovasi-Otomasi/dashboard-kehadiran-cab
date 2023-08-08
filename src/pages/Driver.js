@@ -56,12 +56,12 @@ function Driver() {
   const columns = [
     { name: "ID", selector: (row) => row[0], sortable: true},
     { name: "Username", selector: (row) => row[14], sortable: true},
-    { name: "Nomor", selector: (row) => row[1], sortable: true},
-    { name: "Shift ID", selector: (row) => row[6], sortable: true},
+    // { name: "Nomor", selector: (row) => row[1], sortable: true},
+    // { name: "Shift ID", selector: (row) => row[6], sortable: true},
     { name: "Shift", selector: (row) => row[2], sortable: true},
     // { name: "NIK", selector: (row) => row[3], sortable: true},
     // { name: "Nomor SIM", selector: (row) => row[4], sortable: true},
-    { name: "RFID", selector: (row) => row[5], sortable: true},
+    // { name: "RFID", selector: (row) => row[5], sortable: true},
     // { name: "Mulai Shift", selector: (row) => row[7], sortable: true},
     // { name: "Akhir Shift", selector: (row) => row[8], sortable: true},
     // { name: "Alamat", selector: (row) => row[9], sortable: true},
@@ -179,7 +179,7 @@ function Driver() {
             paginationServer
             theme="solarized"
             fixedHeader
-            fixedHeaderScrollHeight="300px"
+            fixedHeaderScrollHeight="400px"
             paginationTotalRows={countPerPage}
             paginationComponentOptions={{
             noRowsPerPage: true,
@@ -190,14 +190,15 @@ function Driver() {
   )
 
   return (
-    <div className="p-4 vh-100 vw-90">
+    <div className="p-4">
       <h1>Data Driver CAB</h1>
       <hr />
-      <div className="d-flex flex-row">
+      <div className="d-flex flex-row justify-content-between pb-4">
         <AddDriver />
-        <ExportExcel excelData={driversExcel} fileName={"Laporan Drivers CAB"}/>
+        <ExportExcel />
       </div>
       {isLoading ? <Spinner /> : renderTable}
+      
     </div>
   );
 }

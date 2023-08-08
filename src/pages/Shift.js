@@ -61,14 +61,6 @@ function Shift() {
     { name: "Waktu Mulai", selector: (row) => row[3], sortable: true },
     { name: "Waktu Selesai", selector: (row) => row[4], sortable: true },
     {
-      name: "Detail",
-      cell: (row) => (
-        <button className="btn btn-primary btn-sm">
-          <i className="fa fa-search-plus"></i>
-        </button>
-      ),
-    },
-    {
       name: "Edit Data",
       cell: (row) => (
         <button
@@ -175,34 +167,13 @@ function Shift() {
         onChangePage={(page) => setPage(page)}
       />
 
-      {/* Modal Delete*/}
-      {/* <Modal show={show} onHide={handleClose}>
-          <Modal.Header closeButton>
-                <Modal.Title>Konfirmasi Delete</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-                <h1>Apakah anda yakin ingin hapus data ini?</h1>
-            </Modal.Body>
-            <Modal.Footer>
-              <Container className="py-2">
-                <Row className="py-1">
-                  <Col md={6}>
-                    <Button variant="secondary" onClick={handleClose}>
-                      Tutup
-                    </Button>
-                  </Col>
-                  <Col md={6}>
-                    <Button variant="danger" onClick={deleteData(row[0])}>Hapus data</Button>
-                  </Col>
-                </Row>
-              </Container>
-            </Modal.Footer>
-        </Modal> */}
+      
+
     </div>
   );
 
   return (
-    <div className="p-4 vh-100 vw-90">
+    <div className="p-4">
       <h1>Data Shift CAB</h1>
       <hr />
       <AddShift />

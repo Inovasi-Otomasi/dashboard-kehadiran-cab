@@ -60,14 +60,6 @@ function Location() {
     { name: "Titik Akhir", selector: (row) => row[4], sortable: true },
     { name: "Total Pendapatan", selector: (row) => row[5], sortable: true },
     {
-      name: "Detail",
-      cell: (row) => (
-        <button className="btn btn-primary btn-sm">
-          <i className="fa fa-search-plus"></i>
-        </button>
-      ),
-    },
-    {
       name: "Edit Data",
       cell: (row) => (
         <button className="btn btn-success btn-sm"
@@ -169,7 +161,7 @@ function Location() {
   )
 
   return (
-    <div className="p-4 vh-100 vw-90">
+    <div className="p-4">
       <h1>Data Rute CAB</h1>
       <hr />
       <AddRoute />

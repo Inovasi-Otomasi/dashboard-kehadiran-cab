@@ -120,7 +120,7 @@
     transition: 0.5s;
   }
   
-  .show {
+  .show_sidebar {
     left: 0;
   }
   
@@ -144,7 +144,7 @@
       padding: 1rem 0 0 0;
     }
   
-    .show {
+    .show_sidebar {
       width: calc(var(--header-height) + 156px);
     }
   

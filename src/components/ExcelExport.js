@@ -16,7 +16,7 @@ const ExportExcel = ({excelData, fileName}) => {
 
     return (
         <>
-            <button className="btn btn-success sm" onClick={(e) => exportToExcel(fileName)}>Export ke CSV</button>
+            <button className="btn btn-success" onClick={(e) => exportToExcel(fileName)}>Export ke CSV</button>
         </>
     )
 }
