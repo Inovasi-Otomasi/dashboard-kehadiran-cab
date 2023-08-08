@@ -12,13 +12,14 @@ import Dashboard from "./pages/Dashboard";
 import Error from "./pages/Error";
 import EditShift from "./components/EditShift";
 import EditRoute from "./components/EditRoute";
+import Sidebar from "./components/Sidebar";
 
 
 function App() {
   return (
     <Router>
       <div className="App">
-        <Sidenav/>
+        <Sidebar/>
         <main className="container-fluid">
           <Routes>
             <Route exact path="/" element={<Dashboard/>}/>
