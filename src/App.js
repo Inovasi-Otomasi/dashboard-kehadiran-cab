@@ -5,6 +5,7 @@ import Shift from "./pages/Shift";
 import Driver from "./pages/Driver";
 import Location from "./pages/Location";
 import './App.css'
+import Map from "./components/Map";
 
 
 import Dashboard from "./pages/Dashboard";
@@ -26,6 +27,7 @@ function App() {
             <Route exact path="/driver" element={<Driver/>}/>
             <Route exact path="/location" element={<Location/>}/>
             <Route exact path="location/edit/:id" element={<EditRoute />}/>
+            <Route exact path="/map" element={<Map />} />
             <Route exact path="*" element={<Error/>} />
           </Routes>
         </main>
