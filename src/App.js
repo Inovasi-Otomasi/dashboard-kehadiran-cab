@@ -1,6 +1,5 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import { BrowserRouter as Router, Routes, Route} from "react-router-dom"
-import Sidenav from "./components/Sidenav";
 import Shift from "./pages/Shift";
 import Driver from "./pages/Driver";
 import Location from "./pages/Location";

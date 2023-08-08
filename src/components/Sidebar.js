@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import '../styles/sidebar.css';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 const Sidebar = () => {
     const [show, setShow] = useState(false);
@@ -16,24 +16,24 @@ const Sidebar = () => {
         <aside className={`sidebar ${show ? 'show' : null}`}>
           <nav className='nav'>
             <div>
-              <Link to='/' className='nav-logo'>
+              <NavLink to='/' className='nav-logo'>
                 <i className={`fas fa-home-alt nav-logo-icon`}></i>
                 <span className='nav-logo-name'>Dashboard</span>
-              </Link>
+              </NavLink>
   
               <div className='nav-list'>
-                <Link to='/shift' className='nav-link'>
+                <NavLink to='/shift' className='nav-link'>
                   <i className='fa-solid fa-clock nav-link-icon'></i>
                   <span className='nav-link-name'>Shifts</span>
-                </Link>
-                <Link to='/driver' className='nav-link'>
+                </NavLink>
+                <NavLink to='/driver' className='nav-link'>
                   <i className='fa-solid fa-users nav-link-icon'></i>
                   <span className='nav-link-name'>Drivers</span>
-                </Link>
-                <Link to='/location' className='nav-link'>
+                </NavLink>
+                <NavLink to='/location' className='nav-link'>
                   <i className='fa-solid fa-map nav-link-icon'></i>
                   <span className='nav-link-name'>Routes</span>
-                </Link>
+                </NavLink>
               </div>
             </div>
   
