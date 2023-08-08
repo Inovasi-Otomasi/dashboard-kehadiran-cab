@@ -3,18 +3,15 @@ import TrayekPie from '../components/TrayekPie'
 import AbsenPie from '../components/AbsenPie'
 import PendapatanGraph from '../components/PendapatanGraph'
 import KaryawanTable from '../components/KaryawanTable'
-import DateRangePickerComp from '../components/DateRange'
-
+import DateRange from '../components/DateRange'
 
 function Dashboard() {
   return (
     <div className='dashboard-wrapper p-4'>
-        <div className='d-md-flex flex-row justify-content-between'>
+        <div className='d-md-flex flex-row justify-content-around'>
           <h1>Dashboard</h1>
-          <DateRangePickerComp />
         </div>
-        
-        <hr/>
+        <DateRange/>
         <div className='d-md-flex flex-row justify-content-around'>
             <TrayekPie />
             <AbsenPie />
