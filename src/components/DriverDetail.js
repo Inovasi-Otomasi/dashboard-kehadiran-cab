@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 
 import { useParams } from 'react-router-dom'
 import axios from '../api/axios'
+import { Helmet } from 'react-helmet'
 
 function DriverDetail() {
 
@@ -48,6 +49,9 @@ function DriverDetail() {
 
   return (
     <div className='container-fluid'>
+        <Helmet>
+        <title>Data Driver CAB | Detail Driver</title>
+      </Helmet>
         <h1 className='text-center mb-4'>Detail Driver {state.number}</h1>
         <div className='row g-3'>
             <div className='col-md-6'>

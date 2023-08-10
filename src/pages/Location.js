@@ -5,6 +5,7 @@ import axios from "../api/axios";
 import Spinner from "../components/Spinner";
 import AddRoute from "../components/AddRoute";
 import Swal from "sweetalert2";
+import { Helmet } from "react-helmet";
 
 const GET_URL = "/1.0.0/routes_datatables"
 
@@ -162,6 +163,9 @@ function Location() {
 
   return (
     <div className="p-4">
+      <Helmet>
+        <title>Data Driver CAB | Rute</title>
+      </Helmet>
       <h1>Data Rute CAB</h1>
       <hr />
       <AddRoute />

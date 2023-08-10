@@ -5,6 +5,7 @@ import axios from "../api/axios";
 import Spinner from "../components/Spinner";
 import AddShift from "../components/AddShift";
 import Swal from "sweetalert2";
+import { Helmet } from "react-helmet";
 
 function Shift() {
 
@@ -174,6 +175,9 @@ function Shift() {
 
   return (
     <div className="p-4">
+      <Helmet>
+        <title>Data Driver CAB | Shift</title>
+      </Helmet>
       <h1>Data Shift CAB</h1>
       <hr />
       <AddShift />

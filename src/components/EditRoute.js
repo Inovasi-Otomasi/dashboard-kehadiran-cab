@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "../api/axios";
 import Swal from "sweetalert2";
+import { Helmet } from "react-helmet";
 
 function EditRoute() {
   const { id } = useParams();
@@ -79,6 +80,9 @@ function EditRoute() {
 
   return (
     <div className="container-fluid pt-4 text-lg-start">
+      <Helmet>
+        <title>Data Driver CAB | Edit Rute</title>
+      </Helmet>
       <form
         class="row g-3 needs-validation px-5"
         novalidate

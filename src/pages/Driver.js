@@ -194,8 +194,7 @@ function Driver() {
   return (
     <div className="p-4">
       <Helmet>
-        <meta charSet="utf-8" />
-        <title>Dashboard CAB | Drivers</title>
+        <title>Data Driver CAB | Driver</title>
       </Helmet>
       <h1>Data Driver CAB</h1>
       <hr />

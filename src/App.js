@@ -4,7 +4,7 @@ import Shift from "./pages/Shift";
 import Driver from "./pages/Driver";
 import Location from "./pages/Location";
 import './App.css'
-import TrayekMap from "./components/TrayekMap";
+
 
 
 import Dashboard from "./pages/Dashboard";
