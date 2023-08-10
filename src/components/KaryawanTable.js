@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 import DataTable, {createTheme} from "react-data-table-component";
 import { Modal, Button, Col, Container, Row } from "react-bootstrap";
+import profile_pic from '../assets/profile.png'
 
 function KaryawanTable() {
   const [show, setShow] = useState(false);
@@ -48,7 +49,7 @@ function KaryawanTable() {
     {
       name: "Detail",
       cell: (row) => (
-        <button onClick={handleShow} className="btn btn-primary btn-sm">
+        <button onClick={handleShow} className="btn btn-light btn-sm">
           <i className="fa fa-search-plus"></i>
         </button>
       ),
@@ -77,23 +78,26 @@ function KaryawanTable() {
         </Modal.Header>
         <Modal.Body>
           <Container className="py-2 text-center container-fluid">
+            <Col md={12}>
+              <img src={profile_pic} width={'50%'} height={200}/>
+            </Col>
             <Row className="py-1">
               <Col md={6}>
-                <h3>Nama</h3>
+                <label>Nama</label>
                 <h5>Joni</h5>
               </Col> 
               <Col md={6}>
-                <h3>Trayek</h3>
+                <label>Trayek</label>
                 <h5>A</h5>
               </Col>
             </Row>
             <Row className="py-1">
               <Col md={6}>
-                <h3>Penghasilan</h3>
+                <label>Penghasilan</label>
                 <h5>Rp. 5000000</h5>
               </Col>
               <Col md={6}>
-                <h3>NIK</h3>
+                <label>NIK</label>
                 <h5>32152214124100</h5>
               </Col>
             </Row>

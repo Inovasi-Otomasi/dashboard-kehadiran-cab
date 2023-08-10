@@ -13,6 +13,7 @@ import EditShift from "./components/EditShift";
 import EditRoute from "./components/EditRoute";
 import Sidebar from "./components/Sidebar";
 import EditDriver from "./components/EditDriver";
+import DriverDetail from "./components/DriverDetail";
 
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
             <Route exact path="/shift/edit/:id" element={<EditShift/>}/>
             <Route exact path="/driver" element={<Driver/>}/>
             <Route exact path="/driver/edit/:id" element={<EditDriver/>}/>
+            <Route exact path="/driver/details/:id" element={<DriverDetail />}/>
             <Route exact path="/location" element={<Location/>}/>
             <Route exact path="location/edit/:id" element={<EditRoute />}/>
             <Route exact path="*" element={<Error/>} />

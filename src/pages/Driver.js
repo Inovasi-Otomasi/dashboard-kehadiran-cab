@@ -6,6 +6,7 @@ import Spinner from "../components/Spinner";
 import AddDriver from "../components/AddDriver";
 import ExportExcel from "../components/ExcelExport";
 import Swal from "sweetalert2";
+import { Helmet } from "react-helmet";
 
 const GET_URL = "/1.0.0/drivers_datatables"
 
@@ -72,7 +73,8 @@ function Driver() {
     {
       name: "Detail",
       cell: (row) => (
-        <button className="btn btn-light btn-sm">
+        <button className="btn btn-light btn-sm"
+        onClick={() => navigate(`/driver/details/${row[0]}`)}>
           <i className="fa fa-search-plus"></i>
         </button>
       ),
@@ -191,11 +193,15 @@ function Driver() {
 
   return (
     <div className="p-4">
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>Dashboard CAB | Drivers</title>
+      </Helmet>
       <h1>Data Driver CAB</h1>
       <hr />
       <div className="d-flex flex-row justify-content-between pb-4">
         <AddDriver />
-        <ExportExcel />
+        <ExportExcel excelData={driversExcel} fileName={"Laporan Data Driver"}/>
       </div>
       {isLoading ? <Spinner /> : renderTable}
       

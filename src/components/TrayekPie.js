@@ -82,26 +82,26 @@ function TrayekPie() {
                 <Container className='py-2 text-center'>
                     <Row className='py-1'>
                         <Col md={6}>
-                            <Button variant='primary' onClick={handleShowTrayek}>Trayek A</Button>
+                            <Button variant='dark' onClick={handleShowTrayek}>Trayek A</Button>
                         </Col>
                         <Col md={6}>
-                            <Button variant='primary'>Trayek B</Button>
-                        </Col>
-                    </Row>
-                    <Row className='py-1'>
-                        <Col md={6}>
-                            <Button variant='primary'>Trayek C</Button>
-                        </Col>
-                        <Col md={6}>
-                            <Button variant='primary'>Trayek D</Button>
+                            <Button variant='dark'>Trayek B</Button>
                         </Col>
                     </Row>
                     <Row className='py-1'>
                         <Col md={6}>
-                            <Button variant='primary'>Trayek E</Button>
+                            <Button variant='dark'>Trayek C</Button>
                         </Col>
                         <Col md={6}>
-                            <Button variant='primary'>Trayek F</Button>
+                            <Button variant='dark'>Trayek D</Button>
+                        </Col>
+                    </Row>
+                    <Row className='py-1'>
+                        <Col md={6}>
+                            <Button variant='dark'>Trayek E</Button>
+                        </Col>
+                        <Col md={6}>
+                            <Button variant='dark'>Trayek F</Button>
                         </Col>
                     </Row>
                 </Container>
@@ -121,10 +121,27 @@ function TrayekPie() {
             <Modal.Body>
                 <Container className='container-fluid py-2'>
                     <TrayekMap />
-                    <h1>Trayek A</h1>
-                    <h3>Awal Trayek: Depok</h3>
-                    <h3>Akhir Trayek: FX Sudirman</h3>
-                    <h3>Pendapatan: Rp. 50000000</h3>
+                    <h3 className='text-md-center'>Trayek A</h3>
+                    <Row className="py-1 text-center">
+                        <Col md={6}>
+                            <label>Awal Trayek</label>
+                            <h5>Depok</h5>
+                        </Col>
+                        <Col md={6}>
+                            <label>Akhir Trayek</label>
+                            <h5>FX Sudirman</h5>
+                        </Col>        
+                    </Row>
+                    <Row className="py-1 text-center">
+                        <Col md={6}>
+                            <label>Pendapatan</label>
+                            <h5>Rp. 50.000.000</h5>
+                        </Col>
+                        <Col md={6}>
+                            <label>Performansi</label>
+                            <h5>Sangat Baik</h5>
+                        </Col>        
+                    </Row>
                 </Container>
             </Modal.Body>
             <Modal.Footer>

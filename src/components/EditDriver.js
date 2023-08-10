@@ -138,7 +138,7 @@ function EditDriver() {
   };
 
   return (
-    <div className="container-fluid text-lg-start mb-2">
+    <div className="container-fluid text-lg-start mb-4">
       <form
         class="row g-3 needs-validation px-5"
         novalidate
@@ -359,8 +359,8 @@ function EditDriver() {
         </div>
 
         <div class="col-12 text-lg-end">
-          <button class="btn btn-dark" type="submit">
-            Edit Data
+          <button class="btn btn-primary" type="submit">
+            Submit Form
           </button>
         </div>
       </form>
