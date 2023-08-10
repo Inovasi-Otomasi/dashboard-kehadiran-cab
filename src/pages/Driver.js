@@ -72,7 +72,7 @@ function Driver() {
     {
       name: "Detail",
       cell: (row) => (
-        <button className="btn btn-primary btn-sm">
+        <button className="btn btn-light btn-sm">
           <i className="fa fa-search-plus"></i>
         </button>
       ),
@@ -80,7 +80,7 @@ function Driver() {
     {
       name: "Edit Data",
       cell: (row) => (
-        <button className="btn btn-success btn-sm"
+        <button className="btn btn-light btn-sm"
           onClick={() => navigate(`/driver/edit/${row[0]}`)}
           id={row[0]}>
           <i className="fa fa-edit"></i>
@@ -90,7 +90,7 @@ function Driver() {
     {
       name: "Hapus Data",
       cell: (row) => (
-        <button className="btn btn-danger btn-sm" onClick={() => deleteData(row[0])}>
+        <button className="btn btn-light btn-sm" onClick={() => deleteData(row[0])}>
           <i className="fa fa-trash"></i>
         </button>
       ),

@@ -48,7 +48,7 @@ function AbsenPie() {
   return (
     <EChartsReact 
         option={option}
-        style={{height: 500, width: 500}}
+        style={{height: 500, width: '100%'}}
     
     />
   )

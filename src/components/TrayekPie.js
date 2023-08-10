@@ -3,6 +3,7 @@ import EChartsReact from 'echarts-for-react'
 import * as echarts from 'echarts'
 import { useState } from 'react';
 import { Modal, Button, Col, Container, Row } from "react-bootstrap";
+import TrayekMap from './TrayekMap';
 
 
 function TrayekPie() {
@@ -11,6 +12,11 @@ function TrayekPie() {
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+
+    const [showTrayek, setShowTrayek] = useState(false);
+
+    const handleCloseTrayek = () => setShowTrayek (false)
+    const handleShowTrayek = () => setShowTrayek(true)
 
     const onEvents = {
         click: handleShow
@@ -63,7 +69,7 @@ function TrayekPie() {
     <>
         <EChartsReact 
             option={option}
-            style={{height: 500, width: 500}}
+            style={{height: 500, width: '100%'}}
             onEvents = {onEvents}
         />
 
@@ -76,7 +82,7 @@ function TrayekPie() {
                 <Container className='py-2 text-center'>
                     <Row className='py-1'>
                         <Col md={6}>
-                            <Button variant='primary'>Trayek A</Button>
+                            <Button variant='primary' onClick={handleShowTrayek}>Trayek A</Button>
                         </Col>
                         <Col md={6}>
                             <Button variant='primary'>Trayek B</Button>
@@ -107,20 +113,26 @@ function TrayekPie() {
             </Modal.Footer>
         </Modal>
 
-        {/* Modal Detail Kode CAB Trayek
-        <Modal show={show} onHide={handleClose}>
+        {/* Modal Detail CAB */}
+        <Modal show={showTrayek} onHide={handleCloseTrayek}>
             <Modal.Header closeButton>
-                <Modal.Title>Detail CAB</Modal.Title>
+                <Modal.Title>Detail Trayek A</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                
+                <Container className='container-fluid py-2'>
+                    <TrayekMap />
+                    <h1>Trayek A</h1>
+                    <h3>Awal Trayek: Depok</h3>
+                    <h3>Akhir Trayek: FX Sudirman</h3>
+                    <h3>Pendapatan: Rp. 50000000</h3>
+                </Container>
             </Modal.Body>
             <Modal.Footer>
-                <Button variant="secondary" onClick={handleClose}>
+                <Button variant="secondary" onClick={handleCloseTrayek}>
                 Tutup
                 </Button>
             </Modal.Footer>
-        </Modal> */}
+        </Modal>
     </>
     
     

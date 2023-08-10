@@ -64,7 +64,7 @@ function Shift() {
       name: "Edit Data",
       cell: (row) => (
         <button
-          className="btn btn-success btn-sm"
+          className="btn btn-light btn-sm"
           onClick={() => navigate(`/shift/edit/${row[0]}`)}
           id={row[0]}>
           <i className="fa fa-edit"></i>
@@ -75,7 +75,7 @@ function Shift() {
       name: "Hapus Data",
       cell: (row) => (
         <button
-          className="btn btn-danger btn-sm"
+          className="btn btn-light btn-sm"
           onClick={() => deleteData(row[0])}>
           <i className="fa fa-trash"></i>
         </button>

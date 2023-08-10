@@ -67,7 +67,7 @@ function AddRoute() {
   return (  
 
     <div>
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#exampleModal">
             Daftar Data Route
         </button>
 
@@ -110,12 +110,12 @@ function AddRoute() {
                         </div>
                         
                         <div class="col-12 text-lg-end">
-                            <button class="btn btn-primary" type="submit">Submit Form</button>
+                            <button class="btn btn-dark" type="submit">Tambahkan Data</button>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
                 </div>
                 </div>
             </div>

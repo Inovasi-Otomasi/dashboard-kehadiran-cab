@@ -359,8 +359,8 @@ function EditDriver() {
         </div>
 
         <div class="col-12 text-lg-end">
-          <button class="btn btn-primary" type="submit">
-            Submit Form
+          <button class="btn btn-dark" type="submit">
+            Edit Data
           </button>
         </div>
       </form>

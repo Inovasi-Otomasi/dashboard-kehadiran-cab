@@ -54,7 +54,7 @@
     position: fixed;
     top: 0;
     left: -30%;
-    height: 100vh;
+    height: 100%;
     width: var(--nav-width);
     background-color: var(--first-color);
     padding-top: 1rem;

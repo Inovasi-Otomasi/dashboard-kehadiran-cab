@@ -20,7 +20,7 @@ function App() {
     <Router>
       <div className="App">
         <Sidebar/>
-        <main className="container-fluid">
+        <main className="container-sm">
           <Routes>
             <Route exact path="/" element={<Dashboard/>}/>
             <Route exact path="/shift" element={<Shift/>}/>
@@ -29,7 +29,6 @@ function App() {
             <Route exact path="/driver/edit/:id" element={<EditDriver/>}/>
             <Route exact path="/location" element={<Location/>}/>
             <Route exact path="location/edit/:id" element={<EditRoute />}/>
-            <Route exact path="/map" element={<TrayekMap />} />
             <Route exact path="*" element={<Error/>} />
           </Routes>
         </main>

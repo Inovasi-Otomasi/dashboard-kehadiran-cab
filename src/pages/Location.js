@@ -62,7 +62,7 @@ function Location() {
     {
       name: "Edit Data",
       cell: (row) => (
-        <button className="btn btn-success btn-sm"
+        <button className="btn btn-light btn-sm"
           onClick={() => navigate(`/location/edit/${row[0]}`)}
           id={row[0]}
         >
@@ -73,7 +73,7 @@ function Location() {
     {
       name: "Hapus Data",
       cell: (row) => (
-        <button className="btn btn-danger btn-sm" onClick={() => deleteData(row[0])}>
+        <button className="btn btn-light btn-sm" onClick={() => deleteData(row[0])}>
           <i className="fa fa-trash"></i>
         </button>
       ),

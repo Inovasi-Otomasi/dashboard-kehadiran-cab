@@ -70,7 +70,7 @@ function PendapatanGraph() {
   return (
     <EChartsReact 
         option={option}
-        style={{height: 400, width: 900}}
+        style={{height: 400, width: '100%'}}
     />
   )
 }
