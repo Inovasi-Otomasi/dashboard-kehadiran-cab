@@ -1,72 +1,77 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import DataTable, {createTheme} from "react-data-table-component";
+import DataTable, { createTheme } from "react-data-table-component";
 import axios from "../api/axios";
-import Spinner from "../components/Spinner";
+// import Spinner from "../components/Spinner";
 import AddRoute from "../components/AddRoute";
 import Swal from "sweetalert2";
 import { Helmet } from "react-helmet";
 
-const GET_URL = "/1.0.0/routes_datatables"
+const GET_URL = "/1.0.0/routes_datatables";
 
 function Location() {
+  const navigate = useNavigate();
 
-    const navigate = useNavigate();
+  const [page, setPage] = useState(1);
+  const [start, setStart] = useState(0);
+  const [sortColumn, setSortColumn] = useState(0);
+  const [dir, setDir] = useState("desc");
+  const countPerPage = 2;
 
-    var bodyFormData = new FormData();
+  // const [isLoading, setIsLoading] = useState(false);
+  const [locations, setLocations] = useState([]);
+  const [filterLocations, setFilterLocations] = useState("");
 
-    bodyFormData.append("draw", 1);
-    bodyFormData.append("length", 10);
-    bodyFormData.append("order[0][column]", 0);
-    bodyFormData.append("order[0][dir]", "desc");
-    bodyFormData.append("start", 0);
-    bodyFormData.append("search[value]", "");
-    bodyFormData.append("columns[0][search][value]", "");
+  var bodyFormData = new FormData();
 
-    const [page, setPage] = useState(1);
-    const countPerPage = 10;
+  bodyFormData.append("draw", page);
+  bodyFormData.append("length", countPerPage);
+  bodyFormData.append("order[0][column]", 0);
+  bodyFormData.append("order[0][dir]", dir);
+  bodyFormData.append("start", start);
+  bodyFormData.append("search[value]", filterLocations);
+  bodyFormData.append("columns[0][search][value]", "");
 
-    const [isLoading, setIsLoading] = useState(false);
-    const [locations, setLocations] = useState([]);
-    const [filterLocations, setFilterLocations] = useState([]);
-
-    createTheme('solarized', {
+  createTheme(
+    "solarized",
+    {
       text: {
-        primary: '#FFFFFF',
-        secondary: '#FFFFFF',
+        primary: "#FFFFFF",
+        secondary: "#FFFFFF",
       },
       background: {
-        default: '#0A1929',
+        default: "#0A1929",
       },
       context: {
-        background: '#cb4b16',
-        text: '#FFFFFF',
+        background: "#cb4b16",
+        text: "#FFFFFF",
       },
       divider: {
-        default: '#FFFFFF',
+        default: "#FFFFFF",
       },
       action: {
-        button: 'rgba(0,0,0,.54)',
-        hover: 'rgba(0,0,0,.08)',
-        disabled: 'rgba(0,0,0,.12)',
+        button: "rgba(0,0,0,.54)",
+        hover: "rgba(0,0,0,.08)",
+        disabled: "rgba(0,0,0,.12)",
       },
-    }, 'dark');
-
+    },
+    "dark"
+  );
 
   const columns = [
-    { name: "ID", selector: (row) => row[0], sortable: true},
+    { name: "ID", selector: (row) => row[0], sortable: true   },
     { name: "Nomor", selector: (row) => row[1], sortable: true },
-    { name: "Kode", selector: (row) => row[2], sortable: true },
-    { name: "Titik Awal", selector: (row) => row[3], sortable: true },
-    { name: "Titik Akhir", selector: (row) => row[4], sortable: true },
-    { name: "Total Pendapatan", selector: (row) => row[5], sortable: true },
+    { name: "Kode", selector: (row) => row[2], sortable: true  },
+    { name: "Titik Awal", selector: (row) => row[3], sortable: true  },
+    { name: "Titik Akhir", selector: (row) => row[4], sortable: true  },
+    { name: "Total Pendapatan", selector: (row) => row[5], sortable: true  },
     {
       name: "Edit Data",
       cell: (row) => (
-        <button className="btn btn-light btn-sm"
+        <button
+          className="btn btn-light btn-sm"
           onClick={() => navigate(`/location/edit/${row[0]}`)}
-          id={row[0]}
-        >
+          id={row[0]}>
           <i className="fa fa-edit"></i>
         </button>
       ),
@@ -74,30 +79,36 @@ function Location() {
     {
       name: "Hapus Data",
       cell: (row) => (
-        <button className="btn btn-light btn-sm" onClick={() => deleteData(row[0])}>
+        <button
+          className="btn btn-light btn-sm"
+          onClick={() => deleteData(row[0])}>
           <i className="fa fa-trash"></i>
         </button>
       ),
     },
   ];
 
-  const getData = async() => {
+  const handleSort = async (column, sortDirection) => {
+    setSortColumn(column.id - 1);
+    setDir(sortDirection);
+    getData();
+  };
+
+  const getData = async () => {
     try {
-        setIsLoading(true);
-        await axios({
-          method: "post",
-          url: GET_URL,
-          data: bodyFormData,
-          headers: { "Content-Type": "multipart/form-data" },
-        }).then((response) => {
-          setLocations(response.data.data);
-          setFilterLocations(response.data.data);
-          setIsLoading(false);
-        });
-      } catch (error) {
-        setIsLoading(false);
-      }
-  }
+      await axios({
+        method: "post",
+        url: GET_URL,
+        data: bodyFormData,
+        headers: { "Content-Type": "multipart/form-data" },
+      }).then((response) => {
+        setLocations(response.data);
+        
+      });
+    } catch (error) {
+      console.log(error)
+    }
+  };
 
   const deleteData = async (id) => {
     await Swal.fire({
@@ -129,37 +140,54 @@ function Location() {
 
   useEffect(() => {
     getData();
-  }, [page])
+  }, [page]);
 
   const handleFilter = (e) => {
-    const newLocations = filterLocations.filter((row) => 
-    row[2].toLowerCase().includes(e.target.value.toLowerCase())
-    )
-    setLocations(newLocations)
-  }
+    setFilterLocations(e.target.value);
+    console.log(e.target.value)
+    console.log(filterLocations)
+    getData();
+  };
 
   const renderTable = (
     <div className="my-4">
-        <div>
-            <input type="text" placeholder="Search" onChange={handleFilter} className="mb-3"/>
-        </div>
-        <DataTable
+      <div>
+        <input
+          type="text"
+          placeholder="Search"
+          onChange={handleFilter}
+          className="mb-3"
+        />
+      </div>
+      <div className="card bg-light">
+        <div className="card-body">
+          <DataTable
             columns={columns}
-            data={locations}
+            data={locations.data}
             pagination
             highlightOnHover
             paginationServer
             theme="solarized"
             fixedHeader
             fixedHeaderScrollHeight="300px"
-            paginationTotalRows={countPerPage}
+            paginationTotalRows={locations.recordsTotal}
+            paginationPerPage={countPerPage}
             paginationComponentOptions={{
-            noRowsPerPage: true,
+              noRowsPerPage: true,
             }}
-            onChangePage={(page) => setPage(page)}
-        />
+            onSort={handleSort}
+            sortServer
+            onChangePage={(page) => 
+              {
+                setPage(page)
+                setStart(countPerPage * page - countPerPage)
+              }
+            }
+          />
+        </div>
+      </div>
     </div>
-  )
+  );
 
   return (
     <div className="p-4">
@@ -169,7 +197,7 @@ function Location() {
       <h1>Data Rute CAB</h1>
       <hr />
       <AddRoute />
-      {isLoading ? <Spinner /> : renderTable}
+      {renderTable}
     </div>
   );
 }

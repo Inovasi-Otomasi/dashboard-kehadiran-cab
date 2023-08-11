@@ -102,8 +102,8 @@ function AddDriver() {
             })
             Swal.fire({
                 icon: 'success',
-                title: 'Menambahkan Data Shift',
-                text: 'Sukses menambahkan shift!',
+                title: 'Menambahkan Data Driver',
+                text: 'Sukses menambahkan drive!',
             })
             setTimeout(function(){
                 window.location.reload();
@@ -113,8 +113,8 @@ function AddDriver() {
         } catch (error) {
             Swal.fire({
                 icon: 'error',
-                title: 'Menambahkan Data Shift',
-                text: 'Gagal menambahkan shift!',
+                title: 'Menambahkan Data Driver',
+                text: 'Gagal menambahkan Driver!',
             })
         }
     }

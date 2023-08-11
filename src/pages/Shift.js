@@ -2,31 +2,37 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import DataTable, { createTheme } from "react-data-table-component";
 import axios from "../api/axios";
-import Spinner from "../components/Spinner";
+// import Spinner from "../components/Spinner";
 import AddShift from "../components/AddShift";
 import Swal from "sweetalert2";
 import { Helmet } from "react-helmet";
 
 function Shift() {
-
   const navigate = useNavigate();
+  const [shifts, setShifts] = useState([]);
+  const [filterShifts, setFilterShifts] = useState("");
+  const [start, setStart] = useState(0);
+  const [sortColumn, setSortColumn] = useState(0);
+  const [dir, setDir] = useState("desc");
+
+
+  const [page, setPage] = useState(1);
+  const countPerPage = 2;
 
   var bodyFormData = new FormData();
 
-  bodyFormData.append("draw", 1);
-  bodyFormData.append("length", 10);
-  bodyFormData.append("order[0][column]", 0);
-  bodyFormData.append("order[0][dir]", "desc");
-  bodyFormData.append("start", 0);
-  bodyFormData.append("search[value]", "");
+  bodyFormData.append("draw", page);
+  bodyFormData.append("length", countPerPage);
+  bodyFormData.append("order[0][column]",0);
+  bodyFormData.append("order[0][dir]", dir);
+  bodyFormData.append("start", start);
+  bodyFormData.append("search[value]", filterShifts);
   bodyFormData.append("columns[0][search][value]", "");
 
-  const [page, setPage] = useState(1);
-  const countPerPage = 10;
+ 
 
-  const [isLoading, setIsLoading] = useState(false);
-  const [shifts, setShifts] = useState([]);
-  const [filterShifts, setFilterShifts] = useState([]);
+  // const [isLoading, setIsLoading] = useState(false);
+  
 
   // createTheme creates a new theme named solarized that overrides the build in dark theme
   createTheme(
@@ -84,22 +90,33 @@ function Shift() {
     },
   ];
 
+  const handleSort = async (column, sortDirection) => {
+    setSortColumn(column.id - 1);
+    setDir(sortDirection);
+    getData();
+  };
+
+  const handleFilter = (e) => {
+    setFilterShifts(e.target.value);
+    console.log(e.target.value)
+    console.log(filterShifts)
+    getData();
+  };
+
   const getData = async () => {
     try {
-      setIsLoading(true);
       await axios({
         method: "post",
         url: "/1.0.0/shifts_datatables",
         data: bodyFormData,
         headers: { "Content-Type": "multipart/form-data" },
       }).then((response) => {
-        setShifts(response.data.data);
-        setFilterShifts(response.data.data);
-        console.log(response.data.data);
-        setIsLoading(false);
+        setShifts(response.data);
+    
+        
       });
     } catch (error) {
-      setIsLoading(false);
+      console.log(error)
     }
   };
 
@@ -135,13 +152,6 @@ function Shift() {
     getData();
   }, [page]);
 
-  const handleFilter = (e) => {
-    const newShifts = filterShifts.filter((row) =>
-      row[2].toLowerCase().includes(e.target.value.toLowerCase())
-    );
-    setShifts(newShifts);
-  };
-
   const renderTable = (
     <div className="my-4">
       <div>
@@ -152,24 +162,32 @@ function Shift() {
           className="mb-3"
         />
       </div>
-      <DataTable
-        columns={columns}
-        data={shifts}
-        pagination
-        highlightOnHover
-        paginationServer
-        theme="solarized"
-        fixedHeader
-        fixedHeaderScrollHeight="300px"
-        paginationTotalRows={countPerPage}
-        paginationComponentOptions={{
-          noRowsPerPage: true,
-        }}
-        onChangePage={(page) => setPage(page)}
-      />
 
-      
-
+      <div className="card bg-light">
+        <div className="card-body">
+          <DataTable
+            columns={columns}
+            data={shifts.data}
+            pagination
+            highlightOnHover
+            paginationServer
+            theme="solarized"
+            fixedHeader
+            fixedHeaderScrollHeight="300px"
+            paginationTotalRows={shifts.recordsTotal}
+            paginationPerPage={countPerPage}
+            paginationComponentOptions={{
+              noRowsPerPage: true,
+            }}
+            onSort={handleSort}
+            sortServer
+            onChangePage={(page) => {
+              setPage(page);
+              setStart(countPerPage * page - countPerPage)
+            }}
+          />
+        </div>
+      </div>
     </div>
   );
 
@@ -181,7 +199,7 @@ function Shift() {
       <h1>Data Shift CAB</h1>
       <hr />
       <AddShift />
-      {isLoading ? <Spinner /> : renderTable}
+      {renderTable}
     </div>
   );
 }
