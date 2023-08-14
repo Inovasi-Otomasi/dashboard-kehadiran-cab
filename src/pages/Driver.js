@@ -28,7 +28,7 @@ function Driver() {
 
   bodyFormData.append("draw", page);
   bodyFormData.append("length", countPerPage);
-  bodyFormData.append("order[0][column]", 0);
+  bodyFormData.append("order[0][column]", sortColumn);
   bodyFormData.append("order[0][dir]", dir);
   bodyFormData.append("start", start);
   bodyFormData.append("search[value]", filterDrivers);
@@ -70,7 +70,7 @@ function Driver() {
     { name: "Username", selector: (row) => row[14], sortable: true },
     // { name: "Nomor", selector: (row) => row[1], sortable: true},
     // { name: "Shift ID", selector: (row) => row[6], sortable: true},
-    { name: "Shift", selector: (row) => row[2], sortable: true },
+    { name: "Nama", selector: (row) => row[2], sortable: true },
     // { name: "NIK", selector: (row) => row[3], sortable: true},
     // { name: "Nomor SIM", selector: (row) => row[4], sortable: true},
     // { name: "RFID", selector: (row) => row[5], sortable: true},
@@ -117,14 +117,14 @@ function Driver() {
   const handleSort = async (column, sortDirection) => {
     setSortColumn(column.id - 1);
     setDir(sortDirection);
-    getData();
+   
   };
 
   const handleFilter = (e) => {
     setFilterDrivers(e.target.value);
-    console.log(e.target.value)
-    console.log(filterDrivers)
-    getData();
+    // console.log(e.target.value)
+    // console.log(filterDrivers)
+  
   };
 
   const getData = async () => {
@@ -187,7 +187,7 @@ function Driver() {
   useEffect(() => {
     getData();
     getExcel();
-  }, [page]);
+  }, [page, filterDrivers, dir, sortColumn, start]);
 
 
   const renderTable = (

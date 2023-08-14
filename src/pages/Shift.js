@@ -23,7 +23,7 @@ function Shift() {
 
   bodyFormData.append("draw", page);
   bodyFormData.append("length", countPerPage);
-  bodyFormData.append("order[0][column]",0);
+  bodyFormData.append("order[0][column]",sortColumn);
   bodyFormData.append("order[0][dir]", dir);
   bodyFormData.append("start", start);
   bodyFormData.append("search[value]", filterShifts);
@@ -93,14 +93,11 @@ function Shift() {
   const handleSort = async (column, sortDirection) => {
     setSortColumn(column.id - 1);
     setDir(sortDirection);
-    getData();
+
   };
 
   const handleFilter = (e) => {
     setFilterShifts(e.target.value);
-    console.log(e.target.value)
-    console.log(filterShifts)
-    getData();
   };
 
   const getData = async () => {
@@ -150,7 +147,7 @@ function Shift() {
 
   useEffect(() => {
     getData();
-  }, [page]);
+  }, [page, start, dir, sortColumn, filterShifts]);
 
   const renderTable = (
     <div className="my-4">

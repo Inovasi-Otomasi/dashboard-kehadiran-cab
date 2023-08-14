@@ -26,7 +26,7 @@ function Location() {
 
   bodyFormData.append("draw", page);
   bodyFormData.append("length", countPerPage);
-  bodyFormData.append("order[0][column]", 0);
+  bodyFormData.append("order[0][column]", sortColumn);
   bodyFormData.append("order[0][dir]", dir);
   bodyFormData.append("start", start);
   bodyFormData.append("search[value]", filterLocations);
@@ -88,13 +88,8 @@ function Location() {
     },
   ];
 
-  const handleSort = async (column, sortDirection) => {
-    setSortColumn(column.id - 1);
-    setDir(sortDirection);
-    getData();
-  };
-
   const getData = async () => {
+    // setIsLoading(true)
     try {
       await axios({
         method: "post",
@@ -102,11 +97,11 @@ function Location() {
         data: bodyFormData,
         headers: { "Content-Type": "multipart/form-data" },
       }).then((response) => {
-        setLocations(response.data);
-        
+        setLocations(response.data);        
       });
     } catch (error) {
       console.log(error)
+      // setIsLoading(false)
     }
   };
 
@@ -138,16 +133,29 @@ function Location() {
     });
   };
 
-  useEffect(() => {
-    getData();
-  }, [page]);
 
   const handleFilter = (e) => {
     setFilterLocations(e.target.value);
-    console.log(e.target.value)
-    console.log(filterLocations)
-    getData();
+    // console.log(e.target.value)
+    // console.log(filterLocations)
   };
+
+  const handleChangePage = (page) => {
+    setPage(page)
+    setStart(countPerPage * page - countPerPage)
+  }
+
+  const handleSort = async (column, sortDirection) => {
+    setSortColumn(column.id - 1);
+    setDir(sortDirection);
+    
+  };
+
+  useEffect(() => {
+    getData();
+  }, [page, filterLocations, start, dir, sortColumn]);
+
+  
 
   const renderTable = (
     <div className="my-4">
@@ -156,6 +164,7 @@ function Location() {
           type="text"
           placeholder="Search"
           onChange={handleFilter}
+          value={filterLocations}
           className="mb-3"
         />
       </div>
@@ -177,12 +186,7 @@ function Location() {
             }}
             onSort={handleSort}
             sortServer
-            onChangePage={(page) => 
-              {
-                setPage(page)
-                setStart(countPerPage * page - countPerPage)
-              }
-            }
+            onChangePage={handleChangePage}
           />
         </div>
       </div>
