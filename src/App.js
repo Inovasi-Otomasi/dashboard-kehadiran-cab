@@ -15,7 +15,6 @@ import Sidebar from "./components/Sidebar";
 import EditDriver from "./components/EditDriver";
 import DriverDetail from "./components/DriverDetail";
 
-
 function App() {
   return (
     <Router>
