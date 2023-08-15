@@ -4,6 +4,7 @@ import {
   GoogleMap,
   MarkerF,
   DirectionsRenderer,
+  InfoWindow
 } from "@react-google-maps/api";
 
 const center = {
@@ -18,8 +19,37 @@ function Map() {
     libraries: ['places']
   });
 
+
+
   const [map, setMap] = useState(null);
   const [directionsResponse, setDirectionsResponse] = useState(null);
+
+  const markers = [
+    {
+      id: 1,
+      name: "Stop 1: Boss Mini Soccer, Jakarta",
+      position: { lat: -6.34905, lng: 106.79099 }
+    },
+    {
+      id: 2,
+      name: "Stop 2: Rojo Sambel Andara, Jakarta",
+      position: { lat: -6.31354, lng: 106.80350 }
+    },
+    {
+      id: 3,
+      name: "Stop 3: Astoria Residence, Jakarta",
+      position: { lat: -6.28660, lng: 106.80717 }
+    },
+  ]
+
+  const [activeMarker, setActiveMarker] = useState(null)
+
+  const handleActiveMarker = (marker) => {
+    if (marker === activeMarker) {
+      return;
+    }
+    setActiveMarker(marker);
+  };
 
 //   const originRef = useRef();
 //   const destiantionRef = useRef();
@@ -105,7 +135,21 @@ function Map() {
           fullscreenControl: false,
         }}
         onLoad={(map) => setMap(map)}>
-        <MarkerF position={center} />
+        
+        {markers.map(({ id, name, position }) => (
+        <MarkerF
+          key={id}
+          position={position}
+          onClick={() => handleActiveMarker(id)}
+        >
+          {activeMarker === id ? (
+            <InfoWindow onCloseClick={() => setActiveMarker(null)}>
+              <div>{name}</div>
+            </InfoWindow>
+          ) : null}
+        </MarkerF>
+      ))}
+
         {directionsResponse && (
           <DirectionsRenderer directions={directionsResponse} />
         )}
