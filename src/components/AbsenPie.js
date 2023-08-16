@@ -7,8 +7,7 @@ function AbsenPie() {
 
     const option = {
         title: {
-            text: 'Data Performa Driver',
-            subtext: 'Performa Driver Juli 2023',
+            text: 'Performa Driver',
             left: 'center'
           },
           tooltip: {
@@ -31,7 +30,7 @@ function AbsenPie() {
               radius: '50%',
               data: [
                 { value: 100, name: 'Masuk' },
-                { value: 20, name: 'Absen' },
+                { value: 80, name: 'Gak Masuk' },
                 { value: 5, name: 'Alpha' },
                 { value: 10, name: 'Cuti' },
               ],

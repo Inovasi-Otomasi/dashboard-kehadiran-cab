@@ -15,7 +15,6 @@ function EditRoute() {
     code: "",
     start_point: "",
     end_point: "",
-    total_income: null,
   });
 
   const handleChange = (e) => {
@@ -33,7 +32,7 @@ function EditRoute() {
       code: state.code,
       start_point: state.start_point,
       end_point: state.end_point,
-      total_income: state.total_income,
+
     };
     try {
       const response = await axios.put(`/1.0.0/routes/${id}`, routeData);
@@ -43,7 +42,6 @@ function EditRoute() {
         code: "",
         start_point: "",
         end_point: "",
-        total_income: 0,
       });
       Swal.fire({
         icon: "success",
@@ -72,7 +70,6 @@ function EditRoute() {
           code: res.data.code,
           start_point: res.data.start_point,
           end_point: res.data.end_point,
-          total_income: res.data.total_income,
         })
       )
       .catch((err) => console.log(err));
@@ -151,21 +148,6 @@ function EditRoute() {
           />
         </div>
 
-        <div class="col-md-6">
-          <label for="validationCustom03" class="form-label">
-            Total Pendapatan
-          </label>
-          <input
-            type="text"
-            class="form-control"
-            id="validationCustom03"
-            placeholder="1xxxxxxx"
-            name="total_income"
-            value={state.total_income}
-            onChange={handleChange}
-            required
-          />
-        </div>
 
         <div class="col-12 text-lg-end">
           <button class="btn btn-dark" type="submit">

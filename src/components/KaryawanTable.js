@@ -63,7 +63,7 @@ function KaryawanTable() {
       trayek: "A",
       penghasilan: "Rp. 5000000",
       jam_operasional: '30 Hari',
-      penggajian: 'Rp.5000000'
+      penggajian: 'Rp.XXXXXXXX'
     },
   ];
 

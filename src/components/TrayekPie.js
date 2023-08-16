@@ -25,7 +25,7 @@ function TrayekPie() {
 
     const option = {
         title: {
-            text: 'Data Performa Trayek',
+            text: 'Performa Trayek',
             subtext: 'Dalam Rp. X.000.000',
             left: 'center'
           },

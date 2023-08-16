@@ -4,6 +4,7 @@ import DataTable, { createTheme } from "react-data-table-component";
 import axios from "../api/axios";
 // import Spinner from "../components/Spinner";
 import AddRoute from "../components/AddRoute";
+import ExportExcel from "../components/ExcelExport";
 import Swal from "sweetalert2";
 import { Helmet } from "react-helmet";
 
@@ -21,6 +22,7 @@ function Location() {
   // const [isLoading, setIsLoading] = useState(false);
   const [locations, setLocations] = useState([]);
   const [filterLocations, setFilterLocations] = useState("");
+  const [routesExcel, setRoutesExcel] = useState([]);
 
   var bodyFormData = new FormData();
 
@@ -64,7 +66,6 @@ function Location() {
     { name: "Kode", selector: (row) => row[2], sortable: true  },
     { name: "Titik Awal", selector: (row) => row[3], sortable: true  },
     { name: "Titik Akhir", selector: (row) => row[4], sortable: true  },
-    { name: "Total Pendapatan", selector: (row) => row[5], sortable: true  },
     {
       name: "Edit Data",
       cell: (row) => (
@@ -104,6 +105,16 @@ function Location() {
       // setIsLoading(false)
     }
   };
+
+  const getExcel = async() => {
+    try{
+      await axios.get('/1.0.0/routes').then((response) => {
+        setRoutesExcel(response.data)
+      })
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   const deleteData = async (id) => {
     await Swal.fire({
@@ -153,6 +164,7 @@ function Location() {
 
   useEffect(() => {
     getData();
+    getExcel();
   }, [page, filterLocations, start, dir, sortColumn]);
 
   
@@ -200,7 +212,13 @@ function Location() {
       </Helmet>
       <h1>Data Rute CAB</h1>
       <hr />
-      <AddRoute />
+      <div className="d-flex flex-row justify-content-between pb-4">
+        <AddRoute />
+        <ExportExcel
+          excelData={routesExcel}
+          fileName={"Laporan Data Rute Trayek"}
+        />
+      </div>
       {renderTable}
     </div>
   );

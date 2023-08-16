@@ -15,7 +15,6 @@ function AddRoute() {
         code: "",
         start_point: "",
         end_point: "",
-        total_income: null
     })
 
     const handleChange = (e) => {
@@ -33,7 +32,6 @@ function AddRoute() {
             code: state.code,
             start_point: state.start_point,
             end_point: state.end_point,
-            total_income: state.total_income
         };
         try{
             const response = await axios.post(BASE_URL, routeData);
@@ -77,10 +75,9 @@ function AddRoute() {
                 <div class="modal-content">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5" id="exampleModalLabel">Data Route</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form class="row g-3 needs-validation px-5"  novalidate onSubmit={handleSubmit} autoComplete='off'>
+                    <form class="row g-3 needs-validation px-5"  novalidate autoComplete='off'>
                         <div class="col-md-6">
                             <label for="validationCustom01" class="form-label">Nomor</label>
                             <input type="text" class="form-control" id="validationCustom01" 
@@ -102,20 +99,14 @@ function AddRoute() {
                             <input type="text" class="form-control" id="validationCustom03" 
                             placeholder='Kemanggisan' name='end_point' value={state.end_point} onChange={handleChange} required/>
                         </div>
-
-                        <div class="col-md-6">
-                            <label for="validationCustom03" class="form-label">Total Pendapatan</label>
-                            <input type="text" class="form-control" id="validationCustom03" 
-                            placeholder='1xxxxxxx' name='total_income' value={state.total_income} onChange={handleChange} required/>
-                        </div>
                         
-                        <div class="col-12 text-lg-end">
-                            <button class="btn btn-dark" type="submit">Tambahkan Data</button>
-                        </div>
+                        <hr/>
+                        <label>Tambahkan Stop</label>
                     </form>
                 </div>
-                <div class="modal-footer">
+                <div class="modal-footer d-flex flex-row justify-content-center">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                    <button class="btn btn-dark" type="submit" onClick={handleSubmit}>Tambahkan Data</button>
                 </div>
                 </div>
             </div>

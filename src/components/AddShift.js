@@ -73,13 +73,12 @@ function AddShift() {
                 <div class="modal-content">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5" id="exampleModalLabel">Data Shift</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form class="row g-3 needs-validation px-5"  novalidate onSubmit={handleSubmit} autoComplete='off'>
+                    <form class="row g-3 needs-validation px-5"  novalidate autoComplete='off'>
                         <div class="col-md-6">
                             <label for="validationCustom01" class="form-label">Nomor</label>
-                            <input type="text" class="form-control" id="validationCustom01" 
+                            <input type="text " class="form-control" id="validationCustom01" 
                             placeholder="123456" name='number' value={state.number} onChange={handleChange} required/>
                         </div>
                         <div class="col-md-6">
@@ -99,13 +98,11 @@ function AddShift() {
                             placeholder='18:00:00' name='shift_end' value={state.shift_end} onChange={handleChange} required/>
                         </div>
                         
-                        <div class="col-12 text-lg-end">
-                            <button class="btn btn-dark" type="submit">Tambahkan Data</button>
-                        </div>
                     </form>
                 </div>
-                <div class="modal-footer">
+                <div class="modal-footer d-flex flex-row justify-content-center">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                    <button class="btn btn-dark" type="submit" onClick={handleSubmit}>Tambahkan Data</button>
                 </div>
                 </div>
             </div>

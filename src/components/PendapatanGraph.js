@@ -11,9 +11,9 @@ function PendapatanGraph() {
         tooltip: {
             trigger: 'axis'
         },
-        legend: {
-            data: ['Trayek A', 'Trayek B', 'Trayek C', 'Trayek D', 'Trayek E']
-        },
+        // legend: {
+        //     data: ['Trayek A', 'Trayek B', 'Trayek C', 'Trayek D', 'Trayek E']
+        // },
         grid: {
             left: '3%',
             right: '4%',

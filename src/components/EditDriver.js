@@ -10,14 +10,14 @@ function EditDriver() {
 
   const navigate = useNavigate();
 
-  const status_options = [
+  const lvlmenu_options = [
     { value: "A", label: "A" },
     { value: "B", label: "B" },
     { value: "C", label: "C" },
     { value: "D", label: "D" },
   ];
 
-  const lvlmenu_options = [
+  const status_options = [
     { value: "Aktif", label: "Aktif" },
     { value: "Non-Aktif", label: "Non-Aktif" },
     { value: "Mengundurkan diri", label: "Mengundurkan diri" },
@@ -362,10 +362,16 @@ function EditDriver() {
           />
         </div>
 
-        <div class="col-12 text-lg-end">
+        <div class="d-flex flex-row justify-content-center">
           <button class="btn btn-primary" type="submit">
-            Submit Form
+            Edit Data
           </button>
+          {/* <button
+                type="button"
+                class="btn btn-secondary"
+                onClick={navigate(-1)}>
+                Kembali
+            </button> */}
         </div>
       </form>
     </div>
