@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, Link } from "react-router-dom";
 import axios from "../api/axios";
 import Swal from "sweetalert2";
 import { Helmet } from "react-helmet";
@@ -48,7 +48,7 @@ function EditShift() {
         text: "Sukses mengedit shift!",
       });
       setTimeout(function () {
-        navigate(-1);
+        navigate('/shift')
       }, 500);
     } catch (error) {
       Swal.fire({
@@ -60,28 +60,29 @@ function EditShift() {
   };
 
   useEffect(() => {
-    axios.get('/1.0.0/shifts/' + id)
-    .then(res => setState({
-        ...state,
-        number: res.data.number,
-        name: res.data.name,
-        shift_start: res.data.shift_start,
-        shift_end: res.data.shift_end
-    })
-    ) 
-    .catch(err => console.log(err))
-  }, [])
+    axios
+      .get("/1.0.0/shifts/" + id)
+      .then((res) =>
+        setState({
+          ...state,
+          number: res.data.number,
+          name: res.data.name,
+          shift_start: res.data.shift_start,
+          shift_end: res.data.shift_end,
+        })
+      )
+      .catch((err) => console.log(err));
+      if(!state){
+        navigate('/shift')
+      }
+  }, []);
 
   return (
     <div className="container-fluid pt-4 text-lg-start">
       <Helmet>
         <title>Data Driver CAB | Edit Shift</title>
       </Helmet>
-      <form
-        class="row g-3 needs-validation px-5"
-        novalidate
-        onSubmit={handleSubmit}
-        autoComplete="off">
+      <form class="row g-3 needs-validation px-5" novalidate autoComplete="off">
         <h1>Edit Data</h1>
         <div class="col-md-6">
           <label for="validationCustom01" class="form-label">
@@ -144,13 +145,13 @@ function EditShift() {
             required
           />
         </div>
-
-        <div class="col-12 text-lg-end">
-          <button class="btn btn-dark" type="submit">
-            Edit Data
-          </button>
-        </div>
       </form>
+      <div class="d-flex flex-row justify-content-center p-4">
+        <Link to='/shift'><button className="btn btn-secondary">Kembali</button></Link>
+        <button class="btn btn-dark" type="button" onClick={handleSubmit}>
+          Edit Data
+        </button>
+      </div>
     </div>
   );
 }

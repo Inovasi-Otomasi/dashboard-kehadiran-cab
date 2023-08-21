@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, Link } from "react-router-dom";
 import axios from "../api/axios";
 import Swal from "sweetalert2";
 import { Helmet } from "react-helmet";
@@ -49,7 +49,7 @@ function EditRoute() {
         text: "Sukses mengedit rute!",
       });
       setTimeout(function () {
-        navigate(-1);
+        navigate('/location');
       }, 500);
     } catch (error) {
       Swal.fire({
@@ -149,7 +149,12 @@ function EditRoute() {
         </div>
 
 
-        <div class="col-12 text-lg-end">
+        <div class="d-flex flex-row justify-content-center">
+          <Link to="/location">
+            <button className="btn btn-secondary">
+              Kembali
+            </button>
+          </Link>
           <button class="btn btn-dark" type="submit">
             Edit Data
           </button>

@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router";
+import { useNavigate, useParams, Link } from "react-router-dom";
 import axios from "../api/axios";
 import Swal from "sweetalert2";
 import { Helmet } from "react-helmet";
-
 
 function EditDriver() {
   const { id } = useParams();
@@ -127,7 +126,7 @@ function EditDriver() {
         text: "Sukses menambahkan shift!",
       });
       setTimeout(function () {
-        navigate(-1);
+        navigate("/driver");
       }, 500);
     } catch (error) {
       Swal.fire({
@@ -363,15 +362,15 @@ function EditDriver() {
         </div>
 
         <div class="d-flex flex-row justify-content-center">
-          <button class="btn btn-primary" type="submit">
+          <Link to="/driver">
+            <button type="button" class="btn btn-secondary">
+              Kembali
+            </button>
+          </Link>
+
+          <button class="btn btn-dark" type="submit">
             Edit Data
           </button>
-          {/* <button
-                type="button"
-                class="btn btn-secondary"
-                onClick={navigate(-1)}>
-                Kembali
-            </button> */}
         </div>
       </form>
     </div>
