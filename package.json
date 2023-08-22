@@ -18,6 +18,7 @@
     "postcss": "^4.0.0",
     "react": "^18.2.0",
     "react-bootstrap": "^2.8.0",
+    "react-cool-onclickoutside": "^1.7.0",
     "react-data-table-component": "^7.5.3",
     "react-dom": "^18.2.0",
     "react-helmet": "^6.1.0",
@@ -25,7 +26,9 @@
     "react-scripts": "5.0.1",
     "rsuite": "^5.37.4",
     "sheetjs-style": "^0.15.8",
+    "styled-components": "^6.0.7",
     "sweetalert2": "^11.7.20",
+    "use-places-autocomplete": "^4.0.1",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

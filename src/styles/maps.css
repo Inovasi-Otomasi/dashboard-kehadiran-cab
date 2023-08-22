@@ -1,5 +1,19 @@
-.leaflet-container {
+div.pac-container {
+    z-index: 99999999999 !important;
+}
+
+.map-container {
     width: 100%;
-    height: 400px;
-    margin-bottom: 2rem;
+    height: 300px;
+}
+
+.places-container{
+    z-index: 99999999999 !important;
+    position: relative;
+}
+
+.places-container ul, li{
+    z-index: 99999999999 !important;
+    position: relative;
+    background-color: rgb(255, 255, 255);
 }
