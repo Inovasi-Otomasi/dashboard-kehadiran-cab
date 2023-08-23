@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import axios from "../api/axios";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import Places from "./MapInput";
 
 const BASE_URL = "/1.0.0/routes";
 
 function AddRoute() {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const [coordinates, setCoordinates] = useState([]);
 
@@ -35,6 +35,10 @@ function AddRoute() {
         lng: e.latLng.lng(),
       },
     ]);
+  };
+
+  const resetCoordinates = () => {
+    setCoordinates([]);
   };
 
   const handleSubmit = async (e) => {
@@ -182,7 +186,11 @@ function AddRoute() {
                   />
                 </div>
 
-                <Places onMapClick={onMapClick} coordinates={coordinates} />
+                <Places
+                  onMapClick={onMapClick}
+                  coordinates={coordinates}
+                  resetCoordinates={resetCoordinates}
+                />
               </form>
             </div>
             <div class="modal-footer d-flex flex-row justify-content-center">

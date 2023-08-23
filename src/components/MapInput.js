@@ -7,35 +7,24 @@ import usePlacesAutocomplete, {
 import "../styles/maps.css";
 import useOnclickOutside from "react-cool-onclickoutside";
 
-export default function Places({ onMapClick, coordinates }) {
+export default function Places({ onMapClick, coordinates, resetCoordinates }) {
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
     libraries: ["places"],
   });
 
   if (!isLoaded) return <div>Loading...</div>;
-  return <Map onMapClick={onMapClick} coordinates={coordinates} />;
+  return (
+    <Map
+      onMapClick={onMapClick}
+      coordinates={coordinates}
+      resetCoordinates={resetCoordinates}
+    />
+  );
 }
 
-function Map({ onMapClick, coordinates }) {
-  // const center = useMemo(() => ({ lat: -6.2088, lng: 106.8456 }), []);
+function Map({ onMapClick, coordinates, resetCoordinates }) {
   const [selected, setSelected] = useState({ lat: -6.2088, lng: 106.8456 });
-  // const [markers, setMarkers] = useState([]);
-
-  // const onMapClick = (e) => {
-  //   setMarkers((current) => [
-  //     ...current,
-  //     {
-  //       lat: e.latLng.lat(),
-  //       lng: e.latLng.lng(),
-  //     },
-  //   ]);
-  //   console.log(e);
-  // };
-
-  // const resetMarker = () => {
-  //   setMarkers([]);
-  // };
 
   useEffect(() => {
     console.log(coordinates);
@@ -44,7 +33,7 @@ function Map({ onMapClick, coordinates }) {
   return (
     <>
       <GoogleMap
-        zoom={15}
+        zoom={10}
         center={selected}
         mapContainerClassName="map-container"
         onClick={onMapClick}
@@ -63,8 +52,7 @@ function Map({ onMapClick, coordinates }) {
               <button
                 className="btn btn-dark"
                 type="button"
-                // onClick={resetMarker}
-              >
+                onClick={resetCoordinates}>
                 Reset
               </button>
             </div>
@@ -84,7 +72,7 @@ function Map({ onMapClick, coordinates }) {
   );
 }
 
-const PlacesAutocomplete = ({ setSelected, setStops }) => {
+const PlacesAutocomplete = ({ setSelected }) => {
   const {
     ready,
     value,
@@ -116,12 +104,7 @@ const PlacesAutocomplete = ({ setSelected, setStops }) => {
       getGeocode({ address: description }).then((results) => {
         const { lat, lng } = getLatLng(results[0]);
         setSelected({ lat, lng });
-        setStops([
-          {
-            lat: lat,
-            lng: lng,
-          },
-        ]);
+
         console.log("📍 Coordinates: ", { lat, lng });
       });
     };
