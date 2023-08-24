@@ -61,11 +61,11 @@ function Location() {
   );
 
   const columns = [
-    { name: "ID", selector: (row) => row[0], sortable: true   },
+    { name: "ID", selector: (row) => row[0], sortable: true },
     { name: "Nomor", selector: (row) => row[1], sortable: true },
-    { name: "Kode", selector: (row) => row[2], sortable: true  },
-    { name: "Titik Awal", selector: (row) => row[3], sortable: true  },
-    { name: "Titik Akhir", selector: (row) => row[4], sortable: true  },
+    { name: "Kode", selector: (row) => row[2], sortable: true },
+    { name: "Titik Awal", selector: (row) => row[3], sortable: true },
+    { name: "Titik Akhir", selector: (row) => row[4], sortable: true },
     {
       name: "Edit Data",
       cell: (row) => (
@@ -98,23 +98,23 @@ function Location() {
         data: bodyFormData,
         headers: { "Content-Type": "multipart/form-data" },
       }).then((response) => {
-        setLocations(response.data);        
+        setLocations(response.data);
       });
     } catch (error) {
-      console.log(error)
+      console.log(error);
       // setIsLoading(false)
     }
   };
 
-  const getExcel = async() => {
-    try{
-      await axios.get('/1.0.0/routes').then((response) => {
-        setRoutesExcel(response.data)
-      })
+  const getExcel = async () => {
+    try {
+      await axios.get("/1.0.0/routes").then((response) => {
+        setRoutesExcel(response.data);
+      });
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 
   const deleteData = async (id) => {
     await Swal.fire({
@@ -144,30 +144,29 @@ function Location() {
     });
   };
 
-
   const handleFilter = (e) => {
+    setPage(1);
+    setStart(0);
     setFilterLocations(e.target.value);
+
     // console.log(e.target.value)
     // console.log(filterLocations)
   };
 
   const handleChangePage = (page) => {
-    setPage(page)
-    setStart(countPerPage * page - countPerPage)
-  }
+    setPage(page);
+    setStart(countPerPage * page - countPerPage);
+  };
 
   const handleSort = async (column, sortDirection) => {
     setSortColumn(column.id - 1);
     setDir(sortDirection);
-    
   };
 
   useEffect(() => {
     getData();
     getExcel();
   }, [page, filterLocations, start, dir, sortColumn]);
-
-  
 
   const renderTable = (
     <div className="my-4">
@@ -191,7 +190,7 @@ function Location() {
             theme="solarized"
             fixedHeader
             fixedHeaderScrollHeight="300px"
-            paginationTotalRows={locations.recordsTotal}
+            paginationTotalRows={locations.recordsFiltered}
             paginationPerPage={countPerPage}
             paginationComponentOptions={{
               noRowsPerPage: true,

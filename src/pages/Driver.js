@@ -14,7 +14,7 @@ function Driver() {
   const navigate = useNavigate();
 
   const [page, setPage] = useState(1);
-  const [start,setStart] = useState(0);
+  const [start, setStart] = useState(0);
   const [sortColumn, setSortColumn] = useState(0);
   const [dir, setDir] = useState("desc");
   const countPerPage = 2;
@@ -22,7 +22,6 @@ function Driver() {
   const [drivers, setDrivers] = useState([]);
   const [filterDrivers, setFilterDrivers] = useState("");
   const [driversExcel, setDriversExcel] = useState([]);
-
 
   var bodyFormData = new FormData();
 
@@ -33,9 +32,6 @@ function Driver() {
   bodyFormData.append("start", start);
   bodyFormData.append("search[value]", filterDrivers);
   bodyFormData.append("columns[0][search][value]", "");
-  
-
-  
 
   // const [isLoading, setIsLoading] = useState(false);
 
@@ -117,14 +113,14 @@ function Driver() {
   const handleSort = async (column, sortDirection) => {
     setSortColumn(column.id - 1);
     setDir(sortDirection);
-   
   };
 
   const handleFilter = (e) => {
+    setPage(1);
+    setStart(0);
     setFilterDrivers(e.target.value);
     // console.log(e.target.value)
     // console.log(filterDrivers)
-  
   };
 
   const getData = async () => {
@@ -141,7 +137,7 @@ function Driver() {
       });
     } catch (error) {
       // setIsLoading(false);
-      console.log(error)
+      console.log(error);
     }
   };
 
@@ -189,7 +185,6 @@ function Driver() {
     getExcel();
   }, [page, filterDrivers, dir, sortColumn, start]);
 
-
   const renderTable = (
     <div className="">
       <div>
@@ -212,7 +207,7 @@ function Driver() {
             theme="solarized"
             fixedHeader
             fixedHeaderScrollHeight="400px"
-            paginationTotalRows={drivers.recordsTotal}
+            paginationTotalRows={drivers.recordsFiltered}
             paginationPerPage={countPerPage}
             paginationComponentOptions={{
               noRowsPerPage: true,
@@ -220,8 +215,8 @@ function Driver() {
             onSort={handleSort}
             sortServer
             onChangePage={(page) => {
-              setPage(page)
-              setStart(countPerPage * page - countPerPage)
+              setPage(page);
+              setStart(countPerPage * page - countPerPage);
             }}
           />
         </div>

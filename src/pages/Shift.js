@@ -15,7 +15,6 @@ function Shift() {
   const [sortColumn, setSortColumn] = useState(0);
   const [dir, setDir] = useState("desc");
 
-
   const [page, setPage] = useState(1);
   const countPerPage = 2;
 
@@ -23,16 +22,13 @@ function Shift() {
 
   bodyFormData.append("draw", page);
   bodyFormData.append("length", countPerPage);
-  bodyFormData.append("order[0][column]",sortColumn);
+  bodyFormData.append("order[0][column]", sortColumn);
   bodyFormData.append("order[0][dir]", dir);
   bodyFormData.append("start", start);
   bodyFormData.append("search[value]", filterShifts);
   bodyFormData.append("columns[0][search][value]", "");
 
- 
-
   // const [isLoading, setIsLoading] = useState(false);
-  
 
   // createTheme creates a new theme named solarized that overrides the build in dark theme
   createTheme(
@@ -93,10 +89,11 @@ function Shift() {
   const handleSort = async (column, sortDirection) => {
     setSortColumn(column.id - 1);
     setDir(sortDirection);
-
   };
 
   const handleFilter = (e) => {
+    setPage(1);
+    setStart(0);
     setFilterShifts(e.target.value);
   };
 
@@ -109,11 +106,9 @@ function Shift() {
         headers: { "Content-Type": "multipart/form-data" },
       }).then((response) => {
         setShifts(response.data);
-    
-        
       });
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   };
 
@@ -171,7 +166,7 @@ function Shift() {
             theme="solarized"
             fixedHeader
             fixedHeaderScrollHeight="300px"
-            paginationTotalRows={shifts.recordsTotal}
+            paginationTotalRows={shifts.recordsFiltered}
             paginationPerPage={countPerPage}
             paginationComponentOptions={{
               noRowsPerPage: true,
@@ -180,7 +175,7 @@ function Shift() {
             sortServer
             onChangePage={(page) => {
               setPage(page);
-              setStart(countPerPage * page - countPerPage)
+              setStart(countPerPage * page - countPerPage);
             }}
           />
         </div>

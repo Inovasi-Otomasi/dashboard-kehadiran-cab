@@ -17,3 +17,19 @@ div.pac-container {
     position: relative;
     background-color: rgb(255, 255, 255);
 }
+
+/* .trayek-container{
+    z-index: 10 !important;
+    position: relative;
+} */
+
+.trayek-container, ul li{
+    z-index: 1 !important;
+    position: relative;
+    background-color: rgb(255, 255, 255);
+    opacity: 100%;
+}
+
+.btn-container {
+    z-index: 1 !important
+}
