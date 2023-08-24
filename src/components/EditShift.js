@@ -48,7 +48,7 @@ function EditShift() {
         text: "Sukses mengedit shift!",
       });
       setTimeout(function () {
-        navigate('/shift')
+        navigate("/shift");
       }, 500);
     } catch (error) {
       Swal.fire({
@@ -72,9 +72,9 @@ function EditShift() {
         })
       )
       .catch((err) => console.log(err));
-      if(!state){
-        navigate('/shift')
-      }
+    if (!state) {
+      navigate("/shift");
+    }
   }, []);
 
   return (
@@ -89,7 +89,7 @@ function EditShift() {
             Nomor
           </label>
           <input
-            type="text"
+            type="number"
             class="form-control"
             id="validationCustom01"
             placeholder="123456"
@@ -147,7 +147,9 @@ function EditShift() {
         </div>
       </form>
       <div class="d-flex flex-row justify-content-center p-4">
-        <Link to='/shift'><button className="btn btn-secondary">Kembali</button></Link>
+        <Link to="/shift">
+          <button className="btn btn-secondary">Kembali</button>
+        </Link>
         <button class="btn btn-dark" type="button" onClick={handleSubmit}>
           Edit Data
         </button>

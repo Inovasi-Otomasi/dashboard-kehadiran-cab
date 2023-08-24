@@ -3,11 +3,14 @@ import { useNavigate, useParams, Link } from "react-router-dom";
 import axios from "../api/axios";
 import Swal from "sweetalert2";
 import { Helmet } from "react-helmet";
+import Places from "./MapEdit";
 
 function EditRoute() {
   const { id } = useParams();
 
   const navigate = useNavigate();
+
+  const [coordinates, setCoordinates] = useState([]);
 
   const [state, setState] = useState({
     id: id,
@@ -15,6 +18,7 @@ function EditRoute() {
     code: "",
     start_point: "",
     end_point: "",
+    complete_route: "",
   });
 
   const handleChange = (e) => {
@@ -25,6 +29,53 @@ function EditRoute() {
     });
   };
 
+  const onMapClick = (e) => {
+    setCoordinates((current) => [
+      ...current,
+      {
+        lat: e.latLng.lat(),
+        lng: e.latLng.lng(),
+      },
+    ]);
+  };
+
+  const resetCoordinates = () => {
+    setCoordinates([]);
+  };
+
+  const getData = async () => {
+    try {
+      await axios.get("/1.0.0/routes/" + id).then((res) => {
+        setState({
+          ...state,
+          number: res.data.number,
+          code: res.data.code,
+          start_point: res.data.start_point,
+          end_point: res.data.end_point,
+          complete_route: res.data.complete_route,
+        });
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getCoordinates = async () => {
+    try {
+      await axios.get("1.0.0/routes/" + id).then((res) => {
+        setCoordinates(JSON.parse(res.data.coordinates));
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const deleteCoordinates = (i) => {
+    let newCoordinates = coordinates;
+    newCoordinates.splice(i, 1);
+    setCoordinates(newCoordinates);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const routeData = {
@@ -32,7 +83,8 @@ function EditRoute() {
       code: state.code,
       start_point: state.start_point,
       end_point: state.end_point,
-
+      complete_route: state.complete_route,
+      coordinates: coordinates,
     };
     try {
       const response = await axios.put(`/1.0.0/routes/${id}`, routeData);
@@ -42,14 +94,16 @@ function EditRoute() {
         code: "",
         start_point: "",
         end_point: "",
+        complete_route: "",
       });
+      setCoordinates([]);
       Swal.fire({
         icon: "success",
         title: "Edit Data Rute",
         text: "Sukses mengedit rute!",
       });
       setTimeout(function () {
-        navigate('/location');
+        navigate("/location");
       }, 500);
     } catch (error) {
       Swal.fire({
@@ -61,37 +115,23 @@ function EditRoute() {
   };
 
   useEffect(() => {
-    axios
-      .get("/1.0.0/routes/" + id)
-      .then((res) =>
-        setState({
-          ...state,
-          number: res.data.number,
-          code: res.data.code,
-          start_point: res.data.start_point,
-          end_point: res.data.end_point,
-        })
-      )
-      .catch((err) => console.log(err));
+    getCoordinates();
+    getData();
   }, []);
 
   return (
-    <div className="container-fluid pt-4 text-lg-start">
+    <div className="container-fluid py-4">
       <Helmet>
         <title>Data Driver CAB | Edit Rute</title>
       </Helmet>
-      <form
-        class="row g-3 needs-validation px-5"
-        novalidate
-        onSubmit={handleSubmit}
-        autoComplete="off">
+      <form class="row g-3 needs-validation px-5" novalidate autoComplete="off">
         <h1>Edit Data</h1>
         <div class="col-md-6">
           <label for="validationCustom01" class="form-label">
             Nomor
           </label>
           <input
-            type="text"
+            type="number"
             class="form-control"
             id="validationCustom01"
             placeholder="123456"
@@ -148,18 +188,37 @@ function EditRoute() {
           />
         </div>
 
-
-        <div class="d-flex flex-row justify-content-center">
-          <Link to="/location">
-            <button className="btn btn-secondary">
-              Kembali
-            </button>
-          </Link>
-          <button class="btn btn-dark" type="submit">
-            Edit Data
-          </button>
+        <div class="col-md-12">
+          <label for="validationCustom04" class="form-label">
+            Rute Complete
+          </label>
+          <input
+            type="text"
+            class="form-control"
+            id="validationCustom03"
+            placeholder="Kemanggisan-Depok"
+            name="complete_route"
+            value={state.complete_route}
+            onChange={handleChange}
+            required
+          />
         </div>
+
+        <Places
+          onMapClick={onMapClick}
+          resetCoordinates={resetCoordinates}
+          coordinates={coordinates}
+          deleteCoordinate={deleteCoordinates}
+        />
       </form>
+      <div class="d-flex flex-row justify-content-center pt-4">
+        <Link to="/location">
+          <button className="btn btn-secondary">Kembali</button>
+        </Link>
+        <button class="btn btn-dark" type="button" onClick={handleSubmit}>
+          Edit Data
+        </button>
+      </div>
     </div>
   );
 }

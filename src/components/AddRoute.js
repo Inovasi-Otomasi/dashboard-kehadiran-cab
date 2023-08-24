@@ -113,7 +113,7 @@ function AddRoute() {
                     Nomor
                   </label>
                   <input
-                    type="text"
+                    type="number"
                     class="form-control"
                     id="validationCustom01"
                     placeholder="123456"
