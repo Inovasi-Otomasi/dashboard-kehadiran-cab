@@ -361,16 +361,17 @@ function EditDriver() {
           />
         </div>
 
-        <div class="d-flex flex-row justify-content-center">
-          <Link to="/driver">
-            <button type="button" class="btn btn-secondary">
-              Kembali
+        <div class="row g-3 pt-4">
+          <div className="col-6 text-end">
+            <Link to="/shift">
+              <button className="btn btn-secondary">Kembali</button>
+            </Link>
+          </div>
+          <div className="col-6 text-start">
+            <button class="btn btn-dark" type="button" onClick={handleSubmit}>
+              Edit Data
             </button>
-          </Link>
-
-          <button class="btn btn-dark" type="submit">
-            Edit Data
-          </button>
+          </div>
         </div>
       </form>
     </div>

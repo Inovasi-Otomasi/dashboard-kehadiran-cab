@@ -211,13 +211,17 @@ function EditRoute() {
           deleteCoordinate={deleteCoordinates}
         />
       </form>
-      <div class="d-flex flex-row justify-content-center pt-4">
-        <Link to="/location">
-          <button className="btn btn-secondary">Kembali</button>
-        </Link>
-        <button class="btn btn-dark" type="button" onClick={handleSubmit}>
-          Edit Data
-        </button>
+      <div class="row g-3 pt-4">
+        <div className="col-6 text-end">
+          <Link to="/shift">
+            <button className="btn btn-secondary">Kembali</button>
+          </Link>
+        </div>
+        <div className="col-6 text-start">
+          <button class="btn btn-dark" type="button" onClick={handleSubmit}>
+            Edit Data
+          </button>
+        </div>
       </div>
     </div>
   );
