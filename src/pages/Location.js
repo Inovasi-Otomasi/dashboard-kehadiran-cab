@@ -12,6 +12,7 @@ const GET_URL = "/1.0.0/routes_datatables";
 
 function Location() {
   const navigate = useNavigate();
+  const token = localStorage.getItem("token");
 
   const [page, setPage] = useState(1);
   const [start, setStart] = useState(0);
@@ -90,7 +91,7 @@ function Location() {
   ];
 
   const getData = async () => {
-    // setIsLoading(true)
+    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
     try {
       await axios({
         method: "post",
@@ -107,6 +108,7 @@ function Location() {
   };
 
   const getExcel = async () => {
+    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
     try {
       await axios.get("/1.0.0/routes").then((response) => {
         setRoutesExcel(response.data);
@@ -117,6 +119,7 @@ function Location() {
   };
 
   const deleteData = async (id) => {
+    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
     await Swal.fire({
       title: "Penghapusan Data Rute",
       text: "Apakah anda yakin ingin menghapus data ini?",

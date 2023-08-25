@@ -12,6 +12,7 @@ const GET_URL = "/1.0.0/drivers_datatables";
 
 function Driver() {
   const navigate = useNavigate();
+  const token = localStorage.getItem("token");
 
   const [page, setPage] = useState(1);
   const [start, setStart] = useState(0);
@@ -125,7 +126,7 @@ function Driver() {
 
   const getData = async () => {
     try {
-      // setIsLoading(true);
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
       await axios({
         method: "post",
         url: GET_URL,
@@ -143,6 +144,7 @@ function Driver() {
 
   const getExcel = async () => {
     try {
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
       await axios.get("/1.0.0/drivers").then((response) => {
         setDriversExcel(response.data);
       });
@@ -152,6 +154,7 @@ function Driver() {
   };
 
   const deleteData = async (id) => {
+    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
     await Swal.fire({
       title: "Penghapusan Data Driver",
       text: "Apakah anda yakin ingin menghapus data ini?",

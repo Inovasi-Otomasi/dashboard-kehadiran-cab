@@ -9,6 +9,8 @@ import TrayekMap from "./TrayekMap";
 function TrayekPie() {
   const [show, setShow] = useState(false);
 
+  const token = localStorage.getItem("token");
+
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
@@ -25,6 +27,7 @@ function TrayekPie() {
 
   const getCoordinates = async () => {
     try {
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
       await axios.get("1.0.0/routes/1").then((res) => {
         setCoordinates(JSON.parse(res.data.coordinates));
       });

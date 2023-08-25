@@ -9,6 +9,8 @@ import { Helmet } from "react-helmet";
 
 function Shift() {
   const navigate = useNavigate();
+  const token = localStorage.getItem("token");
+
   const [shifts, setShifts] = useState([]);
   const [filterShifts, setFilterShifts] = useState("");
   const [start, setStart] = useState(0);
@@ -98,6 +100,7 @@ function Shift() {
   };
 
   const getData = async () => {
+    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
     try {
       await axios({
         method: "post",
@@ -113,6 +116,7 @@ function Shift() {
   };
 
   const deleteData = async (id) => {
+    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
     await Swal.fire({
       title: "Penghapusan Data Shift",
       text: "Apakah anda yakin ingin menghapus data ini?",

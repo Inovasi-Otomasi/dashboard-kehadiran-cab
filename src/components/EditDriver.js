@@ -363,7 +363,7 @@ function EditDriver() {
 
         <div class="row g-3 pt-4">
           <div className="col-6 text-end">
-            <Link to="/shift">
+            <Link to="/driver">
               <button className="btn btn-secondary">Kembali</button>
             </Link>
           </div>

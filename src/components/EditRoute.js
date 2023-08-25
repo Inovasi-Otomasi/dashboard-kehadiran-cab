@@ -9,6 +9,7 @@ function EditRoute() {
   const { id } = useParams();
 
   const navigate = useNavigate();
+  const token = localStorage.getItem("token");
 
   const [coordinates, setCoordinates] = useState([]);
 
@@ -45,6 +46,7 @@ function EditRoute() {
 
   const getData = async () => {
     try {
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
       await axios.get("/1.0.0/routes/" + id).then((res) => {
         setState({
           ...state,
@@ -62,6 +64,7 @@ function EditRoute() {
 
   const getCoordinates = async () => {
     try {
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
       await axios.get("1.0.0/routes/" + id).then((res) => {
         setCoordinates(JSON.parse(res.data.coordinates));
       });
@@ -213,7 +216,7 @@ function EditRoute() {
       </form>
       <div class="row g-3 pt-4">
         <div className="col-6 text-end">
-          <Link to="/shift">
+          <Link to="/location">
             <button className="btn btn-secondary">Kembali</button>
           </Link>
         </div>

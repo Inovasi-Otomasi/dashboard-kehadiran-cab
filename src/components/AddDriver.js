@@ -8,14 +8,14 @@ const BASE_URL = "/1.0.0/drivers";
 function AddDriver() {
   const navigate = useNavigate();
 
-  const status_options = [
+  const lvlmenu_options = [
     { value: "A", label: "A" },
     { value: "B", label: "B" },
     { value: "C", label: "C" },
     { value: "D", label: "D" },
   ];
 
-  const lvlmenu_options = [
+  const status_options = [
     { value: "Aktif", label: "Aktif" },
     { value: "Non-Aktif", label: "Non-Aktif" },
     { value: "Mengundurkan diri", label: "Mengundurkan diri" },
@@ -301,7 +301,7 @@ function AddDriver() {
                       Pilih Level Menu
                     </option>
                     {lvlmenu_options.map((level) => (
-                      <option value={state.level_menu}>{level.value}</option>
+                      <option value={level.value}>{level.label}</option>
                     ))}
                   </select>
                 </div>
@@ -320,7 +320,7 @@ function AddDriver() {
                       Pilih Status
                     </option>
                     {status_options.map((stats) => (
-                      <option value={state.status}>{stats.value}</option>
+                      <option value={stats.label}>{stats.label}</option>
                     ))}
                   </select>
                 </div>

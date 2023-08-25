@@ -1,12 +1,9 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   useJsApiLoader,
   GoogleMap,
-  MarkerF,
   DirectionsRenderer,
-  InfoWindow,
 } from "@react-google-maps/api";
-import axios from "../api/axios";
 
 const center = {
   lat: -6.402484,
@@ -23,33 +20,6 @@ function Map({ coordinates }) {
   const [loaded, setLoaded] = useState(false);
   const [map, setMap] = useState(null);
   const [directionsResponse, setDirectionsResponse] = useState(null);
-
-  // const markers = [
-  //   {
-  //     id: 1,
-  //     name: "Stop 1: Boss Mini Soccer, Jakarta",
-  //     position: { lat: -6.34905, lng: 106.79099 },
-  //   },
-  //   {
-  //     id: 2,
-  //     name: "Stop 2: Rojo Sambel Andara, Jakarta",
-  //     position: { lat: -6.31354, lng: 106.8035 },
-  //   },
-  //   {
-  //     id: 3,
-  //     name: "Stop 3: Astoria Residence, Jakarta",
-  //     position: { lat: -6.2866, lng: 106.80717 },
-  //   },
-  // ];
-
-  // const [activeMarker, setActiveMarker] = useState(null);
-
-  // const handleActiveMarker = (marker) => {
-  //   if (marker === activeMarker) {
-  //     return;
-  //   }
-  //   setActiveMarker(marker);
-  // };
 
   async function calculateRoute() {
     const directionsService = new window.google.maps.DirectionsService();
@@ -113,20 +83,6 @@ function Map({ coordinates }) {
           fullscreenControl: false,
         }}
         onLoad={(map) => setMap(map)}>
-        {/* {markers.map(({ id, name, position }) => (
-        <MarkerF
-          key={id}
-          position={position}
-          onClick={() => handleActiveMarker(id)}
-        >
-          {activeMarker === id ? (
-            <InfoWindow onCloseClick={() => setActiveMarker(null)}>
-              <div>{name}</div>
-            </InfoWindow>
-          ) : null}
-        </MarkerF>
-      ))} */}
-
         {directionsResponse && (
           <DirectionsRenderer directions={directionsResponse} />
         )}
