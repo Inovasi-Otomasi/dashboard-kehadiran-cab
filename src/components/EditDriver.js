@@ -37,6 +37,9 @@ function EditDriver() {
   };
 
   useEffect(() => {
+    if (!localStorage.getItem("token")) {
+      navigate("/");
+    }
     axios
       .get("/1.0.0/drivers/" + id)
       .then((res) =>

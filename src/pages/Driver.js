@@ -184,6 +184,9 @@ function Driver() {
   };
 
   useEffect(() => {
+    if (!localStorage.getItem("token")) {
+      navigate("/");
+    }
     getData();
     getExcel();
   }, [page, filterDrivers, dir, sortColumn, start]);

@@ -39,6 +39,10 @@ const Sidebar = () => {
                 <i className="fa-solid fa-map nav-link-icon"></i>
                 <span className="nav-link-name">Routes</span>
               </NavLink>
+              <NavLink to={token ? "/logout" : "/"} className="nav-link">
+                <i className={`fas fa-power-off nav-logo-icon`}></i>
+                <span className="nav-logo-name">Logout</span>
+              </NavLink>
             </div>
           </div>
         </nav>

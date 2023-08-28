@@ -13,6 +13,7 @@ import Sidebar from "./components/Sidebar";
 import EditDriver from "./components/EditDriver";
 import DriverDetail from "./components/DriverDetail";
 import Login from "./pages/Login";
+import Logout from "./pages/Logout";
 
 import AdminRoutes from "./utils/AdminRoute";
 
@@ -25,6 +26,7 @@ function App() {
           <Routes>
             <Route exact path="/" element={<Login />} />
             <Route exact path="/login" element={<Login />} />
+            <Route exact path="/logout" element={<Logout />} />
 
             <Route element={<AdminRoutes />}>
               <Route exact path="/dashboard" element={<Dashboard />} />

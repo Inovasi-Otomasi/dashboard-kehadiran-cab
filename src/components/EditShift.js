@@ -60,6 +60,9 @@ function EditShift() {
   };
 
   useEffect(() => {
+    if (!localStorage.getItem("token")) {
+      navigate("/");
+    }
     axios
       .get("/1.0.0/shifts/" + id)
       .then((res) =>

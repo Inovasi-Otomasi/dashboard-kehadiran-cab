@@ -167,6 +167,9 @@ function Location() {
   };
 
   useEffect(() => {
+    if (!localStorage.getItem("token")) {
+      navigate("/");
+    }
     getData();
     getExcel();
   }, [page, filterLocations, start, dir, sortColumn]);

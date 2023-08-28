@@ -145,6 +145,9 @@ function Shift() {
   };
 
   useEffect(() => {
+    if (!localStorage.getItem("token")) {
+      navigate("/");
+    }
     getData();
   }, [page, start, dir, sortColumn, filterShifts]);
 

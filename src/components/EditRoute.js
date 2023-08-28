@@ -73,7 +73,7 @@ function EditRoute() {
     }
   };
 
-  const deleteCoordinates = (i) => {
+  const deleteCoordinates = (i, c) => {
     let newCoordinates = coordinates;
     newCoordinates.splice(i, 1);
     setCoordinates(newCoordinates);
@@ -118,6 +118,9 @@ function EditRoute() {
   };
 
   useEffect(() => {
+    if (!localStorage.getItem("token")) {
+      navigate("/");
+    }
     getCoordinates();
     getData();
   }, []);
