@@ -31,7 +31,7 @@ export default function Places({
 
 function Map({ onMapClick, coordinates, resetCoordinates, deleteCoordinate }) {
   // const center = useMemo(() => ({ lat: -6.2088, lng: 106.8456 }), []);
-  const [selected, setSelected] = useState({ lat: -6.2088, lng: 106.8456 });
+  const [selected, setSelected] = useState({ lat: -6.40115, lng: 106.79307 });
   const [loaded, setLoaded] = useState(false);
 
   // const [markers, setMarkers] = useState([]);
@@ -60,11 +60,9 @@ function Map({ onMapClick, coordinates, resetCoordinates, deleteCoordinate }) {
 
   const renderCoordinates = (coordinates) => {
     // console.log(JSON.parse(coordinates));
-    console.log(coordinates);
     // let markers = `[{"lat":-6.130250445894336,"lng":106.85315310058594},{"lat":-6.386783226010253,"lng":106.82676315307617},{"lat":-6.180406243016221,"lng":106.79178714752197}]`;
     return (
       <>
-        {console.log(coordinates)}
         {coordinates.map((marker) => {
           return (
             <MarkerF
