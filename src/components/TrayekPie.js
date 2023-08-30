@@ -15,6 +15,14 @@ function TrayekPie() {
   const handleShow = () => setShow(true);
 
   const [coordinates, setCoordinates] = useState([]);
+  const [trayek, setTrayek] = useState([]);
+  const [modalData, setModaldata] = useState({
+    id: null,
+    number: null,
+    code: "",
+    start_point: "",
+    end_point: "",
+  });
 
   const [showTrayek, setShowTrayek] = useState(false);
 
@@ -36,8 +44,33 @@ function TrayekPie() {
     }
   };
 
+  const getTrayek = async () => {
+    try {
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      await axios.get("1.0.0/routes/").then((res) => {
+        setTrayek(res.data);
+        console.log(res.data);
+        console.log(trayek);
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getTrayekbyId = async (id) => {
+    try {
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      await axios.get(`/1.0.0/routes/${id}`).then((res) => {
+        setModaldata(res);
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     getCoordinates();
+    getTrayek();
   }, []);
 
   const option = {
@@ -97,31 +130,17 @@ function TrayekPie() {
         </Modal.Header>
         <Modal.Body>
           <Container className="py-2 text-center">
-            <Row className="py-1">
-              <Col md={6}>
-                <Button variant="dark" onClick={handleShowTrayek}>
-                  Trayek A
-                </Button>
-              </Col>
-              <Col md={6}>
-                <Button variant="dark">Trayek B</Button>
-              </Col>
-            </Row>
-            <Row className="py-1">
-              <Col md={6}>
-                <Button variant="dark">Trayek C</Button>
-              </Col>
-              <Col md={6}>
-                <Button variant="dark">Trayek D</Button>
-              </Col>
-            </Row>
-            <Row className="py-1">
-              <Col md={6}>
-                <Button variant="dark">Trayek E</Button>
-              </Col>
-              <Col md={6}>
-                <Button variant="dark">Trayek F</Button>
-              </Col>
+            <Row>
+              {trayek.map((tryk) => (
+                <Col md={6}>
+                  <Button
+                    variant="dark"
+                    onClick={handleShowTrayek}
+                    key={tryk.id}>
+                    {tryk.code}
+                  </Button>
+                </Col>
+              ))}
             </Row>
           </Container>
         </Modal.Body>

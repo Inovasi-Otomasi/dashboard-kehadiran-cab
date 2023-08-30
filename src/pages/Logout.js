@@ -47,8 +47,8 @@ function Logout() {
     <div>
       <div class="d-flex align-items-center justify-content-center vh-100">
         <div class="text-center">
-          <h1 class="display-1 fw-bold">Anda Yakin mau Logout?</h1>
-          <button className="btn btn-primary" onClick={handleLogout}>
+          <h1 class="fw-bold py-4">Anda Yakin mau Logout?</h1>
+          <button className="btn btn-dark" onClick={handleLogout}>
             Logout
           </button>
         </div>

@@ -77,6 +77,7 @@ function EditRoute() {
     let newCoordinates = coordinates;
     newCoordinates.splice(i, 1);
     setCoordinates(newCoordinates);
+    console.log(coordinates);
   };
 
   const handleSubmit = async (e) => {

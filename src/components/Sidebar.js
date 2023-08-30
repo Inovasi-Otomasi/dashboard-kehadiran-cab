@@ -27,19 +27,19 @@ const Sidebar = () => {
             </NavLink>
 
             <div className="nav-list">
-              <NavLink to="/shift" className="nav-link">
+              <NavLink to={token ? "/shift" : "/"} className="nav-link">
                 <i className="fa-solid fa-clock nav-link-icon"></i>
                 <span className="nav-link-name">Shifts</span>
               </NavLink>
-              <NavLink to="/driver" className="nav-link">
+              <NavLink to={token ? "/driver" : "/"} className="nav-link">
                 <i className="fa-solid fa-users nav-link-icon"></i>
                 <span className="nav-link-name">Drivers</span>
               </NavLink>
-              <NavLink to="/location" className="nav-link">
+              <NavLink to={token ? "/location" : "/"} className="nav-link">
                 <i className="fa-solid fa-map nav-link-icon"></i>
                 <span className="nav-link-name">Routes</span>
               </NavLink>
-              <NavLink to={token ? "/logout" : "/"} className="nav-link">
+              <NavLink to={token ? "/logout" : "/"} className="nav-logo">
                 <i className={`fas fa-power-off nav-logo-icon`}></i>
                 <span className="nav-logo-name">Logout</span>
               </NavLink>
