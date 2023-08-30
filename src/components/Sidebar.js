@@ -21,25 +21,25 @@ const Sidebar = () => {
       <aside className={`sidebar ${show ? "show_sidebar" : null}`}>
         <nav className="nav">
           <div>
-            <NavLink to={token ? "/dashboard" : "/"} className="nav-logo">
+            <NavLink to="/dashboard" className="nav-logo">
               <i className={`fas fa-home-alt nav-logo-icon`}></i>
               <span className="nav-logo-name">Dashboard</span>
             </NavLink>
 
             <div className="nav-list">
-              <NavLink to={token ? "/shift" : "/"} className="nav-link">
+              <NavLink to="/shift" className="nav-link">
                 <i className="fa-solid fa-clock nav-link-icon"></i>
                 <span className="nav-link-name">Shifts</span>
               </NavLink>
-              <NavLink to={token ? "/driver" : "/"} className="nav-link">
+              <NavLink to="/driver" className="nav-link">
                 <i className="fa-solid fa-users nav-link-icon"></i>
                 <span className="nav-link-name">Drivers</span>
               </NavLink>
-              <NavLink to={token ? "/location" : "/"} className="nav-link">
+              <NavLink to="/location" className="nav-link">
                 <i className="fa-solid fa-map nav-link-icon"></i>
                 <span className="nav-link-name">Routes</span>
               </NavLink>
-              <NavLink to={token ? "/logout" : "/"} className="nav-logo">
+              <NavLink to="/logout" className="nav-logo">
                 <i className={`fas fa-power-off nav-logo-icon`}></i>
                 <span className="nav-logo-name">Logout</span>
               </NavLink>
