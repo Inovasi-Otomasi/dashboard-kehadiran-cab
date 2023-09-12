@@ -2,6 +2,7 @@
   "name": "dashboard-kehadiran-cab",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://utilitydemo.colinn.id:8686",
   "dependencies": {
     "@react-google-maps/api": "^2.19.2",
     "@testing-library/jest-dom": "^5.17.0",
