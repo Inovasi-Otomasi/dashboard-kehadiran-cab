@@ -10,7 +10,7 @@ const AdminRoutes = () => {
   if (auth === "admin") {
     return <Outlet />;
   } else {
-    navigate("*");
+    navigate("/login");
   }
 };
 

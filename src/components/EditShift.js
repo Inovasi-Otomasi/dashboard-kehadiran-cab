@@ -83,7 +83,7 @@ function EditShift() {
   return (
     <div className="container-fluid pt-4 text-lg-start">
       <Helmet>
-        <title>Data Driver CAB | Edit Shift</title>
+        <title>Data Absensi CAB | Edit Shift</title>
       </Helmet>
       <form class="row g-3 needs-validation px-5" novalidate autoComplete="off">
         <h1>Edit Data</h1>

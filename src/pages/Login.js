@@ -4,6 +4,8 @@ import axios from "../api/axios";
 import { useNavigate } from "react-router-dom";
 import secureLocalStorage from "react-secure-storage";
 import Swal from "sweetalert2";
+import { Helmet } from "react-helmet";
+import logo from "../assets/logo.png";
 
 const login_URL = "/login";
 
@@ -50,7 +52,7 @@ function Login() {
               text: "Berhasil login!",
             });
             setTimeout(() => {
-              navigate("/dashboard");
+              window.location.reload();
             }, 1000);
           } else {
             Swal.fire({
@@ -73,8 +75,16 @@ function Login() {
 
   return (
     <div className="container-fluid">
+      <Helmet>
+        <title>Data Absensi CAB | Login</title>
+      </Helmet>
+      <div className="d-flex flex-row justify-content-center">
+        <img src={logo} className="img-fluid" width={200} height={200} />
+      </div>
+      <h1 className="text-center">DATA ABSENSI CAB</h1>
+
       <form className="p-5" onSubmit={handleLogin}>
-        <h1 className="text-center">Login</h1>
+        <h3 className="text-center">Login</h3>
         <div className="mb-3">
           <label for="exampleInputEmail1" className="form-label">
             Alamat Email
@@ -107,7 +117,7 @@ function Login() {
             autoComplete="off"
           />
         </div>
-        <button type="submit" className="btn btn-primary">
+        <button type="submit" className="btn btn-success">
           Submit
         </button>
       </form>

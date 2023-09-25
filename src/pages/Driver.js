@@ -233,7 +233,7 @@ function Driver() {
   return (
     <div className="p-4">
       <Helmet>
-        <title>Data Driver CAB | Driver</title>
+        <title>Data Absensi CAB | Driver</title>
       </Helmet>
       <h1>Data Driver CAB</h1>
       <hr />

@@ -16,13 +16,14 @@ import Login from "./pages/Login";
 import Logout from "./pages/Logout";
 
 import AdminRoutes from "./utils/AdminRoute";
+import Footer from "./components/Footer";
 
 function App() {
   return (
     <Router>
       <div className="App">
         <Sidebar />
-        <main className="container-sm">
+        <main className="container">
           <Routes>
             <Route exact path="/" element={<Login />} />
             <Route exact path="/login" element={<Login />} />
@@ -41,10 +42,12 @@ function App() {
               />
               <Route exact path="/location" element={<Location />} />
               <Route exact path="location/edit/:id" element={<EditRoute />} />
+              <Route exact path="/logout" element={<Logout />} />
             </Route>
 
             <Route exact path="*" element={<Error />} />
           </Routes>
+          <Footer />
         </main>
       </div>
     </Router>

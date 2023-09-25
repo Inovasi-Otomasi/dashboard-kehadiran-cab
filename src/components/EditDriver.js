@@ -143,7 +143,7 @@ function EditDriver() {
   return (
     <div className="container-fluid text-lg-start mb-4">
       <Helmet>
-        <title>Data Driver CAB | Edit Driver</title>
+        <title>Data Absensi CAB | Edit Driver</title>
       </Helmet>
       <form
         class="row g-3 needs-validation px-5"

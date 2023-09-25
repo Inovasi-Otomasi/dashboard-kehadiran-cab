@@ -193,7 +193,7 @@ function Shift() {
   return (
     <div className="p-4">
       <Helmet>
-        <title>Data Driver CAB | Shift</title>
+        <title>Data Absensi CAB | Shift</title>
       </Helmet>
       <h1>Data Shift CAB</h1>
       <hr />

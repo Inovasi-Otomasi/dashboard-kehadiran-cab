@@ -20,7 +20,7 @@ function Dashboard() {
   return (
     <div className="dashboard-wrapper p-4">
       <Helmet>
-        <title>Data Driver CAB | Dashboard</title>
+        <title>Data Absensi CAB | Dashboard</title>
       </Helmet>
       <div className="d-md-flex flex-row justify-content-around">
         <h1>Dashboard</h1>

@@ -213,7 +213,7 @@ function Location() {
   return (
     <div className="p-4">
       <Helmet>
-        <title>Data Driver CAB | Rute</title>
+        <title>Data Absensi CAB | Trayek</title>
       </Helmet>
       <h1>Data Rute CAB</h1>
       <hr />

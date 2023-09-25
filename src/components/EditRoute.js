@@ -129,7 +129,7 @@ function EditRoute() {
   return (
     <div className="container-fluid py-4">
       <Helmet>
-        <title>Data Driver CAB | Edit Rute</title>
+        <title>Data Absensi CAB | Edit Rute</title>
       </Helmet>
       <form class="row g-3 needs-validation px-5" novalidate autoComplete="off">
         <h1>Edit Data</h1>
