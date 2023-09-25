@@ -119,11 +119,16 @@ function AddDriver() {
     <div>
       <button
         type="button"
-        class="btn btn-dark"
+        className="btn btn-primary shadow rounded"
         data-bs-toggle="modal"
         data-bs-target="#exampleModal">
-        Daftar Data Driver
+        <i className="fa fa-plus"></i>
       </button>
+      <span
+        className="px-2"
+        style={{ fontSize: "1.1rem", fontWeight: "bolder" }}>
+        Driver
+      </span>
 
       <div
         class="modal fade"
@@ -151,9 +156,10 @@ function AddDriver() {
                     type="number"
                     class="form-control"
                     id="validationCustom01"
-                    placeholder="123456"
+                    placeholder="Contoh: "
                     name="number"
                     value={state.number}
+                    min="0"
                     onChange={handleChange}
                     required
                   />
@@ -166,7 +172,7 @@ function AddDriver() {
                     type="text"
                     class="form-control"
                     id="validationCustom02"
-                    placeholder="John Doe"
+                    placeholder="Contoh: "
                     name="name"
                     value={state.name}
                     onChange={handleChange}
@@ -182,7 +188,7 @@ function AddDriver() {
                     type="text"
                     class="form-control"
                     id="validationCustom03"
-                    placeholder="3xxxxxxxxxxx"
+                    placeholder="Contoh: "
                     name="nik"
                     value={state.nik}
                     onChange={handleChange}
@@ -197,7 +203,7 @@ function AddDriver() {
                     type="text"
                     class="form-control"
                     id="validationCustom03"
-                    placeholder="2xxxxxxxxxxx"
+                    placeholder="Contoh: "
                     name="no_sim"
                     value={state.no_sim}
                     onChange={handleChange}
@@ -213,7 +219,7 @@ function AddDriver() {
                     type="text"
                     class="form-control"
                     id="validationCustom03"
-                    placeholder="1xxxxxxx"
+                    placeholder="Contoh: "
                     name="rfid"
                     value={state.rfid}
                     onChange={handleChange}
@@ -234,7 +240,7 @@ function AddDriver() {
                       Pilih disini
                     </option>
                     {shifts.map((shift) => (
-                      <option value={state.shift_id}>{shift.id}</option>
+                      <option value={shift.id}>{shift.id}</option>
                     ))}
                   </select>
                 </div>
@@ -247,7 +253,7 @@ function AddDriver() {
                     type="text"
                     class="form-control"
                     id="validationCustom03"
-                    placeholder="Depok"
+                    placeholder="Contoh: "
                     name="address"
                     value={state.address}
                     onChange={handleChange}
@@ -262,7 +268,7 @@ function AddDriver() {
                     type="datetime-local"
                     class="form-control"
                     id="validationCustom03"
-                    placeholder="20/10/2000"
+                    placeholder="Contoh: "
                     name="start_working"
                     value={state.start_working}
                     onChange={handleChange}
@@ -278,7 +284,7 @@ function AddDriver() {
                     type="text"
                     class="form-control"
                     id="validationCustom03"
-                    placeholder="Driver"
+                    placeholder="Contoh: "
                     name="position"
                     value={state.position}
                     onChange={handleChange}
@@ -295,7 +301,6 @@ function AddDriver() {
                     aria-label="Default select example"
                     required
                     onChange={(value) => handleChange(value)}
-                    value={state.level_menu}
                     name="level_menu">
                     <option selected disabled>
                       Pilih Level Menu
@@ -314,7 +319,6 @@ function AddDriver() {
                     aria-label="Default select example"
                     required
                     onChange={(value) => handleChange(value)}
-                    value={state.status}
                     name="status">
                     <option selected disabled>
                       Pilih Status
@@ -333,7 +337,7 @@ function AddDriver() {
                     type="text"
                     class="form-control"
                     id="validationCustom03"
-                    placeholder="JohnDoe123"
+                    placeholder="Contoh: "
                     name="username"
                     value={state.username}
                     onChange={handleChange}
@@ -365,8 +369,11 @@ function AddDriver() {
                 Tutup
               </button>
 
-              <button class="btn btn-dark" type="submit" onClick={handleSubmit}>
-                Tambahkan Data
+              <button
+                class="btn btn-success"
+                type="submit"
+                onClick={handleSubmit}>
+                Submit
               </button>
             </div>
           </div>

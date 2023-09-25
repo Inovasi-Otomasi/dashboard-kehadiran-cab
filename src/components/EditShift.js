@@ -85,7 +85,7 @@ function EditShift() {
       <Helmet>
         <title>Data Absensi CAB | Edit Shift</title>
       </Helmet>
-      <form class="row g-3 needs-validation px-5" novalidate autoComplete="off">
+      <form class="row g-3 needs-validation " novalidate autoComplete="off">
         <h1>Edit Data</h1>
         <div class="col-md-6">
           <label for="validationCustom01" class="form-label">
@@ -95,7 +95,7 @@ function EditShift() {
             type="number"
             class="form-control"
             id="validationCustom01"
-            placeholder="123456"
+            placeholder="Contoh: "
             name="number"
             value={state.number}
             onChange={handleChange}
@@ -110,7 +110,7 @@ function EditShift() {
             type="text"
             class="form-control"
             id="validationCustom02"
-            placeholder="Axxxxx"
+            placeholder="Contoh: "
             name="name"
             value={state.name}
             onChange={handleChange}
@@ -126,7 +126,7 @@ function EditShift() {
             type="time"
             class="form-control"
             id="validationCustom03"
-            placeholder="06:00:00"
+            placeholder="Contoh: "
             name="shift_start"
             value={state.shift_start}
             onChange={handleChange}
@@ -141,7 +141,7 @@ function EditShift() {
             type="time"
             class="form-control"
             id="validationCustom03"
-            placeholder="18:00:00"
+            placeholder="Contoh: "
             name="shift_end"
             value={state.shift_end}
             onChange={handleChange}
@@ -156,8 +156,8 @@ function EditShift() {
           </Link>
         </div>
         <div className="col-6 text-start">
-          <button class="btn btn-dark" type="button" onClick={handleSubmit}>
-            Edit Data
+          <button class="btn btn-success" type="button" onClick={handleSubmit}>
+            Submit
           </button>
         </div>
       </div>

@@ -146,7 +146,7 @@ function EditDriver() {
         <title>Data Absensi CAB | Edit Driver</title>
       </Helmet>
       <form
-        class="row g-3 needs-validation px-5"
+        class="row g-3 needs-validation"
         novalidate
         onSubmit={handleSubmit}
         autoComplete="off">
@@ -157,7 +157,7 @@ function EditDriver() {
           <input
             type="number"
             class="form-control"
-            id="validationCustom01"
+            id="Contoh: "
             placeholder="123456"
             name="number"
             value={state.number}
@@ -173,7 +173,7 @@ function EditDriver() {
             type="text"
             class="form-control"
             id="validationCustom02"
-            placeholder="John Doe"
+            placeholder="Contoh: "
             name="name"
             value={state.name}
             onChange={handleChange}
@@ -189,7 +189,7 @@ function EditDriver() {
             type="text"
             class="form-control"
             id="validationCustom03"
-            placeholder="3xxxxxxxxxxx"
+            placeholder="Contoh: "
             name="nik"
             value={state.nik}
             onChange={handleChange}
@@ -204,7 +204,7 @@ function EditDriver() {
             type="text"
             class="form-control"
             id="validationCustom03"
-            placeholder="2xxxxxxxxxxx"
+            placeholder="Contoh: "
             name="no_sim"
             value={state.no_sim}
             onChange={handleChange}
@@ -220,7 +220,7 @@ function EditDriver() {
             type="text"
             class="form-control"
             id="validationCustom03"
-            placeholder="1xxxxxxx"
+            placeholder="Contoh: "
             name="rfid"
             value={state.rfid}
             onChange={handleChange}
@@ -255,7 +255,7 @@ function EditDriver() {
             type="text"
             class="form-control"
             id="validationCustom03"
-            placeholder="Depok"
+            placeholder="Contoh: "
             name="address"
             value={state.address}
             onChange={handleChange}
@@ -270,7 +270,7 @@ function EditDriver() {
             type="datetime-local"
             class="form-control"
             id="validationCustom03"
-            placeholder="20/10/2000"
+            placeholder="Contoh: "
             name="start_working"
             value={state.start_working}
             onChange={handleChange}
@@ -286,7 +286,7 @@ function EditDriver() {
             type="text"
             class="form-control"
             id="validationCustom03"
-            placeholder="Driver"
+            placeholder="Contoh: "
             name="position"
             value={state.position}
             onChange={handleChange}
@@ -341,7 +341,7 @@ function EditDriver() {
             type="text"
             class="form-control"
             id="validationCustom03"
-            placeholder="JohnDoe123"
+            placeholder="Contoh: "
             name="username"
             value={state.username}
             onChange={handleChange}
@@ -371,8 +371,11 @@ function EditDriver() {
             </Link>
           </div>
           <div className="col-6 text-start">
-            <button class="btn btn-dark" type="button" onClick={handleSubmit}>
-              Edit Data
+            <button
+              class="btn btn-success"
+              type="button"
+              onClick={handleSubmit}>
+              Submit
             </button>
           </div>
         </div>

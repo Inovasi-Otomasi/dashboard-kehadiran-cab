@@ -50,7 +50,7 @@ function Map({ onMapClick, coordinates, resetCoordinates }) {
             </div>
             <div className="col-md-4">
               <button
-                className="btn btn-dark"
+                className="btn btn-danger"
                 type="button"
                 onClick={resetCoordinates}>
                 Reset

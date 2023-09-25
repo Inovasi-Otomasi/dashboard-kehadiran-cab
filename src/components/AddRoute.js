@@ -84,11 +84,16 @@ function AddRoute() {
     <div>
       <button
         type="button"
-        class="btn btn-dark"
+        className="btn btn-primary shadow rounded"
         data-bs-toggle="modal"
         data-bs-target="#exampleModal">
-        Daftar Data Route
+        <i className="fa fa-plus"></i>
       </button>
+      <span
+        className="px-2"
+        style={{ fontSize: "1.1rem", fontWeight: "bolder" }}>
+        Trayek
+      </span>
 
       <div
         class="modal fade"
@@ -100,7 +105,7 @@ function AddRoute() {
           <div class="modal-content">
             <div class="modal-header">
               <h1 class="modal-title fs-5" id="exampleModalLabel">
-                Data Route
+                Data Trayek
               </h1>
             </div>
             <div class="modal-body">
@@ -116,7 +121,7 @@ function AddRoute() {
                     type="number"
                     class="form-control"
                     id="validationCustom01"
-                    placeholder="123456"
+                    placeholder="Contoh: "
                     name="number"
                     value={state.number}
                     onChange={handleChange}
@@ -131,7 +136,7 @@ function AddRoute() {
                     type="text"
                     class="form-control"
                     id="validationCustom02"
-                    placeholder="Axxxxx"
+                    placeholder="Contoh: "
                     name="code"
                     value={state.code}
                     onChange={handleChange}
@@ -141,13 +146,13 @@ function AddRoute() {
 
                 <div class="col-md-6">
                   <label for="validationCustom03" class="form-label">
-                    Titik Awal Rute
+                    Titik Awal Trayek
                   </label>
                   <input
                     type="text"
                     class="form-control"
                     id="validationCustom03"
-                    placeholder="Depok"
+                    placeholder="Contoh: "
                     name="start_point"
                     value={state.start_point}
                     onChange={handleChange}
@@ -156,13 +161,13 @@ function AddRoute() {
                 </div>
                 <div class="col-md-6">
                   <label for="validationCustom04" class="form-label">
-                    Titik Akhir Rute
+                    Titik Akhir Trayek
                   </label>
                   <input
                     type="text"
                     class="form-control"
                     id="validationCustom03"
-                    placeholder="Kemanggisan"
+                    placeholder="Contoh: "
                     name="end_point"
                     value={state.end_point}
                     onChange={handleChange}
@@ -172,13 +177,13 @@ function AddRoute() {
 
                 <div class="col-md-12">
                   <label for="validationCustom04" class="form-label">
-                    Rute Complete
+                    Trayek Complit
                   </label>
                   <input
                     type="text"
                     class="form-control"
                     id="validationCustom03"
-                    placeholder="Kemanggisan-Depok"
+                    placeholder="Contoh: "
                     name="complete_route"
                     value={state.complete_route}
                     onChange={handleChange}
@@ -200,8 +205,11 @@ function AddRoute() {
                 data-bs-dismiss="modal">
                 Tutup
               </button>
-              <button class="btn btn-dark" type="submit" onClick={handleSubmit}>
-                Tambahkan Data
+              <button
+                class="btn btn-success"
+                type="submit"
+                onClick={handleSubmit}>
+                Submit
               </button>
             </div>
           </div>

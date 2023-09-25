@@ -18,7 +18,7 @@ function Driver() {
   const [start, setStart] = useState(0);
   const [sortColumn, setSortColumn] = useState(0);
   const [dir, setDir] = useState("desc");
-  const countPerPage = 2;
+  const countPerPage = 10;
 
   const [drivers, setDrivers] = useState([]);
   const [filterDrivers, setFilterDrivers] = useState("");
@@ -35,32 +35,6 @@ function Driver() {
   bodyFormData.append("columns[0][search][value]", "");
 
   // const [isLoading, setIsLoading] = useState(false);
-
-  createTheme(
-    "solarized",
-    {
-      text: {
-        primary: "#FFFFFF",
-        secondary: "#FFFFFF",
-      },
-      background: {
-        default: "#0A1929",
-      },
-      context: {
-        background: "#cb4b16",
-        text: "#FFFFFF",
-      },
-      divider: {
-        default: "#FFFFFF",
-      },
-      action: {
-        button: "rgba(0,0,0,.54)",
-        hover: "rgba(0,0,0,.08)",
-        disabled: "rgba(0,0,0,.12)",
-      },
-    },
-    "dark"
-  );
 
   const columns = [
     { name: "ID", selector: (row) => row[0], sortable: true },
@@ -82,17 +56,17 @@ function Driver() {
       name: "Detail",
       cell: (row) => (
         <button
-          className="btn btn-light btn-sm"
+          className="btn btn-success btn-sm"
           onClick={() => navigate(`/driver/details/${row[0]}`)}>
           <i className="fa fa-search-plus"></i>
         </button>
       ),
     },
     {
-      name: "Edit Data",
+      name: "Edit",
       cell: (row) => (
         <button
-          className="btn btn-light btn-sm"
+          className="btn btn-primary btn-sm"
           onClick={() => navigate(`/driver/edit/${row[0]}`)}
           id={row[0]}>
           <i className="fa fa-edit"></i>
@@ -100,10 +74,10 @@ function Driver() {
       ),
     },
     {
-      name: "Hapus Data",
+      name: "Hapus",
       cell: (row) => (
         <button
-          className="btn btn-light btn-sm"
+          className="btn btn-danger btn-sm"
           onClick={() => deleteData(row[0])}>
           <i className="fa fa-trash"></i>
         </button>
@@ -210,7 +184,6 @@ function Driver() {
             pagination
             highlightOnHover
             paginationServer
-            theme="solarized"
             fixedHeader
             fixedHeaderScrollHeight="400px"
             paginationTotalRows={drivers.recordsFiltered}
@@ -231,7 +204,7 @@ function Driver() {
   );
 
   return (
-    <div className="p-4">
+    <div className="py-4">
       <Helmet>
         <title>Data Absensi CAB | Driver</title>
       </Helmet>

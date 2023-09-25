@@ -98,7 +98,7 @@ function Map({ onMapClick, coordinates, resetCoordinates, deleteCoordinate }) {
               </div>
               <div className="col-md-4 btn-container">
                 <button
-                  className="btn btn-dark"
+                  className="btn btn-danger"
                   type="button"
                   onClick={resetCoordinates}>
                   Reset

@@ -131,7 +131,7 @@ function EditRoute() {
       <Helmet>
         <title>Data Absensi CAB | Edit Rute</title>
       </Helmet>
-      <form class="row g-3 needs-validation px-5" novalidate autoComplete="off">
+      <form class="row g-3 needs-validation" novalidate autoComplete="off">
         <h1>Edit Data</h1>
         <div class="col-md-6">
           <label for="validationCustom01" class="form-label">
@@ -141,7 +141,7 @@ function EditRoute() {
             type="number"
             class="form-control"
             id="validationCustom01"
-            placeholder="123456"
+            placeholder="Contoh: "
             name="number"
             value={state.number}
             onChange={handleChange}
@@ -156,7 +156,7 @@ function EditRoute() {
             type="text"
             class="form-control"
             id="validationCustom02"
-            placeholder="Axxxxx"
+            placeholder="Contoh: "
             name="code"
             value={state.code}
             onChange={handleChange}
@@ -172,7 +172,7 @@ function EditRoute() {
             type="text"
             class="form-control"
             id="validationCustom03"
-            placeholder="Depok"
+            placeholder="Contoh: "
             name="start_point"
             value={state.start_point}
             onChange={handleChange}
@@ -187,7 +187,7 @@ function EditRoute() {
             type="text"
             class="form-control"
             id="validationCustom03"
-            placeholder="Kemanggisan"
+            placeholder="Contoh: "
             name="end_point"
             value={state.end_point}
             onChange={handleChange}
@@ -203,7 +203,7 @@ function EditRoute() {
             type="text"
             class="form-control"
             id="validationCustom03"
-            placeholder="Kemanggisan-Depok"
+            placeholder="Contoh: "
             name="complete_route"
             value={state.complete_route}
             onChange={handleChange}
@@ -225,8 +225,8 @@ function EditRoute() {
           </Link>
         </div>
         <div className="col-6 text-start">
-          <button class="btn btn-dark" type="button" onClick={handleSubmit}>
-            Edit Data
+          <button class="btn btn-success" type="button" onClick={handleSubmit}>
+            Submit
           </button>
         </div>
       </div>

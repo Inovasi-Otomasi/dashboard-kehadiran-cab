@@ -18,7 +18,7 @@ function Shift() {
   const [dir, setDir] = useState("desc");
 
   const [page, setPage] = useState(1);
-  const countPerPage = 2;
+  const countPerPage = 10;
 
   var bodyFormData = new FormData();
 
@@ -33,43 +33,18 @@ function Shift() {
   // const [isLoading, setIsLoading] = useState(false);
 
   // createTheme creates a new theme named solarized that overrides the build in dark theme
-  createTheme(
-    "solarized",
-    {
-      text: {
-        primary: "#FFFFFF",
-        secondary: "#FFFFFF",
-      },
-      background: {
-        default: "#0A1929",
-      },
-      context: {
-        background: "#cb4b16",
-        text: "#FFFFFF",
-      },
-      divider: {
-        default: "#FFFFFF",
-      },
-      action: {
-        button: "rgba(0,0,0,.54)",
-        hover: "rgba(0,0,0,.08)",
-        disabled: "rgba(0,0,0,.12)",
-      },
-    },
-    "dark"
-  );
 
   const columns = [
-    { name: "Nomor ID", selector: (row) => row[0], sortable: true },
-    { name: "Nomor Shift", selector: (row) => row[1], sortable: true },
-    { name: "Nama Shift", selector: (row) => row[2], sortable: true },
-    { name: "Waktu Mulai", selector: (row) => row[3], sortable: true },
-    { name: "Waktu Selesai", selector: (row) => row[4], sortable: true },
+    { name: "ID", selector: (row) => row[0], sortable: true },
+    { name: "Nomor ", selector: (row) => row[1], sortable: true },
+    { name: "Shift", selector: (row) => row[2], sortable: true },
+    { name: "Mulai", selector: (row) => row[3], sortable: true },
+    { name: "Selesai", selector: (row) => row[4], sortable: true },
     {
-      name: "Edit Data",
+      name: "Edit",
       cell: (row) => (
         <button
-          className="btn btn-light btn-sm"
+          className="btn btn-primary btn-sm"
           onClick={() => navigate(`/shift/edit/${row[0]}`)}
           id={row[0]}>
           <i className="fa fa-edit"></i>
@@ -77,10 +52,10 @@ function Shift() {
       ),
     },
     {
-      name: "Hapus Data",
+      name: "Hapus",
       cell: (row) => (
         <button
-          className="btn btn-light btn-sm"
+          className="btn btn-danger btn-sm"
           onClick={() => deleteData(row[0])}>
           <i className="fa fa-trash"></i>
         </button>
@@ -170,7 +145,6 @@ function Shift() {
             pagination
             highlightOnHover
             paginationServer
-            theme="solarized"
             fixedHeader
             fixedHeaderScrollHeight="300px"
             paginationTotalRows={shifts.recordsFiltered}
@@ -191,7 +165,7 @@ function Shift() {
   );
 
   return (
-    <div className="p-4">
+    <div className="py-4">
       <Helmet>
         <title>Data Absensi CAB | Shift</title>
       </Helmet>

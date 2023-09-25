@@ -2,6 +2,10 @@ import React, { useState } from "react";
 import axios from "../api/axios";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import dayjs from "dayjs";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { MobileTimePicker } from "@mui/x-date-pickers/MobileTimePicker";
 
 const BASE_URL = "/1.0.0/shifts";
 
@@ -60,11 +64,16 @@ function AddShift() {
     <div>
       <button
         type="button"
-        class="btn btn-dark"
+        className="btn btn-primary shadow rounded"
         data-bs-toggle="modal"
         data-bs-target="#exampleModal">
-        Daftar Data Shift
+        <i className="fa fa-plus"></i>
       </button>
+      <span
+        className="px-2"
+        style={{ fontSize: "1.1rem", fontWeight: "bolder" }}>
+        Shift
+      </span>
 
       <div
         class="modal fade"
@@ -92,7 +101,7 @@ function AddShift() {
                     type="number"
                     class="form-control"
                     id="validationCustom01"
-                    placeholder="123456"
+                    placeholder="Contoh: "
                     name="number"
                     value={state.number}
                     onChange={handleChange}
@@ -107,7 +116,7 @@ function AddShift() {
                     type="text"
                     class="form-control"
                     id="validationCustom02"
-                    placeholder="Axxxxx"
+                    placeholder="Contoh: "
                     name="name"
                     value={state.name}
                     onChange={handleChange}
@@ -123,7 +132,7 @@ function AddShift() {
                     type="time"
                     class="form-control"
                     id="validationCustom03"
-                    placeholder="06:00:00"
+                    placeholder="Contoh: "
                     name="shift_start"
                     value={state.shift_start}
                     onChange={handleChange}
@@ -138,12 +147,21 @@ function AddShift() {
                     type="time"
                     class="form-control"
                     id="validationCustom03"
-                    placeholder="18:00:00"
+                    placeholder="Contoh: "
                     name="shift_end"
                     value={state.shift_end}
                     onChange={handleChange}
                     required
                   />
+                </div>
+
+                <div className="col-md-6">
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <MobileTimePicker
+                      defaultValue={dayjs("2023-09-30T12:00")}
+                      className="form-control"
+                    />
+                  </LocalizationProvider>
                 </div>
               </form>
             </div>
@@ -154,8 +172,11 @@ function AddShift() {
                 data-bs-dismiss="modal">
                 Tutup
               </button>
-              <button class="btn btn-dark" type="submit" onClick={handleSubmit}>
-                Tambahkan Data
+              <button
+                class="btn btn-success"
+                type="submit"
+                onClick={handleSubmit}>
+                Submit
               </button>
             </div>
           </div>
