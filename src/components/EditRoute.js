@@ -13,6 +13,8 @@ function EditRoute() {
 
   const [coordinates, setCoordinates] = useState([]);
 
+  const [isLoaded, setIsLoaded] = useState(false);
+
   const [state, setState] = useState({
     id: id,
     number: null,
@@ -122,8 +124,13 @@ function EditRoute() {
     if (!localStorage.getItem("token")) {
       navigate("/");
     }
-    getCoordinates();
-    getData();
+
+    if (!isLoaded) {
+      getCoordinates();
+      getData();
+
+      setIsLoaded(true);
+    }
   }, []);
 
   return (

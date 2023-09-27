@@ -11,6 +11,8 @@ function Shift() {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
 
+  const [isLoaded, setIsLoaded] = useState(false);
+
   const [shifts, setShifts] = useState([]);
   const [filterShifts, setFilterShifts] = useState("");
   const [start, setStart] = useState(0);
@@ -123,7 +125,11 @@ function Shift() {
     if (!localStorage.getItem("token")) {
       navigate("/");
     }
-    getData();
+    if (!isLoaded) {
+      getData();
+
+      setIsLoaded(true);
+    }
   }, [page, start, dir, sortColumn, filterShifts]);
 
   const renderTable = (

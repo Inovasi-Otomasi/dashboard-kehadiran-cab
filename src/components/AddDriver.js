@@ -8,6 +8,8 @@ const BASE_URL = "/1.0.0/drivers";
 function AddDriver() {
   const navigate = useNavigate();
 
+  const [isLoaded, setIsLoaded] = useState(false);
+
   const lvlmenu_options = [
     { value: "A", label: "A" },
     { value: "B", label: "B" },
@@ -36,7 +38,11 @@ function AddDriver() {
   };
 
   useEffect(() => {
-    getShift();
+    if (!isLoaded) {
+      getShift();
+
+      setIsLoaded(true);
+    }
   }, []);
 
   const [state, setState] = useState({

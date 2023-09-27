@@ -9,6 +9,8 @@ function DriverDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
 
+  const [isLoaded, setIsLoaded] = useState(false);
+
   const [state, setState] = useState({
     id: id,
     number: 0,
@@ -26,26 +28,30 @@ function DriverDetail() {
   });
 
   useEffect(() => {
-    axios
-      .get("/1.0.0/drivers/" + id)
-      .then((res) =>
-        setState({
-          ...state,
-          number: res.data.number,
-          name: res.data.name,
-          nik: res.data.nik,
-          no_sim: res.data.no_sim,
-          rfid: res.data.rfid,
-          shift_id: res.data.shift_id,
-          address: res.data.address,
-          start_working: res.data.start_working,
-          position: res.data.position,
-          level_menu: res.data.level_menu,
-          username: res.data.username,
-          status: res.data.status,
-        })
-      )
-      .catch((err) => console.log(err));
+    if (!isLoaded) {
+      axios
+        .get("/1.0.0/drivers/" + id)
+        .then((res) =>
+          setState({
+            ...state,
+            number: res.data.number,
+            name: res.data.name,
+            nik: res.data.nik,
+            no_sim: res.data.no_sim,
+            rfid: res.data.rfid,
+            shift_id: res.data.shift_id,
+            address: res.data.address,
+            start_working: res.data.start_working,
+            position: res.data.position,
+            level_menu: res.data.level_menu,
+            username: res.data.username,
+            status: res.data.status,
+          })
+        )
+        .catch((err) => console.log(err));
+
+      setIsLoaded(true);
+    }
   }, []);
 
   return (

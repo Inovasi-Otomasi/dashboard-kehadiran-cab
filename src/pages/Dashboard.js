@@ -18,7 +18,7 @@ function Dashboard() {
   });
 
   return (
-    <div className="dashboard-wrapper p-4">
+    <div className="dashboard-wrapper py-4">
       <Helmet>
         <title>Data Absensi CAB | Dashboard</title>
       </Helmet>

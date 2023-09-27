@@ -14,6 +14,8 @@ function Location() {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
 
+  const [isLoaded, setIsLoaded] = useState(false);
+
   const [page, setPage] = useState(1);
   const [start, setStart] = useState(0);
   const [sortColumn, setSortColumn] = useState(0);
@@ -144,8 +146,12 @@ function Location() {
     if (!localStorage.getItem("token")) {
       navigate("/");
     }
-    getData();
-    getExcel();
+    if (!isLoaded) {
+      getData();
+      getExcel();
+
+      setIsLoaded(true);
+    }
   }, [page, filterLocations, start, dir, sortColumn]);
 
   const renderTable = (

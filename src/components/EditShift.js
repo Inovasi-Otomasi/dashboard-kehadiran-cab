@@ -7,6 +7,8 @@ import { Helmet } from "react-helmet";
 function EditShift() {
   const { id } = useParams();
 
+  const [isLoaded, setIsLoaded] = useState(false);
+
   const navigate = useNavigate();
 
   const [state, setState] = useState({
@@ -63,18 +65,23 @@ function EditShift() {
     if (!localStorage.getItem("token")) {
       navigate("/");
     }
-    axios
-      .get("/1.0.0/shifts/" + id)
-      .then((res) =>
-        setState({
-          ...state,
-          number: res.data.number,
-          name: res.data.name,
-          shift_start: res.data.shift_start,
-          shift_end: res.data.shift_end,
-        })
-      )
-      .catch((err) => console.log(err));
+    if (!isLoaded) {
+      axios
+        .get("/1.0.0/shifts/" + id)
+        .then((res) =>
+          setState({
+            ...state,
+            number: res.data.number,
+            name: res.data.name,
+            shift_start: res.data.shift_start,
+            shift_end: res.data.shift_end,
+          })
+        )
+        .catch((err) => console.log(err));
+
+      setIsLoaded(true);
+    }
+
     if (!state) {
       navigate("/shift");
     }

@@ -27,6 +27,14 @@ function AddShift() {
     });
   };
 
+  const handleChangeTime = (name, newValue) => {
+    setState({
+      ...state,
+      [name]: newValue,
+    });
+    console.log(state);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const shiftData = {
@@ -138,6 +146,18 @@ function AddShift() {
                     onChange={handleChange}
                     required
                   />
+                  {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <MobileTimePicker
+                      name="shift_start"
+                      value={state.shift_start}
+                      className="form-control"
+                      required
+                      onChange={(newVal) =>
+                        handleChangeTime("shift_start", newVal)
+                      }
+                      defaultValue={dayjs("2023-09-30T12:00")}
+                    />
+                  </LocalizationProvider> */}
                 </div>
                 <div class="col-md-6">
                   <label for="validationCustom04" class="form-label">
@@ -155,14 +175,7 @@ function AddShift() {
                   />
                 </div>
 
-                <div className="col-md-6">
-                  <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <MobileTimePicker
-                      defaultValue={dayjs("2023-09-30T12:00")}
-                      className="form-control"
-                    />
-                  </LocalizationProvider>
-                </div>
+                <div className="col-md-6"></div>
               </form>
             </div>
             <div class="modal-footer d-flex flex-row justify-content-center">
