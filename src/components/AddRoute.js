@@ -65,8 +65,8 @@ function AddRoute() {
       setCoordinates([]);
       Swal.fire({
         icon: "success",
-        title: "Menambahkan Data Rute",
-        text: "Sukses menambahkan rute!",
+        title: "Menambahkan Data Trayek",
+        text: "Sukses menambahkan Trayek!",
       });
       setTimeout(function () {
         window.location.reload();
@@ -74,8 +74,8 @@ function AddRoute() {
     } catch (error) {
       Swal.fire({
         icon: "error",
-        title: "Menambahkan Data Rute",
-        text: "Gagal menambahkan rute!",
+        title: "Menambahkan Data Trayek",
+        text: "Gagal menambahkan Trayek!",
       });
     }
   };
@@ -111,7 +111,7 @@ function AddRoute() {
             <div class="modal-body">
               <form
                 class="row g-3 needs-validation px-5"
-                novalidate
+                onSubmit={handleSubmit}
                 autoComplete="off">
                 <div class="col-md-6">
                   <label for="validationCustom01" class="form-label">
@@ -121,7 +121,7 @@ function AddRoute() {
                     type="number"
                     class="form-control"
                     id="validationCustom01"
-                    placeholder="Contoh: "
+                    placeholder="Contoh: 123"
                     name="number"
                     value={state.number}
                     onChange={handleChange}
@@ -136,7 +136,7 @@ function AddRoute() {
                     type="text"
                     class="form-control"
                     id="validationCustom02"
-                    placeholder="Contoh: "
+                    placeholder="Contoh: DPK-001"
                     name="code"
                     value={state.code}
                     onChange={handleChange}
@@ -152,7 +152,7 @@ function AddRoute() {
                     type="text"
                     class="form-control"
                     id="validationCustom03"
-                    placeholder="Contoh: "
+                    placeholder="Contoh: Depok"
                     name="start_point"
                     value={state.start_point}
                     onChange={handleChange}
@@ -167,7 +167,7 @@ function AddRoute() {
                     type="text"
                     class="form-control"
                     id="validationCustom03"
-                    placeholder="Contoh: "
+                    placeholder="Contoh: Sudirman"
                     name="end_point"
                     value={state.end_point}
                     onChange={handleChange}
@@ -183,7 +183,7 @@ function AddRoute() {
                     type="text"
                     class="form-control"
                     id="validationCustom03"
-                    placeholder="Contoh: "
+                    placeholder="Contoh: Depok-Sudirman"
                     name="complete_route"
                     value={state.complete_route}
                     onChange={handleChange}
@@ -196,9 +196,25 @@ function AddRoute() {
                   coordinates={coordinates}
                   resetCoordinates={resetCoordinates}
                 />
+
+                <div class="row g-3 pt-4">
+                  <div className="col-6 text-end mt-4">
+                    <button
+                      type="button"
+                      class="btn btn-secondary"
+                      data-bs-dismiss="modal">
+                      Tutup
+                    </button>
+                  </div>
+                  <div className="col-6 text-start mt-4">
+                    <button class="btn btn-success" type="submit">
+                      Submit
+                    </button>
+                  </div>
+                </div>
               </form>
             </div>
-            <div class="modal-footer d-flex flex-row justify-content-center">
+            {/* <div class="modal-footer d-flex flex-row justify-content-center">
               <button
                 type="button"
                 class="btn btn-secondary"
@@ -211,7 +227,7 @@ function AddRoute() {
                 onClick={handleSubmit}>
                 Submit
               </button>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

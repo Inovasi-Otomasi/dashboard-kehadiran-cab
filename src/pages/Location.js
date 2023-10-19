@@ -101,8 +101,8 @@ function Location() {
       text: "Apakah anda yakin ingin menghapus data ini?",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
       confirmButtonText: "Hapus Data!",
     }).then((result) => {
       try {
@@ -162,7 +162,7 @@ function Location() {
           placeholder="Search"
           onChange={handleFilter}
           value={filterLocations}
-          className="mb-3"
+          className="form-control mb-3"
         />
       </div>
       <div className="card bg-light">

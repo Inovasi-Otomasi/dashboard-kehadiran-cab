@@ -40,20 +40,14 @@ function Driver() {
 
   const columns = [
     { name: "ID", selector: (row) => row[0], sortable: true },
-    { name: "Username", selector: (row) => row[14], sortable: true },
-    // { name: "Nomor", selector: (row) => row[1], sortable: true},
-    // { name: "Shift ID", selector: (row) => row[6], sortable: true},
+    { name: "Nomor", selector: (row) => row[1], sortable: true },
     { name: "Nama", selector: (row) => row[2], sortable: true },
-    // { name: "NIK", selector: (row) => row[3], sortable: true},
-    // { name: "Nomor SIM", selector: (row) => row[4], sortable: true},
-    // { name: "RFID", selector: (row) => row[5], sortable: true},
-    // { name: "Mulai Shift", selector: (row) => row[7], sortable: true},
-    // { name: "Akhir Shift", selector: (row) => row[8], sortable: true},
-    // { name: "Alamat", selector: (row) => row[9], sortable: true},
-    // { name: "Mulai Bekerja", selector: (row) => row[10], sortable: true},
-    { name: "Jabatan", selector: (row) => row[11], sortable: true },
-    { name: "Level Menu", selector: (row) => row[12], sortable: true },
-    { name: "Status", selector: (row) => row[13], sortable: true },
+    { name: "NIK", selector: (row) => row[3], sortable: true },
+    { name: "SIM", selector: (row) => row[4], sortable: true },
+    { name: "RFID", selector: (row) => row[5], sortable: true },
+    { name: "Alamat", selector: (row) => row[6], sortable: true },
+    { name: "Tanggal Masuk", selector: (row) => row[7], sortable: true },
+    { name: "Status", selector: (row) => row[8], sortable: true },
     {
       name: "Detail",
       cell: (row) => (
@@ -136,8 +130,8 @@ function Driver() {
       text: "Apakah anda yakin ingin menghapus data ini?",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
       confirmButtonText: "Hapus Data!",
     }).then((result) => {
       try {
@@ -163,8 +157,9 @@ function Driver() {
     if (!localStorage.getItem("token")) {
       navigate("/");
     }
+
+    getData();
     if (!isLoaded) {
-      getData();
       getExcel();
 
       setIsLoaded(true);
@@ -178,7 +173,7 @@ function Driver() {
           type="text"
           placeholder="Search"
           onChange={handleFilter}
-          className="mb-3"
+          className="form-control mb-3"
         />
       </div>
 

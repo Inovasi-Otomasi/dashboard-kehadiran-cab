@@ -4,8 +4,10 @@ import TrayekPie from "../components/TrayekPie";
 import AbsenPie from "../components/AbsenPie";
 import PendapatanGraph from "../components/PendapatanGraph";
 import KaryawanTable from "../components/KaryawanTable";
-import DateRange from "../components/DateRange";
+import { DatePicker } from "antd";
 import { Helmet } from "react-helmet";
+
+const { RangePicker } = DatePicker;
 
 const token = localStorage.getItem("token");
 
@@ -25,7 +27,32 @@ function Dashboard() {
       <div className="d-md-flex flex-row justify-content-around">
         <h1>Dashboard</h1>
       </div>
-      <DateRange />
+
+      <div className="d-flex justify-content-between my-5">
+        <div>
+          <span>Pilih range data: </span>
+          <RangePicker
+          // onChange={handleChangeDebut}
+          />
+        </div>
+        <div>
+          <button
+            className="btn btn-success btn-sm text-start"
+            // onClick={getIssuesByRange}
+            // value={[moment(startDate), moment(endDate)]}
+          >
+            Set Range
+          </button>
+          <span> </span>
+          <button
+            className="btn btn-danger btn-sm text-end"
+            // onClick={resetIssues}
+          >
+            Reset
+          </button>
+        </div>
+      </div>
+
       <div className="d-md-flex flex-row justify-content-around">
         <TrayekPie />
         <AbsenPie />

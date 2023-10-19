@@ -22,8 +22,7 @@ function KaryawanTable() {
     { name: "Nama", selector: (row) => row.nama },
     { name: "Trayek", selector: (row) => row.trayek },
     { name: "Total Penghasilan", selector: (row) => row.penghasilan },
-    { name: "Jam Operasional Kerja", selector: (row) => row.jam_operasional },
-    { name: "Penggajian", selector: (row) => row.penggajian },
+
     {
       name: "Detail",
       cell: (row) => (
@@ -40,8 +39,6 @@ function KaryawanTable() {
       nama: "Joni",
       trayek: "A",
       penghasilan: "Rp. 5000000",
-      jam_operasional: "30 Hari",
-      penggajian: "Rp.XXXXXXXX",
     },
   ];
 

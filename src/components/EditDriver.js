@@ -11,32 +11,12 @@ function EditDriver() {
 
   const [isLoaded, setIsLoaded] = useState(false);
 
-  const lvlmenu_options = [
-    { value: "A", label: "A" },
-    { value: "B", label: "B" },
-    { value: "C", label: "C" },
-    { value: "D", label: "D" },
-  ];
-
   const status_options = [
     { value: "Aktif", label: "Aktif" },
     { value: "Non-Aktif", label: "Non-Aktif" },
     { value: "Mengundurkan diri", label: "Mengundurkan diri" },
     { value: "Dipecat", label: "Dipecat" },
   ];
-
-  const [shifts, setShifts] = useState([]);
-
-  const getShift = async () => {
-    try {
-      await axios.get("/1.0.0/shifts").then((response) => {
-        setShifts(response.data);
-        console.log(response.data);
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   useEffect(() => {
     if (!localStorage.getItem("token")) {
@@ -54,18 +34,12 @@ function EditDriver() {
             nik: res.data.nik,
             no_sim: res.data.no_sim,
             rfid: res.data.rfid,
-            shift_id: res.data.shift_id,
             address: res.data.address,
             start_working: res.data.start_working,
-            position: res.data.position,
-            level_menu: res.data.level_menu,
             status: res.data.status,
-            username: res.data.username,
-            password: res.data.password,
           })
         )
         .catch((err) => console.log(err));
-      getShift();
 
       setIsLoaded(true);
     }
@@ -77,14 +51,10 @@ function EditDriver() {
     nik: null,
     no_sim: null,
     rfid: "",
-    shift_id: null,
     address: "",
     start_working: "",
-    position: "",
-    level_menu: "",
+
     status: "",
-    username: "",
-    password: "",
   });
 
   const handleChange = (e) => {
@@ -103,14 +73,11 @@ function EditDriver() {
       nik: state.nik,
       no_sim: state.no_sim,
       rfid: state.rfid,
-      shift_id: state.shift_id,
+
       address: state.address,
       start_working: state.start_working,
-      position: state.position,
-      level_menu: state.level_menu,
+
       status: state.status,
-      username: state.username,
-      password: state.password,
     };
     try {
       const response = await axios.put(`/1.0.0/drivers/${id}`, driverData);
@@ -121,19 +88,16 @@ function EditDriver() {
         nik: 0,
         no_sim: 0,
         rfid: "",
-        shift_id: 0,
+
         address: "",
         start_working: "",
-        position: "",
-        level_menu: "",
+
         status: "",
-        username: "",
-        password: "",
       });
       Swal.fire({
         icon: "success",
-        title: "Menambahkan Data Shift",
-        text: "Sukses menambahkan shift!",
+        title: "Edit Data Driver",
+        text: "Sukses mengedit driver!",
       });
       setTimeout(function () {
         navigate("/driver");
@@ -141,8 +105,8 @@ function EditDriver() {
     } catch (error) {
       Swal.fire({
         icon: "error",
-        title: "Menambahkan Data Shift",
-        text: "Gagal menambahkan shift!",
+        title: "Edit Data Driver",
+        text: "Gagal menambahkan driver!",
       });
     }
   };
@@ -152,11 +116,12 @@ function EditDriver() {
       <Helmet>
         <title>Data Absensi CAB | Edit Driver</title>
       </Helmet>
+
       <form
         class="row g-3 needs-validation"
-        novalidate
         onSubmit={handleSubmit}
         autoComplete="off">
+        <h1>Edit Data</h1>
         <div class="col-md-6">
           <label for="validationCustom01" class="form-label">
             Nomor
@@ -234,25 +199,6 @@ function EditDriver() {
             required
           />
         </div>
-        <div class="col-md-6">
-          <label for="validationCustom03" class="form-label">
-            Shift
-          </label>
-          <select
-            class="form-select"
-            aria-label="Default select example"
-            required
-            onChange={(value) => handleChange(value)}
-            name="shift_id"
-            value={state.shift_id}>
-            <option selected disabled>
-              Pilih disini
-            </option>
-            {shifts.map((shift) => (
-              <option value={shift.id}>{shift.id}</option>
-            ))}
-          </select>
-        </div>
 
         <div class="col-md-6">
           <label for="validationCustom03" class="form-label">
@@ -286,41 +232,6 @@ function EditDriver() {
         </div>
 
         <div class="col-md-6">
-          <label for="validationCustom03" class="form-label">
-            Jabatan
-          </label>
-          <input
-            type="text"
-            class="form-control"
-            id="validationCustom03"
-            placeholder="Contoh: "
-            name="position"
-            value={state.position}
-            onChange={handleChange}
-            required
-          />
-        </div>
-
-        <div class="col-md-6">
-          <label for="validationCustom03" class="form-label">
-            Level Menu
-          </label>
-          <select
-            class="form-select"
-            aria-label="Default select example"
-            required
-            onChange={(value) => handleChange(value)}
-            value={state.level_menu}
-            name="level_menu">
-            <option selected disabled>
-              Pilih Level Menu
-            </option>
-            {lvlmenu_options.map((level) => (
-              <option value={level.value}>{level.label}</option>
-            ))}
-          </select>
-        </div>
-        <div class="col-md-6">
           <label for="validationCustom04" class="form-label">
             Status
           </label>
@@ -338,37 +249,6 @@ function EditDriver() {
               <option value={stats.value}>{stats.label}</option>
             ))}
           </select>
-        </div>
-
-        <div class="col-md-6">
-          <label for="validationCustom03" class="form-label">
-            Username
-          </label>
-          <input
-            type="text"
-            class="form-control"
-            id="validationCustom03"
-            placeholder="Contoh: "
-            name="username"
-            value={state.username}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div class="col-md-6">
-          <label for="validationCustom04" class="form-label">
-            Password
-          </label>
-          <input
-            type="password"
-            class="form-control"
-            id="validationCustom03"
-            placeholder="********"
-            name="password"
-            value={state.password}
-            onChange={handleChange}
-            required
-          />
         </div>
 
         <div class="row g-3 pt-4">

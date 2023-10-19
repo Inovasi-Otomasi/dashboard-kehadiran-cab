@@ -10,13 +10,6 @@ function AddDriver() {
 
   const [isLoaded, setIsLoaded] = useState(false);
 
-  const lvlmenu_options = [
-    { value: "A", label: "A" },
-    { value: "B", label: "B" },
-    { value: "C", label: "C" },
-    { value: "D", label: "D" },
-  ];
-
   const status_options = [
     { value: "Aktif", label: "Aktif" },
     { value: "Non-Aktif", label: "Non-Aktif" },
@@ -24,23 +17,8 @@ function AddDriver() {
     { value: "Dipecat", label: "Dipecat" },
   ];
 
-  const [shifts, setShifts] = useState([]);
-
-  const getShift = async () => {
-    try {
-      await axios.get("/1.0.0/shifts").then((response) => {
-        setShifts(response.data);
-        console.log(response.data);
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   useEffect(() => {
     if (!isLoaded) {
-      getShift();
-
       setIsLoaded(true);
     }
   }, []);
@@ -51,14 +29,10 @@ function AddDriver() {
     nik: null,
     no_sim: null,
     rfid: "",
-    shift_id: null,
     address: "",
     start_working: "",
-    position: "",
-    level_menu: "A",
+
     status: "Aktif",
-    username: "",
-    password: "",
   });
 
   const handleChange = (e) => {
@@ -77,14 +51,10 @@ function AddDriver() {
       nik: state.nik,
       no_sim: state.no_sim,
       rfid: state.rfid,
-      shift_id: state.shift_id,
       address: state.address,
       start_working: state.start_working,
-      position: state.position,
-      level_menu: state.level_menu,
+
       status: state.status,
-      username: state.username,
-      password: state.password,
     };
     try {
       const response = await axios.post(BASE_URL, driverData);
@@ -95,14 +65,10 @@ function AddDriver() {
         nik: 0,
         no_sim: 0,
         rfid: "",
-        shift_id: 0,
         address: "",
         start_working: "",
-        position: "",
-        level_menu: "",
+
         status: "",
-        username: "",
-        password: "",
       });
       Swal.fire({
         icon: "success",
@@ -152,7 +118,7 @@ function AddDriver() {
             <div class="modal-body">
               <form
                 class="row g-3 needs-validation px-5"
-                novalidate
+                onSubmit={handleSubmit}
                 autoComplete="off">
                 <div class="col-md-6">
                   <label for="validationCustom01" class="form-label">
@@ -162,7 +128,7 @@ function AddDriver() {
                     type="number"
                     class="form-control"
                     id="validationCustom01"
-                    placeholder="Contoh: "
+                    placeholder="Contoh: 123"
                     name="number"
                     value={state.number}
                     min="0"
@@ -178,7 +144,7 @@ function AddDriver() {
                     type="text"
                     class="form-control"
                     id="validationCustom02"
-                    placeholder="Contoh: "
+                    placeholder="Contoh: Bambang"
                     name="name"
                     value={state.name}
                     onChange={handleChange}
@@ -194,7 +160,7 @@ function AddDriver() {
                     type="text"
                     class="form-control"
                     id="validationCustom03"
-                    placeholder="Contoh: "
+                    placeholder="Contoh: 32750xxxxx"
                     name="nik"
                     value={state.nik}
                     onChange={handleChange}
@@ -209,7 +175,7 @@ function AddDriver() {
                     type="text"
                     class="form-control"
                     id="validationCustom03"
-                    placeholder="Contoh: "
+                    placeholder="Contoh: 123xxxxxx"
                     name="no_sim"
                     value={state.no_sim}
                     onChange={handleChange}
@@ -225,7 +191,7 @@ function AddDriver() {
                     type="text"
                     class="form-control"
                     id="validationCustom03"
-                    placeholder="Contoh: "
+                    placeholder="Contoh: 123xxxxxx"
                     name="rfid"
                     value={state.rfid}
                     onChange={handleChange}
@@ -234,38 +200,20 @@ function AddDriver() {
                 </div>
                 <div class="col-md-6">
                   <label for="validationCustom03" class="form-label">
-                    Shift
-                  </label>
-                  <select
-                    class="form-select"
-                    aria-label="Default select example"
-                    required
-                    onChange={(value) => handleChange(value)}
-                    name="shift_id">
-                    <option selected disabled>
-                      Pilih disini
-                    </option>
-                    {shifts.map((shift) => (
-                      <option value={shift.id}>{shift.id}</option>
-                    ))}
-                  </select>
-                </div>
-
-                <div class="col-md-6">
-                  <label for="validationCustom03" class="form-label">
                     Address
                   </label>
                   <input
                     type="text"
                     class="form-control"
                     id="validationCustom03"
-                    placeholder="Contoh: "
+                    placeholder="Contoh: Jakarta"
                     name="address"
                     value={state.address}
                     onChange={handleChange}
                     required
                   />
                 </div>
+
                 <div class="col-md-6">
                   <label for="validationCustom04" class="form-label">
                     Tanggal Mulai Bekerja
@@ -282,40 +230,6 @@ function AddDriver() {
                   />
                 </div>
 
-                <div class="col-md-6">
-                  <label for="validationCustom03" class="form-label">
-                    Jabatan
-                  </label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="validationCustom03"
-                    placeholder="Contoh: "
-                    name="position"
-                    value={state.position}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
-
-                <div class="col-md-6">
-                  <label for="validationCustom03" class="form-label">
-                    Level Menu
-                  </label>
-                  <select
-                    class="form-select"
-                    aria-label="Default select example"
-                    required
-                    onChange={(value) => handleChange(value)}
-                    name="level_menu">
-                    <option selected disabled>
-                      Pilih Level Menu
-                    </option>
-                    {lvlmenu_options.map((level) => (
-                      <option value={level.value}>{level.label}</option>
-                    ))}
-                  </select>
-                </div>
                 <div class="col-md-6">
                   <label for="validationCustom04" class="form-label">
                     Status
@@ -335,39 +249,24 @@ function AddDriver() {
                   </select>
                 </div>
 
-                <div class="col-md-6">
-                  <label for="validationCustom03" class="form-label">
-                    Username
-                  </label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="validationCustom03"
-                    placeholder="Contoh: "
-                    name="username"
-                    value={state.username}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
-                <div class="col-md-6">
-                  <label for="validationCustom04" class="form-label">
-                    Password
-                  </label>
-                  <input
-                    type="password"
-                    class="form-control"
-                    id="validationCustom03"
-                    placeholder="********"
-                    name="password"
-                    value={state.password}
-                    onChange={handleChange}
-                    required
-                  />
+                <div class="row g-3 pt-4">
+                  <div className="col-6 text-end mt-4">
+                    <button
+                      type="button"
+                      class="btn btn-secondary"
+                      data-bs-dismiss="modal">
+                      Tutup
+                    </button>
+                  </div>
+                  <div className="col-6 text-start mt-4">
+                    <button class="btn btn-success" type="submit">
+                      Submit
+                    </button>
+                  </div>
                 </div>
               </form>
             </div>
-            <div class="modal-footer d-flex flex-row justify-content-center">
+            {/* <div class="modal-footer d-flex flex-row justify-content-center">
               <button
                 type="button"
                 class="btn btn-secondary"
@@ -381,7 +280,7 @@ function AddDriver() {
                 onClick={handleSubmit}>
                 Submit
               </button>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

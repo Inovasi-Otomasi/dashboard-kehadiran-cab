@@ -1,6 +1,7 @@
 import React from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import secureLocalStorage from "react-secure-storage";
+import Error from "../pages/Error";
 
 const AdminRoutes = () => {
   const navigate = useNavigate();
@@ -10,7 +11,7 @@ const AdminRoutes = () => {
   if (auth === "admin") {
     return <Outlet />;
   } else {
-    navigate("/login");
+    return <Error />;
   }
 };
 

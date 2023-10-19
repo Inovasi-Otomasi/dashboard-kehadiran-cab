@@ -43,14 +43,14 @@ const Sidebar = () => {
                 </NavLink>
 
                 <NavLink
-                  to="/shift"
+                  to="/log-absen"
                   className="nav-link"
                   style={{ textDecoration: "none" }}>
                   <i className="fa-solid fa-clock nav-link-icon"></i>
                   <span
                     className="nav-link-name"
                     style={{ marginLeft: "1.3rem" }}>
-                    Shifts
+                    Log Absen
                   </span>
                 </NavLink>
                 <NavLink
@@ -58,7 +58,11 @@ const Sidebar = () => {
                   className="nav-link"
                   style={{ textDecoration: "none" }}>
                   <i className="fa-solid fa-users nav-link-icon"></i>
-                  <span className="nav-link-name">Drivers</span>
+                  <span
+                    className="nav-link-name"
+                    style={{ marginLeft: "1.1rem" }}>
+                    Drivers
+                  </span>
                 </NavLink>
                 <NavLink
                   to="/location"

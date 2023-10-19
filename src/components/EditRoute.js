@@ -105,8 +105,8 @@ function EditRoute() {
       setCoordinates([]);
       Swal.fire({
         icon: "success",
-        title: "Edit Data Rute",
-        text: "Sukses mengedit rute!",
+        title: "Edit Data Trayek",
+        text: "Sukses mengedit trayek!",
       });
       setTimeout(function () {
         navigate("/location");
@@ -114,8 +114,8 @@ function EditRoute() {
     } catch (error) {
       Swal.fire({
         icon: "error",
-        title: "Edit Data Rute",
-        text: "Gagal mengedit rute!",
+        title: "Edit Data Trayek",
+        text: "Gagal mengedit trayek!",
       });
     }
   };
@@ -138,7 +138,7 @@ function EditRoute() {
       <Helmet>
         <title>Data Absensi CAB | Edit Rute</title>
       </Helmet>
-      <form class="row g-3 needs-validation" novalidate autoComplete="off">
+      <form class="row g-3 needs-validation" autoComplete="off">
         <h1>Edit Data</h1>
         <div class="col-md-6">
           <label for="validationCustom01" class="form-label">

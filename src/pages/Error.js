@@ -16,7 +16,7 @@ function Error() {
         </p>
         <p class="lead">Halaman yang kau cari tidak ada.</p>
         <Link to="/" className="btn btn-primary">
-          Back to Dashboard
+          Back to Login or Dashboard
         </Link>
       </div>
     </div>

@@ -5,6 +5,7 @@ import axios from "../api/axios";
 import { useState, useEffect } from "react";
 import { Modal, Button, Col, Container, Row } from "react-bootstrap";
 import TrayekMap from "./TrayekMap";
+import delamenta from "../api/delamenta";
 
 function TrayekPie() {
   const [show, setShow] = useState(false);
@@ -16,6 +17,8 @@ function TrayekPie() {
 
   const [coordinates, setCoordinates] = useState([]);
   const [trayek, setTrayek] = useState([]);
+
+  const [delamentaDt, setDelamentaDt] = useState([]);
   const [modalData, setModaldata] = useState({
     id: null,
     number: null,
@@ -57,20 +60,36 @@ function TrayekPie() {
     }
   };
 
-  const getTrayekbyId = async (id) => {
+  const getTrayekDelamenta = async () => {
     try {
-      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-      await axios.get(`/1.0.0/routes/${id}`).then((res) => {
-        setModaldata(res);
-      });
+      axios.defaults.headers.common["Authorization"] =
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJlYWRlcjMwIiwiaWF0IjoxNjk2ODE4NTY5LCJleHAiOjE2OTc0MjMzNjl9.eaKyfOsqgAGYx4e0wW4nT_IYxupQWvT2BvUZrB4alzs";
+      axios.defaults.headers.common["Access-Control-Allow-Origin"] = "*";
+      await delamenta
+        .get("/table?startDate=2023-09-01&endDate=2023-09-11")
+        .then((res) => {
+          setDelamentaDt(res.data);
+        });
     } catch (error) {
       console.log(error);
     }
   };
 
+  // const getTrayekbyId = async (id) => {
+  //   try {
+  //     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+  //     await axios.get(`/1.0.0/routes/${id}`).then((res) => {
+  //       setModaldata(res);
+  //     });
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+
   useEffect(() => {
     getCoordinates();
     getTrayek();
+    getTrayekDelamenta();
   }, []);
 
   const option = {
@@ -115,6 +134,8 @@ function TrayekPie() {
       },
     ],
   };
+
+  console.log(delamentaDt);
   return (
     <>
       <EChartsReact
