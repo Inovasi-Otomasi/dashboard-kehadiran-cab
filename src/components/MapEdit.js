@@ -70,7 +70,7 @@ function Map({ onMapClick, coordinates, resetCoordinates, deleteCoordinate }) {
                 lat: marker.lat,
                 lng: marker.lng,
               }}
-              onClick={deleteCoordinate}
+              // onClick={deleteCoordinate}
             />
           );
         })}

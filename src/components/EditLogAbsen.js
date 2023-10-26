@@ -10,6 +10,12 @@ function EditLogAbsen() {
 
   const [isLoaded, setIsLoaded] = useState(false);
 
+  const remark_options = [
+    { value: "Masuk", label: "Masuk" },
+    { value: "Alpha", label: "Alpha" },
+    { value: "Cuti", label: "Cuti" },
+  ];
+
   const [state, setState] = useState({
     name: "",
     date: "",
@@ -60,7 +66,7 @@ function EditLogAbsen() {
     };
 
     try {
-      const response = await axios.put(`/1.0.0/shifts/${id}`, logData);
+      await axios.put(`/1.0.0/shifts/${id}`, logData);
       setState({
         name: "",
         date: "",
@@ -70,8 +76,8 @@ function EditLogAbsen() {
       });
       Swal.fire({
         icon: "success",
-        title: "Edit Data Driver",
-        text: "Sukses mengedit driver!",
+        title: "Edit Data Log Absen",
+        text: "Sukses mengedit log absen!",
       });
       setTimeout(function () {
         navigate("/driver");
@@ -79,8 +85,8 @@ function EditLogAbsen() {
     } catch (error) {
       Swal.fire({
         icon: "error",
-        title: "Edit Data Driver",
-        text: "Gagal menambahkan driver!",
+        title: "Edit Data Log Absen",
+        text: "Gagal mengedit log absen!",
       });
     }
   };
@@ -91,7 +97,10 @@ function EditLogAbsen() {
         <title>Data Absensi CAB | Edit Log Absen</title>
       </Helmet>
 
-      <form className="row g-3 needs-validation" autoComplete="off">
+      <form
+        className="row g-3 needs-validation"
+        autoComplete="off"
+        onSubmit={handleSubmit}>
         <h1>Edit Data</h1>
 
         <div class="col-md-6">
@@ -164,15 +173,21 @@ function EditLogAbsen() {
           <label for="validationRemark" class="form-label">
             Remark
           </label>
-          <textarea
-            rows="3"
-            class="form-control"
+          <select
+            class="form-select"
+            aria-label="Default select example"
             id="validationRemark"
-            placeholder="Masuk"
-            name="remark"
+            required
+            onChange={(value) => handleChange(value)}
             value={state.remark}
-            onChange={handleChange}
-            required></textarea>
+            name="remark">
+            <option selected disabled>
+              Pilih Remark
+            </option>
+            {remark_options.map((remark) => (
+              <option value={remark.value}>{remark.label}</option>
+            ))}
+          </select>
         </div>
 
         <div class="row g-3 pt-4">

@@ -106,7 +106,7 @@ function EditDriver() {
       Swal.fire({
         icon: "error",
         title: "Edit Data Driver",
-        text: "Gagal menambahkan driver!",
+        text: "Gagal mengedit driver!",
       });
     }
   };

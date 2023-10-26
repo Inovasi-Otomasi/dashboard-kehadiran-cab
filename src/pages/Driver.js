@@ -39,15 +39,20 @@ function Driver() {
   // const [isLoading, setIsLoading] = useState(false);
 
   const columns = [
-    { name: "ID", selector: (row) => row[0], sortable: true },
-    { name: "Nomor", selector: (row) => row[1], sortable: true },
-    { name: "Nama", selector: (row) => row[2], sortable: true },
-    { name: "NIK", selector: (row) => row[3], sortable: true },
-    { name: "SIM", selector: (row) => row[4], sortable: true },
-    { name: "RFID", selector: (row) => row[5], sortable: true },
-    { name: "Alamat", selector: (row) => row[6], sortable: true },
-    { name: "Tanggal Masuk", selector: (row) => row[7], sortable: true },
-    { name: "Status", selector: (row) => row[8], sortable: true },
+    { name: "ID", selector: (row) => row[0], sortable: true, wrap: true },
+    { name: "Nomor", selector: (row) => row[1], sortable: true, wrap: true },
+    { name: "Nama", selector: (row) => row[2], sortable: true, wrap: true },
+    { name: "NIK", selector: (row) => row[3], sortable: true, wrap: true },
+    { name: "SIM", selector: (row) => row[4], sortable: true, wrap: true },
+    { name: "RFID", selector: (row) => row[5], sortable: true, wrap: true },
+    { name: "Alamat", selector: (row) => row[6], sortable: true, wrap: true },
+    {
+      name: "Tanggal Masuk",
+      selector: (row) => row[7],
+      sortable: true,
+      wrap: true,
+    },
+    { name: "Status", selector: (row) => row[8], sortable: true, wrap: true },
     {
       name: "Detail",
       cell: (row) => (
@@ -217,6 +222,10 @@ function Driver() {
           excelData={driversExcel}
           fileName={"Laporan Data Driver"}
         />
+      </div>
+      <div className="d-flex flex-row justify-content-between pb-4">
+        {/* <ExportExcel excelData={logsExcel} fileName={"Laporan Log Absen"} /> */}
+        <button className="btn btn-primary">Sync Delamenta</button>
       </div>
       {renderTable}
     </div>

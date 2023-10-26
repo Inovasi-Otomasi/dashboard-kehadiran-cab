@@ -38,11 +38,11 @@ function Location() {
   bodyFormData.append("columns[0][search][value]", "");
 
   const columns = [
-    { name: "ID", selector: (row) => row[0], sortable: true },
-    { name: "Nomor", selector: (row) => row[1], sortable: true },
-    { name: "Kode", selector: (row) => row[2], sortable: true },
-    { name: "Awal", selector: (row) => row[3], sortable: true },
-    { name: "Akhir", selector: (row) => row[4], sortable: true },
+    { name: "ID", selector: (row) => row[0], sortable: true, wrap: true },
+    { name: "Nomor", selector: (row) => row[1], sortable: true, wrap: true },
+    { name: "Kode", selector: (row) => row[2], sortable: true, wrap: true },
+    { name: "Awal", selector: (row) => row[3], sortable: true, wrap: true },
+    { name: "Akhir", selector: (row) => row[4], sortable: true, wrap: true },
     {
       name: "Edit",
       cell: (row) => (
@@ -202,6 +202,10 @@ function Location() {
           excelData={routesExcel}
           fileName={"Laporan Data Rute Trayek"}
         />
+      </div>
+      <div className="d-flex flex-row justify-content-between pb-4">
+        {/* <ExportExcel excelData={logsExcel} fileName={"Laporan Log Absen"} /> */}
+        <button className="btn btn-primary">Sync Delamenta</button>
       </div>
       {renderTable}
     </div>

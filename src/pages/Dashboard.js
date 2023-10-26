@@ -6,6 +6,7 @@ import PendapatanGraph from "../components/PendapatanGraph";
 import KaryawanTable from "../components/KaryawanTable";
 import { DatePicker } from "antd";
 import { Helmet } from "react-helmet";
+import TestChart from "../components/TestChart";
 
 const { RangePicker } = DatePicker;
 
@@ -57,6 +58,7 @@ function Dashboard() {
         <TrayekPie />
         <AbsenPie />
       </div>
+      {/* <TestChart /> */}
       <PendapatanGraph />
       <KaryawanTable />
     </div>

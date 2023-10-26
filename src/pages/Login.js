@@ -6,6 +6,7 @@ import secureLocalStorage from "react-secure-storage";
 import Swal from "sweetalert2";
 import { Helmet } from "react-helmet";
 import logo from "../assets/logo.png";
+import LoginDelamenta from "../components/LoginDelamenta";
 
 const login_URL = "/login";
 
@@ -120,6 +121,7 @@ function Login() {
         <button type="submit" className="btn btn-success">
           Submit
         </button>
+        {/* <LoginDelamenta /> */}
       </form>
     </div>
   );

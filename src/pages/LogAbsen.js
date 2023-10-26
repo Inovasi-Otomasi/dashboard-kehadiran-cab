@@ -5,6 +5,9 @@ import axios from "../api/axios";
 import Swal from "sweetalert2";
 import { Helmet } from "react-helmet";
 import ExportExcel from "../components/ExcelExport";
+import { DatePicker } from "antd";
+
+const { RangePicker } = DatePicker;
 
 const GET_URL = "/1.0.0/shifts_datatables";
 
@@ -20,6 +23,17 @@ function LogAbsen() {
   const [dir, setDir] = useState("desc");
   const countPerPage = 10;
 
+  const date = new Date();
+
+  let currentDay = String(date.getDate()).padStart(2, "0");
+  let currentMonth = String(date.getMonth() + 1).padStart(2, "0");
+  let currentYear = date.getFullYear();
+
+  let currentDate = `${currentYear}-${currentMonth}-${currentDay}`;
+
+  const [startDate, setStartDate] = useState("2023-08-30");
+  const [endDate, setEndDate] = useState(currentDate);
+
   const [logAbsen, setLogAbsen] = useState([]);
   const [filterLog, setFilterLog] = useState("");
   const [logsExcel, setLogsExcel] = useState([]);
@@ -32,15 +46,17 @@ function LogAbsen() {
   bodyFormData.append("order[0][dir]", dir);
   bodyFormData.append("start", start);
   bodyFormData.append("search[value]", filterLog);
-  bodyFormData.append("columns[0][search][value]", "");
+  // bodyFormData.append("columns[0][search][value]", "");
+  bodyFormData.append("start_date", startDate);
+  bodyFormData.append("end_date", endDate);
 
   const columns = [
-    { name: "ID", selector: (row) => row[0], sortable: true },
-    { name: "Nama", selector: (row) => row[1], sortable: true },
-    { name: "Tanggal", selector: (row) => row[2], sortable: true },
-    { name: "Tap-In", selector: (row) => row[3], sortable: true },
-    { name: "Tap-Out", selector: (row) => row[4], sortable: true },
-    { name: "Remark", selector: (row) => row[5], sortable: true },
+    { name: "ID", selector: (row) => row[0], sortable: true, wrap: true },
+    { name: "Nama", selector: (row) => row[1], sortable: true, wrap: true },
+    { name: "Tanggal", selector: (row) => row[2], sortable: true, wrap: true },
+    { name: "Tap-In", selector: (row) => row[3], sortable: true, wrap: true },
+    { name: "Tap-Out", selector: (row) => row[4], sortable: true, wrap: true },
+    { name: "Remark", selector: (row) => row[5], sortable: true, wrap: true },
     {
       name: "Edit",
       cell: (row) => (
@@ -60,6 +76,7 @@ function LogAbsen() {
   };
 
   const handleFilter = (e) => {
+    setSortColumn(1);
     setPage(1);
     setStart(0);
     setFilterLog(e.target.value);
@@ -80,6 +97,40 @@ function LogAbsen() {
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const resetData = async () => {
+    window.location.reload();
+  };
+
+  const getDataByRange = async () => {
+    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    try {
+      await axios({
+        method: "post",
+        url: GET_URL,
+        data: bodyFormData,
+        headers: { "Content-Type": "multipart/form-data" },
+      }).then((response) => {
+        setLogAbsen(response.data);
+        Swal.fire({
+          icon: "success",
+          title: "Load Data Issue",
+          text: `Range dari ${startDate} hingga ${endDate} `,
+        });
+      });
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Load Data Issue",
+        text: "Gagal mengload data",
+      });
+    }
+  };
+
+  const handleChangeDebut = (range) => {
+    setStartDate(range[0].format("YYYY-MM-DD"));
+    setEndDate(range[1].format("YYYY-MM-DD"));
   };
 
   const getExcel = async () => {
@@ -150,8 +201,24 @@ function LogAbsen() {
       </Helmet>
       <h1>Data Log Absen CAB</h1>
       <hr />
+      <div className="d-flex justify-content-between my-4">
+        <div>
+          <span>Pilih range data: </span>
+          <RangePicker onChange={handleChangeDebut} />
+        </div>
+        <div>
+          <button className="btn btn-success btn-sm" onClick={getDataByRange}>
+            Set Range
+          </button>
+          <span> </span>
+          <button className="btn btn-danger btn-sm" onClick={resetData}>
+            Reset
+          </button>
+        </div>
+      </div>
       <div className="d-flex flex-row justify-content-between pb-4">
         <ExportExcel excelData={logsExcel} fileName={"Laporan Log Absen"} />
+        <button className="btn btn-primary">Sync Delamenta</button>
       </div>
       {renderTable}
     </div>

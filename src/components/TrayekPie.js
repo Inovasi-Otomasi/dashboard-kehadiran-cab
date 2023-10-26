@@ -6,9 +6,12 @@ import { useState, useEffect } from "react";
 import { Modal, Button, Col, Container, Row } from "react-bootstrap";
 import TrayekMap from "./TrayekMap";
 import delamenta from "../api/delamenta";
+import { useNavigate } from "react-router-dom";
 
 function TrayekPie() {
   const [show, setShow] = useState(false);
+
+  const navigate = useNavigate();
 
   const token = localStorage.getItem("token");
 
@@ -19,13 +22,18 @@ function TrayekPie() {
   const [trayek, setTrayek] = useState([]);
 
   const [delamentaDt, setDelamentaDt] = useState([]);
-  const [modalData, setModaldata] = useState({
-    id: null,
-    number: null,
-    code: "",
-    start_point: "",
-    end_point: "",
-  });
+  // const [modalData, setModaldata] = useState({
+  //   id: null,
+  //   number: null,
+  //   code: "",
+  //   start_point: "",
+  //   end_point: "",
+  // });
+
+  const [chartData, setChartData] = useState({});
+
+  const [trayekCode, setTrayekCode] = useState([]);
+  const [trayekNumber, setTrayekNumber] = useState([]);
 
   const [showTrayek, setShowTrayek] = useState(false);
 
@@ -53,7 +61,6 @@ function TrayekPie() {
       await axios.get("1.0.0/routes/").then((res) => {
         setTrayek(res.data);
         console.log(res.data);
-        console.log(trayek);
       });
     } catch (error) {
       console.log(error);
@@ -63,7 +70,7 @@ function TrayekPie() {
   const getTrayekDelamenta = async () => {
     try {
       axios.defaults.headers.common["Authorization"] =
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJlYWRlcjMwIiwiaWF0IjoxNjk2ODE4NTY5LCJleHAiOjE2OTc0MjMzNjl9.eaKyfOsqgAGYx4e0wW4nT_IYxupQWvT2BvUZrB4alzs";
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJlYWRlcjMwIiwiaWF0IjoxNjk3NzY2NTAzLCJleHAiOjE2OTgzNzEzMDN9.iputdp5dBErsLeXfXQd8tup52p-0ERIfoc8QsTfrtiM";
       axios.defaults.headers.common["Access-Control-Allow-Origin"] = "*";
       await delamenta
         .get("/table?startDate=2023-09-01&endDate=2023-09-11")
@@ -89,17 +96,18 @@ function TrayekPie() {
   useEffect(() => {
     getCoordinates();
     getTrayek();
-    getTrayekDelamenta();
+    // getTrayekDelamenta();
   }, []);
 
   const option = {
     title: {
       text: "Performa Trayek",
       subtext: "Dalam Rp. X.000.000",
-      left: "center",
+      x: "center",
     },
     tooltip: {
       trigger: "item",
+      formatter: "{a} <br/>{b} : {c} ({d}%)",
     },
     legend: {
       orient: "vertical",
@@ -143,7 +151,6 @@ function TrayekPie() {
         style={{ height: 500, width: "100%" }}
         onEvents={onEvents}
       />
-
       {/* Modal KODE CAB TRAYEK */}
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
@@ -153,9 +160,10 @@ function TrayekPie() {
           <Container className="py-2 text-center">
             <Row>
               {trayek.map((tryk) => (
-                <Col md={6}>
+                <Col md={6} style={{ marginBottom: "1rem" }}>
                   <Button
                     variant="dark"
+                    // onClick={navigate(`/location/details/${tryk.id}`)}
                     onClick={handleShowTrayek}
                     key={tryk.id}>
                     {tryk.code}
@@ -171,11 +179,10 @@ function TrayekPie() {
           </Button>
         </Modal.Footer>
       </Modal>
-
-      {/* Modal Detail CAB */}
+      Modal Detail CAB
       <Modal show={showTrayek} onHide={handleCloseTrayek}>
         <Modal.Header closeButton>
-          <Modal.Title>Detail Trayek A</Modal.Title>
+          <Modal.Title>Detail Trayek</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Container className="container-fluid py-2">
@@ -183,22 +190,22 @@ function TrayekPie() {
             <h3 className="text-md-center">Trayek A</h3>
             <Row className="py-1 text-center">
               <Col md={6}>
-                <label>Awal Trayek</label>
-                <h5>Depok</h5>
+                <label>Trayek</label>
+                <h5>Contoh: Depok-Jakarta</h5>
               </Col>
               <Col md={6}>
-                <label>Akhir Trayek</label>
-                <h5>FX Sudirman</h5>
+                <label>Unit</label>
+                <h5>Contoh: B 4204 DB</h5>
               </Col>
             </Row>
             <Row className="py-1 text-center">
               <Col md={6}>
-                <label>Pendapatan</label>
-                <h5>Rp. 50.000.000</h5>
+                <label>Total Pendapatan</label>
+                <h5>Contoh: Rp. 50.000.000</h5>
               </Col>
               <Col md={6}>
-                <label>Performansi</label>
-                <h5>Sangat Baik</h5>
+                <label>Total Transaksi</label>
+                <h5>Contoh: 30</h5>
               </Col>
             </Row>
           </Container>

@@ -26,13 +26,12 @@ function AddDriver() {
   const [state, setState] = useState({
     number: null,
     name: "",
-    nik: null,
-    no_sim: null,
+    nik: "",
+    no_sim: "",
     rfid: "",
     address: "",
     start_working: "",
-
-    status: "Aktif",
+    status: "",
   });
 
   const handleChange = (e) => {
@@ -46,14 +45,13 @@ function AddDriver() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const driverData = {
-      number: state.number,
+      number: parseInt(state.number),
       name: state.name,
       nik: state.nik,
       no_sim: state.no_sim,
       rfid: state.rfid,
       address: state.address,
       start_working: state.start_working,
-
       status: state.status,
     };
     try {
@@ -67,7 +65,6 @@ function AddDriver() {
         rfid: "",
         address: "",
         start_working: "",
-
         status: "",
       });
       Swal.fire({
@@ -79,6 +76,7 @@ function AddDriver() {
         window.location.reload();
       }, 500);
     } catch (error) {
+      console.log(error);
       Swal.fire({
         icon: "error",
         title: "Menambahkan Data Driver",

@@ -20,6 +20,7 @@ import Footer from "./components/Footer";
 import User from "./components/User";
 import LogAbsen from "./pages/LogAbsen";
 import EditLogAbsen from "./components/EditLogAbsen";
+import TrayekDetail from "./components/TrayekDetail";
 
 function App() {
   return (
@@ -50,6 +51,11 @@ function App() {
               />
               <Route exact path="/location" element={<Location />} />
               <Route exact path="location/edit/:id" element={<EditRoute />} />
+              <Route
+                exact
+                path="/location/details/:id"
+                element={<TrayekDetail />}
+              />
               <Route exact path="/logout" element={<Logout />} />
             </Route>
 
