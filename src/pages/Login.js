@@ -121,7 +121,7 @@ function Login() {
         <button type="submit" className="btn btn-success">
           Submit
         </button>
-        {/* <LoginDelamenta /> */}
+        <LoginDelamenta />
       </form>
     </div>
   );

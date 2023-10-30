@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import TrayekMap from "./TrayekMap";
+import Map from "./TrayekMap";
 
 import axios from "../api/axios";
 import { Helmet } from "react-helmet";
@@ -52,10 +52,6 @@ function TrayekDetail() {
   };
 
   useEffect(() => {
-    if (!localStorage.getItem("token")) {
-      navigate("/");
-    }
-
     if (!isLoaded) {
       getCoordinates();
       getData();
@@ -70,7 +66,7 @@ function TrayekDetail() {
         <title>Data Absensi CAB | Detail Trayek</title>
       </Helmet>
       <h1 className="text-center mb-4">Detail Trayek {id}</h1>
-      <TrayekMap coordinates={coordinates} />
+      <Map coordinates={coordinates} />
       <div className="row g-3 text-center">
         <div className="col-md-6">
           <label>Kode Trayek</label>

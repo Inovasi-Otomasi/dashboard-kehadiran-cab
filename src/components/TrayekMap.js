@@ -61,35 +61,36 @@ function Map({ coordinates }) {
     if (coordinates.length > 0) {
       setLoaded(true);
     }
-    console.log();
 
     calculateRoute(coordinates);
   }, [coordinates, loaded]);
 
-  return isLoaded ? (
-    <div className="container-fluid">
-      <GoogleMap
-        center={center}
-        zoom={10}
-        mapContainerStyle={{
-          width: "100%",
-          height: "400px",
-          marginBottom: "2rem",
-        }}
-        options={{
-          zoomControl: true,
-          streetViewControl: false,
-          mapTypeControl: true,
-          fullscreenControl: false,
-        }}
-        onLoad={(map) => setMap(map)}>
-        {directionsResponse && (
-          <DirectionsRenderer directions={directionsResponse} />
-        )}
-      </GoogleMap>
-    </div>
-  ) : (
-    <></>
+  return (
+    <>
+      {loaded === true && (
+        <div className="container-fluid">
+          <GoogleMap
+            center={center}
+            zoom={10}
+            mapContainerStyle={{
+              width: "100%",
+              height: "400px",
+              marginBottom: "2rem",
+            }}
+            options={{
+              zoomControl: true,
+              streetViewControl: false,
+              mapTypeControl: true,
+              fullscreenControl: false,
+            }}
+            onLoad={(map) => setMap(map)}>
+            {directionsResponse && (
+              <DirectionsRenderer directions={directionsResponse} />
+            )}
+          </GoogleMap>
+        </div>
+      )}
+    </>
   );
 }
 

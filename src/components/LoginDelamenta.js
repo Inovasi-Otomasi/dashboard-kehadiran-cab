@@ -3,38 +3,40 @@ import axios from "axios";
 import Swal from "sweetalert2";
 
 function LoginDelamenta() {
-  const testURL = "http://38.47.76.208:3006/api/users/login";
-  const myInit = {
-    email: "reader30",
-    password: "AdminDb1407!",
-    method: "POST",
-    mode: "no-cors",
-  };
+  // const testURL = "http://38.47.76.208:3006/api/users/login";
+  // const myInit = {
+  //   email: "reader30",
+  //   password: "AdminDb1407!",
+  //   method: "POST",
+  //   mode: "no-cors",
+  // };
 
-  const myRequest = new Request(testURL, myInit);
-  fetch(myRequest)
-    .then(function (response) {
-      return response;
-    })
-    .then(function (response) {
-      console.log(response);
-    })
-    .catch(function (e) {
-      console.log(e);
-    });
+  // const myRequest = new Request(testURL, myInit);
+  // fetch(myRequest)
+  //   .then(function (response) {
+  //     return response;
+  //   })
+  //   .then(function (response) {
+  //     console.log(response);
+  //   })
+  //   .catch(function (e) {
+  //     console.log(e);
+  //   });
 
   const handleLogin = async (e) => {
     e.preventDefault();
 
-    await axios("http://38.47.76.208:3006/api/users/login", {
-      email: "reader30",
-      password: "AdminDb1407!",
+    await axios("http://38.47.76.208:3007/api/users/login", {
       method: "POST",
       mode: "no-cors",
       headers: {
         "Access-Control-Allow-Origin": "*",
         Accept: "application/json",
         "Content-Type": "application/json",
+      },
+      data: {
+        username: "reader30",
+        password: "AdminDB1407!",
       },
       withCredentials: true,
       credentials: "same-origin",

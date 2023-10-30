@@ -179,7 +179,7 @@ function TrayekPie() {
           </Button>
         </Modal.Footer>
       </Modal>
-      Modal Detail CAB
+
       <Modal show={showTrayek} onHide={handleCloseTrayek}>
         <Modal.Header closeButton>
           <Modal.Title>Detail Trayek</Modal.Title>

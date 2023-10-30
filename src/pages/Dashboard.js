@@ -54,11 +54,12 @@ function Dashboard() {
         </div>
       </div>
 
-      <div className="d-md-flex flex-row justify-content-around">
-        <TrayekPie />
+      <div className="d-lg-flex flex-row justify-content-between mb-5">
+        <TestChart />
         <AbsenPie />
       </div>
       {/* <TestChart /> */}
+
       <PendapatanGraph />
       <KaryawanTable />
     </div>

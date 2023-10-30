@@ -80,7 +80,7 @@ function EditLogAbsen() {
         text: "Sukses mengedit log absen!",
       });
       setTimeout(function () {
-        navigate("/driver");
+        navigate("/log-absen");
       }, 500);
     } catch (error) {
       Swal.fire({
