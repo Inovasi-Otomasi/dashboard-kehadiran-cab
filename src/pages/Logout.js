@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "../api/axios";
+import api from "../api/axios";
 import secureLocalStorage from "react-secure-storage";
 import Swal from "sweetalert2";
 import { Helmet } from "react-helmet";
@@ -20,12 +20,13 @@ function Logout() {
   });
 
   const handleLogout = async () => {
-    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
     try {
-      await axios.post(LOGOUT_URL).then(() => {
+      await api.post(LOGOUT_URL).then(() => {
         localStorage.removeItem("token");
         secureLocalStorage.removeItem("role");
+        localStorage.removeItem("delamenta-token");
         Swal.fire({
           icon: "success",
           title: "Logout Berhasil",

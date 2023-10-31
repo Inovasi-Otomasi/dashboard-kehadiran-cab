@@ -1,6 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import axios from "../api/axios";
+import api from "../api/axios";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import secureLocalStorage from "react-secure-storage";
 import Swal from "sweetalert2";
@@ -27,7 +28,24 @@ function Login() {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      await axios
+      await axios("http://38.47.76.208:3007/api/users/login", {
+        method: "POST",
+
+        data: {
+          username: "reader30",
+          password: "AdminDb1407!",
+        },
+      })
+        .then((response) => {
+          localStorage.setItem(
+            "delamenta-token",
+            response.data.data.token.split(" ")[1]
+          );
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+      await api
         .post(
           login_URL,
           {
@@ -118,10 +136,12 @@ function Login() {
             autoComplete="off"
           />
         </div>
-        <button type="submit" className="btn btn-success">
-          Submit
-        </button>
-        <LoginDelamenta />
+        <div className="d-flex flex-row justify-content-center">
+          <button type="submit" className="btn btn-success">
+            Submit
+          </button>
+          {/* <LoginDelamenta /> */}
+        </div>
       </form>
     </div>
   );

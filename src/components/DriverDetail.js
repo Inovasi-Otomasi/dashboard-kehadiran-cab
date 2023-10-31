@@ -83,10 +83,6 @@ function DriverDetail() {
           <label>RFID</label>
           <h3>{state.rfid}</h3>
         </div>
-        <div className="col-md-6">
-          <label>ID Shift</label>
-          <h3>{state.shift_id}</h3>
-        </div>
 
         <div className="col-md-6">
           <label>Alamat</label>
@@ -97,20 +93,6 @@ function DriverDetail() {
           <h3>{state.start_working}</h3>
         </div>
 
-        <div className="col-md-6">
-          <label>Username</label>
-          <h3>{state.username}</h3>
-        </div>
-
-        <div className="col-md-6">
-          <label>Jabatan</label>
-          <h3>{state.position}</h3>
-        </div>
-
-        <div className="col-md-6">
-          <label>Level Menu</label>
-          <h3>{state.level_menu}</h3>
-        </div>
         <div className="col-md-6">
           <label>Status</label>
           <h3>{state.status}</h3>

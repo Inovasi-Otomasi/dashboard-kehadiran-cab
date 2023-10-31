@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "../api/axios";
+import api from "../api/axios";
+import axios from "axios";
 import Chart from "react-apexcharts";
 import delamenta from "../api/delamenta";
 
-const token = localStorage.getItem("token");
+const token = localStorage.getItem("delamenta-token");
 
 function TestChart() {
   const [trayekNumbers, setTrayekNumbers] = useState([]);
@@ -33,12 +34,14 @@ function TestChart() {
   useEffect(() => {
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
     axios
-      .get("/1.0.0/routes")
+      .get(
+        "http://38.47.76.208:3007/api/trayek/table?startDate=2023-09-01&endDate=2023-10-30"
+      )
       .then((response) => {
         console.log(response);
-        response.data.map((item) => {
-          numbers.push(item.number);
-          codes.push(item.id);
+        response.data.data.map((item) => {
+          numbers.push(item.total_pendapatan);
+          codes.push(item.trayek);
         });
         setTrayekNumbers(numbers);
         setTrayekCodes(codes);
@@ -46,12 +49,26 @@ function TestChart() {
       .catch((e) => {
         console.log(e);
       });
+    // axios
+    //   .get("/1.0.0/routes")
+    //   .then((response) => {
+    //     console.log(response);
+    //     response.data.map((item) => {
+    //       numbers.push(item.number);
+    //       codes.push(item.id);
+    //     });
+    //     setTrayekNumbers(numbers);
+    //     setTrayekCodes(codes);
+    //   })
+    //   .catch((e) => {
+    //     console.log(e);
+    //   });
 
     // getTrayekDelamenta();
   }, []);
 
   return (
-    <div className="card">
+    <div className="card" style={{ width: "50vw" }}>
       <div className="card-body">
         <Chart
           options={{
@@ -76,19 +93,19 @@ function TestChart() {
             chart: {
               events: {
                 dataPointSelection: (event, chartContext, config) => {
-                  // console.log(config.w.config.labels[config.dataPointIndex]);
-                  navigate(
-                    `/location/details/${
-                      config.w.config.labels[config.dataPointIndex]
-                    }`
-                  );
+                  console.log(config.w.config.labels[config.dataPointIndex]);
+                  // navigate(
+                  //   `/location/details/${
+                  //     config.w.config.labels[config.dataPointIndex]
+                  //   }`
+                  // );
                 },
               },
             },
           }}
           series={trayekNumbers}
           type="pie"
-          width={400}
+          width="100%"
           height="auto"
         />
       </div>
