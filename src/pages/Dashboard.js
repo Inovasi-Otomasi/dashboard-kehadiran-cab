@@ -56,6 +56,7 @@ function Dashboard() {
 
       <div className="d-lg-flex flex-row justify-content-between mb-5">
         <TestChart />
+        {/* <TrayekPie /> */}
         <AbsenPie />
       </div>
       {/* <TestChart /> */}

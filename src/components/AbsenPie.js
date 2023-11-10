@@ -7,10 +7,11 @@ function AbsenPie() {
   const series = [120, 30, 5];
 
   return (
-    <div className="card">
+    <div className="card" style={{ width: "100vw" }}>
       <div className="card-body">
         <Chart
           options={{
+            width: "100%",
             title: {
               text: "Absensi Driver",
             },
@@ -19,7 +20,7 @@ function AbsenPie() {
           }}
           series={series}
           type="pie"
-          width={425}
+          width="100%"
           height="auto"
         />
       </div>

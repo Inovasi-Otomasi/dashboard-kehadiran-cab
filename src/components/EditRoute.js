@@ -12,6 +12,7 @@ function EditRoute() {
   const token = localStorage.getItem("token");
 
   const [coordinates, setCoordinates] = useState([]);
+  const [zoom, setZoom] = useState(10);
 
   const [isLoaded, setIsLoaded] = useState(false);
 
@@ -42,8 +43,23 @@ function EditRoute() {
     ]);
   };
 
+  const onSelect = (lat, lng) => {
+    setCoordinates((current) => [
+      ...current,
+      {
+        lat: lat,
+        lng: lng,
+      },
+    ]);
+  };
+
   const resetCoordinates = () => {
     setCoordinates([]);
+    setZoom(10);
+    Swal.fire({
+      icon: "success",
+      title: "Berhasil reset data",
+    });
   };
 
   const getData = async () => {
@@ -69,17 +85,30 @@ function EditRoute() {
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
       await axios.get("1.0.0/routes/" + id).then((res) => {
         setCoordinates(JSON.parse(res.data.coordinates));
+        console.log(JSON.parse(res.data.coordinates));
       });
     } catch (error) {
       console.log(error);
     }
   };
 
-  const deleteCoordinates = (i, c) => {
-    let newCoordinates = coordinates;
-    newCoordinates.splice(i, 1);
-    setCoordinates(newCoordinates);
-    console.log(coordinates);
+  const deleteCoordinates = (i) => {
+    coordinates.splice(i, 1);
+    setCoordinates(coordinates);
+  };
+
+  const onMarkerDragStart = (i) => {
+    coordinates.filter((item) => item !== i);
+  };
+
+  const onMarkerDragEnd = (event) => {
+    setCoordinates((current) => [
+      ...current,
+      {
+        lat: event.latLng.lat(),
+        lng: event.latLng.lng(),
+      },
+    ]);
   };
 
   const handleSubmit = async (e) => {
@@ -204,7 +233,7 @@ function EditRoute() {
 
         <div class="col-md-12">
           <label for="validationCustom04" class="form-label">
-            Rute Complete
+            Trayek Lengkap
           </label>
           <input
             type="text"
@@ -223,6 +252,11 @@ function EditRoute() {
           resetCoordinates={resetCoordinates}
           coordinates={coordinates}
           deleteCoordinate={deleteCoordinates}
+          zoom={zoom}
+          setZoom={setZoom}
+          onSelect={onSelect}
+          onMarkerDragEnd={onMarkerDragEnd}
+          onMarkerDragStart={onMarkerDragStart}
         />
       </form>
       <div class="row g-3 pt-4">

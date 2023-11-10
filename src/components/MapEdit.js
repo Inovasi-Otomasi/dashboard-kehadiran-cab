@@ -12,6 +12,11 @@ export default function Places({
   coordinates,
   resetCoordinates,
   deleteCoordinate,
+  zoom,
+  setZoom,
+  onSelect,
+  onMarkerDragEnd,
+  onMarkerDragStart,
 }) {
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
@@ -25,31 +30,31 @@ export default function Places({
       coordinates={coordinates}
       resetCoordinates={resetCoordinates}
       deleteCoordinate={deleteCoordinate}
+      zoom={zoom}
+      setZoom={setZoom}
+      onSelect={onSelect}
+      onMarkerDragEnd={onMarkerDragEnd}
+      onMarkerDragStart={onMarkerDragStart}
     />
   );
 }
 
-function Map({ onMapClick, coordinates, resetCoordinates, deleteCoordinate }) {
+function Map({
+  onMapClick,
+  coordinates,
+  resetCoordinates,
+  deleteCoordinate,
+  onMarkerDragEnd,
+  onMarkerDragStart,
+  zoom,
+  setZoom,
+  onSelect,
+}) {
   // const center = useMemo(() => ({ lat: -6.2088, lng: 106.8456 }), []);
   const [selected, setSelected] = useState({ lat: -6.40115, lng: 106.79307 });
   const [loaded, setLoaded] = useState(false);
 
-  // const [markers, setMarkers] = useState([]);
-
-  // const onMapClick = (e) => {
-  //   setMarkers((current) => [
-  //     ...current,
-  //     {
-  //       lat: e.latLng.lat(),
-  //       lng: e.latLng.lng(),
-  //     },
-  //   ]);
-  //   console.log(e);
-  // };
-
-  // const resetMarker = () => {
-  //   setMarkers([]);
-  // };
+  // const [zoom, setZoom] = useState(10);
 
   useEffect(() => {
     // renderCoordinates(coordinates);
@@ -63,13 +68,17 @@ function Map({ onMapClick, coordinates, resetCoordinates, deleteCoordinate }) {
     // let markers = `[{"lat":-6.130250445894336,"lng":106.85315310058594},{"lat":-6.386783226010253,"lng":106.82676315307617},{"lat":-6.180406243016221,"lng":106.79178714752197}]`;
     return (
       <>
-        {coordinates.map((marker) => {
+        {coordinates.map((marker, i) => {
           return (
             <MarkerF
+              key={i}
               position={{
                 lat: marker.lat,
                 lng: marker.lng,
               }}
+              // draggable
+              // onDragStart={onMarkerDragStart(i)}
+              // onDragEnd={onMarkerDragEnd}
               // onClick={deleteCoordinate}
             />
           );
@@ -79,9 +88,9 @@ function Map({ onMapClick, coordinates, resetCoordinates, deleteCoordinate }) {
   };
   return (
     <>
-      {loaded == true && (
+      {loaded === true && (
         <GoogleMap
-          zoom={13}
+          zoom={zoom}
           center={selected}
           mapContainerClassName="map-container"
           onClick={onMapClick}
@@ -94,7 +103,11 @@ function Map({ onMapClick, coordinates, resetCoordinates, deleteCoordinate }) {
           <div className="pt-2">
             <div className="row g-3">
               <div className="col-md-8">
-                <PlacesAutocomplete setSelected={setSelected} />
+                <PlacesAutocomplete
+                  setSelected={setSelected}
+                  setZoom={setZoom}
+                  onSelect={onSelect}
+                />
               </div>
               <div className="col-md-4 btn-container">
                 <button
@@ -122,7 +135,7 @@ function Map({ onMapClick, coordinates, resetCoordinates, deleteCoordinate }) {
   );
 }
 
-const PlacesAutocomplete = ({ setSelected }) => {
+const PlacesAutocomplete = ({ setSelected, setZoom, onSelect }) => {
   const {
     ready,
     value,
@@ -148,14 +161,17 @@ const PlacesAutocomplete = ({ setSelected }) => {
       // When the user selects a place, we can replace the keyword without request data from API
       // by setting the second parameter to "false"
       setValue(description, false);
-      clearSuggestions();
+      // clearSuggestions();
 
       // Get latitude and longitude via utility functions
       getGeocode({ address: description }).then((results) => {
         const { lat, lng } = getLatLng(results[0]);
         setSelected({ lat, lng });
+        setZoom(20);
+        onSelect(lat, lng);
         console.log("📍 Coordinates: ", { lat, lng });
       });
+      clearSuggestions();
     };
 
   const renderSuggestions = () =>

@@ -11,6 +11,8 @@ function AddRoute() {
 
   const [coordinates, setCoordinates] = useState([]);
 
+  const [zoom, setZoom] = useState(10);
+
   const [state, setState] = useState({
     number: null,
     code: "",
@@ -37,9 +39,28 @@ function AddRoute() {
     ]);
   };
 
+  const onSelect = (lat, lng) => {
+    setCoordinates((current) => [
+      ...current,
+      {
+        lat: lat,
+        lng: lng,
+      },
+    ]);
+  };
+
   const resetCoordinates = () => {
     setCoordinates([]);
+    setZoom(10);
+    Swal.fire({
+      icon: "success",
+      title: "Berhasil reset data",
+    });
   };
+
+  // const deleteCoordinate = () => {
+  //   await Swal.fire()
+  // }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -177,7 +198,7 @@ function AddRoute() {
 
                 <div class="col-md-12">
                   <label for="validationCustom04" class="form-label">
-                    Trayek Complit
+                    Trayek Komplit
                   </label>
                   <input
                     type="text"
@@ -194,7 +215,10 @@ function AddRoute() {
                 <Places
                   onMapClick={onMapClick}
                   coordinates={coordinates}
+                  zoom={zoom}
+                  setZoom={setZoom}
                   resetCoordinates={resetCoordinates}
+                  onSelect={onSelect}
                 />
 
                 <div class="row g-3 pt-4">
