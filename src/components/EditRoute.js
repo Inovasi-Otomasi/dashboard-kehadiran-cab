@@ -84,8 +84,9 @@ function EditRoute() {
     try {
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
       await axios.get("1.0.0/routes/" + id).then((res) => {
-        setCoordinates(JSON.parse(res.data.coordinates));
-        console.log(JSON.parse(res.data.coordinates));
+        if (res.data.coordinates.length > 0) {
+          setCoordinates(JSON.parse(res.data.coordinates));
+        }
       });
     } catch (error) {
       console.log(error);

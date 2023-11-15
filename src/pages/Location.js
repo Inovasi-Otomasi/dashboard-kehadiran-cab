@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import DataTable, { createTheme } from "react-data-table-component";
-import axios from "../api/axios";
+import api from "../api/axios";
+import delamenta from "../api/delamenta";
 // import Spinner from "../components/Spinner";
 import AddRoute from "../components/AddRoute";
 import ExportExcel from "../components/ExcelExport";
@@ -13,6 +14,7 @@ const GET_URL = "/1.0.0/routes_datatables";
 function Location() {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
+  const dmtoken = localStorage.getItem("delamenta-token");
 
   const [isLoaded, setIsLoaded] = useState(false);
 
@@ -24,6 +26,9 @@ function Location() {
 
   // const [isLoading, setIsLoading] = useState(false);
   const [locations, setLocations] = useState([]);
+
+  const [locationsId, setLocationsId] = useState([]);
+  const [dmDataId, setDmDataId] = useState([]);
   const [filterLocations, setFilterLocations] = useState("");
   const [routesExcel, setRoutesExcel] = useState([]);
 
@@ -78,9 +83,9 @@ function Location() {
   ];
 
   const getData = async () => {
-    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
     try {
-      await axios({
+      await api({
         method: "post",
         url: GET_URL,
         data: bodyFormData,
@@ -94,10 +99,98 @@ function Location() {
     }
   };
 
-  const getExcel = async () => {
-    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+  const getDelamentaData = async (id) => {
+    let temp = [];
+    console.log(id);
+
+    delamenta.defaults.headers.common["Authorization"] = `Bearer ${dmtoken}`;
     try {
-      await axios.get("/1.0.0/routes").then((response) => {
+      await delamenta
+        .get("http://103.165.135.134:6005/api/trayek/master")
+        .then((response) => {
+          temp = response.data.data.rows;
+        });
+
+      let objData = temp.find((o) => parseInt(o.id_trayek) === id);
+      console.log(objData);
+
+      const trayekData = {
+        number: parseInt(objData.id_trayek),
+        code: objData.deskripsi,
+        complete_route: objData.trayek,
+      };
+
+      await api.post("/1.0.0/routes", trayekData);
+
+      temp = [];
+      Swal.fire({
+        icon: "success",
+        title: "Menambahkan Data Trayek",
+        text: "Sukses menambahkan Trayek!",
+      });
+      getData();
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Menambahkan Data Trayek",
+        text: "Gagal menambahkan Trayek!",
+      });
+    }
+  };
+
+  const handleSync = async () => {
+    const tempDmId = [];
+    const tempId = [];
+
+    api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    delamenta.defaults.headers.common["Authorization"] = `Bearer ${dmtoken}`;
+    Swal.fire({
+      title: "Syncing",
+      icon: "info",
+      timer: 4000,
+      timerProgressBar: true,
+    });
+    try {
+      await delamenta
+        .get("http://103.165.135.134:6005/api/trayek/master")
+        .then((response) => {
+          // setDmDataId(response.data.data.rows.trayek);
+          response.data.data.rows.forEach((element) => {
+            tempDmId.push(parseInt(element.id_trayek));
+          });
+          setDmDataId(tempDmId);
+        });
+
+      await api({
+        method: "post",
+        url: GET_URL,
+        data: bodyFormData,
+        headers: { "Content-Type": "multipart/form-data" },
+      }).then((res) => {
+        res.data.data.forEach((element) => {
+          tempId.push(element[1]);
+        });
+        setLocationsId(tempId);
+      });
+
+      let uniqueDm = tempDmId.filter((o) => tempId.indexOf(o) === -1);
+      let unique = tempId.filter((o) => tempDmId.indexOf(o) === -1);
+      console.log(uniqueDm.concat(unique));
+
+      const tempUnique = uniqueDm.concat(unique);
+
+      tempUnique.forEach((id) => {
+        getDelamentaData(id);
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const getExcel = async () => {
+    api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    try {
+      await api.get("/1.0.0/routes").then((response) => {
         setRoutesExcel(response.data);
       });
     } catch (error) {
@@ -106,7 +199,7 @@ function Location() {
   };
 
   const deleteData = async (id) => {
-    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
     await Swal.fire({
       title: "Penghapusan Data Rute",
       text: "Apakah anda yakin ingin menghapus data ini?",
@@ -118,7 +211,7 @@ function Location() {
     }).then((result) => {
       try {
         if (result.isConfirmed) {
-          axios.delete(`/1.0.0/routes/${id}`).then((response) => {
+          api.delete(`/1.0.0/routes/${id}`).then((response) => {
             Swal.fire("Terhapus!", "Data telah dihapus.", "success");
             console.log(response);
             getData();
@@ -160,6 +253,7 @@ function Location() {
     if (!isLoaded) {
       getData();
       getExcel();
+      // handleSync();
 
       setIsLoaded(true);
     }
@@ -216,7 +310,9 @@ function Location() {
       </div>
       <div className="d-flex flex-row justify-content-between pb-4">
         {/* <ExportExcel excelData={logsExcel} fileName={"Laporan Log Absen"} /> */}
-        <button className="btn btn-primary">Sync Delamenta</button>
+        <button className="btn btn-primary" onClick={handleSync}>
+          Sync Delamenta
+        </button>
       </div>
       {renderTable}
     </div>

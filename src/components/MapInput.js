@@ -87,7 +87,7 @@ function Map({
                 lat: marker.lat,
                 lng: marker.lng,
               }}
-              draggable
+              // draggable
             />
           ))}
       </GoogleMap>

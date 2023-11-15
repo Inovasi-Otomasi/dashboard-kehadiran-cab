@@ -57,80 +57,73 @@ function Map({
   // const [zoom, setZoom] = useState(10);
 
   useEffect(() => {
-    // renderCoordinates(coordinates);
-    if (coordinates.length > 0) {
-      setLoaded(true);
-    }
-  }, [coordinates, loaded]);
+    console.log(coordinates);
+  }, [coordinates]);
 
-  const renderCoordinates = (coordinates) => {
-    // console.log(JSON.parse(coordinates));
-    // let markers = `[{"lat":-6.130250445894336,"lng":106.85315310058594},{"lat":-6.386783226010253,"lng":106.82676315307617},{"lat":-6.180406243016221,"lng":106.79178714752197}]`;
-    return (
-      <>
-        {coordinates.map((marker, i) => {
-          return (
-            <MarkerF
-              key={i}
-              position={{
-                lat: marker.lat,
-                lng: marker.lng,
-              }}
-              // draggable
-              // onDragStart={onMarkerDragStart(i)}
-              // onDragEnd={onMarkerDragEnd}
-              // onClick={deleteCoordinate}
-            />
-          );
-        })}
-      </>
-    );
-  };
+  // const renderCoordinates = (coordinates) => {
+  //   return (
+  //     <>
+  //       {coordinates.map((marker, i) => {
+  //         return (
+  //           <MarkerF
+  //             key={i}
+  //             position={{
+  //               lat: marker.lat,
+  //               lng: marker.lng,
+  //             }}
+  //             // draggable
+  //             // onDragStart={onMarkerDragStart(i)}
+  //             // onDragEnd={onMarkerDragEnd}
+  //             // onClick={deleteCoordinate}
+  //           />
+  //         );
+  //       })}
+  //     </>
+  //   );
+  // };
   return (
     <>
-      {loaded === true && (
-        <GoogleMap
-          zoom={zoom}
-          center={selected}
-          mapContainerClassName="map-container"
-          onClick={onMapClick}
-          options={{
-            zoomControl: true,
-            streetViewControl: false,
-            mapTypeControl: false,
-            fullscreenControl: false,
-          }}>
-          <div className="pt-2">
-            <div className="row g-3">
-              <div className="col-md-8">
-                <PlacesAutocomplete
-                  setSelected={setSelected}
-                  setZoom={setZoom}
-                  onSelect={onSelect}
-                />
-              </div>
-              <div className="col-md-4 btn-container">
-                <button
-                  className="btn btn-danger"
-                  type="button"
-                  onClick={resetCoordinates}>
-                  Reset
-                </button>
-              </div>
+      <GoogleMap
+        zoom={zoom}
+        center={selected}
+        mapContainerClassName="map-container"
+        onClick={onMapClick}
+        options={{
+          zoomControl: true,
+          streetViewControl: false,
+          mapTypeControl: false,
+          fullscreenControl: false,
+        }}>
+        <div className="pt-2">
+          <div className="row g-3">
+            <div className="col-md-8">
+              <PlacesAutocomplete
+                setSelected={setSelected}
+                setZoom={setZoom}
+                onSelect={onSelect}
+              />
+            </div>
+            <div className="col-md-4 btn-container">
+              <button
+                className="btn btn-danger"
+                type="button"
+                onClick={resetCoordinates}>
+                Reset
+              </button>
             </div>
           </div>
-          {renderCoordinates(coordinates)}
-          {/* {
+        </div>
+        {coordinates &&
           coordinates.map((marker) => (
             <MarkerF
               position={{
                 lat: marker.lat,
                 lng: marker.lng,
               }}
+              // draggable
             />
-          ))} */}
-        </GoogleMap>
-      )}
+          ))}
+      </GoogleMap>
     </>
   );
 }
