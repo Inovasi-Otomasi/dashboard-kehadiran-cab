@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Map from "./TrayekMap";
-
+import secureLocalStorage from "react-secure-storage";
 import axios from "../api/axios";
 import { Helmet } from "react-helmet";
+import Swal from "sweetalert2";
 
 function TrayekDetail() {
   const { id } = useParams();
@@ -37,6 +38,17 @@ function TrayekDetail() {
       });
     } catch (error) {
       console.log(error);
+      localStorage.removeItem("token");
+      secureLocalStorage.removeItem("role");
+      localStorage.removeItem("delamenta-token");
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Coba login kembali",
+      });
+      setTimeout(function () {
+        window.location.reload();
+      }, 1000);
     }
   };
 
@@ -48,6 +60,17 @@ function TrayekDetail() {
       });
     } catch (error) {
       console.log(error);
+      localStorage.removeItem("token");
+      secureLocalStorage.removeItem("role");
+      localStorage.removeItem("delamenta-token");
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Coba login kembali",
+      });
+      setTimeout(function () {
+        window.location.reload();
+      }, 1000);
     }
   };
 

@@ -123,13 +123,12 @@ function AddDriver() {
                     Nomor
                   </label>
                   <input
-                    type="number"
+                    type="text"
                     class="form-control"
                     id="validationCustom01"
                     placeholder="Contoh: 123"
                     name="number"
                     value={state.number}
-                    min="0"
                     onChange={handleChange}
                     required
                   />

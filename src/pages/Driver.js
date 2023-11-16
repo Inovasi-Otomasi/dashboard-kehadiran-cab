@@ -1,18 +1,21 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import DataTable, { createTheme } from "react-data-table-component";
-import axios from "../api/axios";
+import api from "../api/axios";
+import delamenta from "../api/delamenta";
 // import Spinner from "../components/Spinner";
 import AddDriver from "../components/AddDriver";
 import ExportExcel from "../components/ExcelExport";
 import Swal from "sweetalert2";
 import { Helmet } from "react-helmet";
+import secureLocalStorage from "react-secure-storage";
 
 const GET_URL = "/1.0.0/drivers_datatables";
 
 function Driver() {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
+  const dmtoken = localStorage.getItem("delamenta-token");
 
   const [isLoaded, setIsLoaded] = useState(false);
 
@@ -101,8 +104,8 @@ function Driver() {
 
   const getData = async () => {
     try {
-      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-      await axios({
+      api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      await api({
         method: "post",
         url: GET_URL,
         data: bodyFormData,
@@ -114,13 +117,113 @@ function Driver() {
     } catch (error) {
       // setIsLoading(false);
       console.log(error);
+      localStorage.removeItem("token");
+      secureLocalStorage.removeItem("role");
+      localStorage.removeItem("delamenta-token");
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Coba login kembali",
+      });
+      setTimeout(function () {
+        window.location.reload();
+      }, 1000);
+    }
+  };
+
+  const getDelamentaData = async (id) => {
+    let temp = [];
+    console.log(id);
+
+    delamenta.defaults.headers.common["Authorization"] = `Bearer ${dmtoken}`;
+    try {
+      await delamenta.get("/driver?status=active").then((response) => {
+        temp = response.data.data;
+        console.log(response.data.data);
+      });
+
+      let objData = temp.find((o) => o.id_driver === id);
+      console.log(objData);
+
+      const driverData = {
+        number: objData.id_driver,
+        rfid: objData.nomor_kartu,
+        name: objData.nama,
+        status: "Aktif",
+      };
+
+      await api.post("/1.0.0/drivers", driverData);
+
+      temp = [];
+      Swal.fire({
+        icon: "success",
+        title: "Menambahkan Data Driver",
+        text: "Sukses menambahkan Driver!",
+      });
+      getData();
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Menambahkan Data Driver",
+        text: `Driver sudah ada atau tidak bisa ditambah! ${error}`,
+      });
+    }
+  };
+
+  const handleSync = async () => {
+    const tempDmId = [];
+    const tempId = [];
+
+    api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    delamenta.defaults.headers.common["Authorization"] = `Bearer ${dmtoken}`;
+
+    Swal.fire({
+      title: "Syncing",
+      icon: "info",
+      timer: 4000,
+      timerProgressBar: true,
+    });
+
+    try {
+      await delamenta.get("/driver?status=active").then((response) => {
+        response.data.data.forEach((element) => {
+          tempDmId.push(element.id_driver);
+        });
+      });
+
+      await api({
+        method: "post",
+        url: GET_URL,
+        data: bodyFormData,
+        headers: { "Content-Type": "multipart/form-data" },
+      }).then((res) => {
+        res.data.data.forEach((element) => {
+          tempId.push(element[1]);
+        });
+
+        let uniqueDm = tempDmId.filter((o) => tempId.indexOf(o) === -1);
+        let unique = tempId.filter((o) => tempDmId.indexOf(o) === -1);
+        console.log(uniqueDm.concat(unique));
+
+        const tempUnique = uniqueDm.concat(unique);
+
+        console.log(tempId);
+        console.log(tempDmId);
+        console.log(tempUnique);
+
+        tempUnique.forEach((id) => {
+          getDelamentaData(id);
+        });
+      });
+    } catch (e) {
+      console.log(e);
     }
   };
 
   const getExcel = async () => {
     try {
-      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-      await axios.get("/1.0.0/drivers").then((response) => {
+      api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      await api.get("/1.0.0/drivers").then((response) => {
         setDriversExcel(response.data);
       });
     } catch (error) {
@@ -129,7 +232,7 @@ function Driver() {
   };
 
   const deleteData = async (id) => {
-    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
     await Swal.fire({
       title: "Penghapusan Data Driver",
       text: "Apakah anda yakin ingin menghapus data ini?",
@@ -141,7 +244,7 @@ function Driver() {
     }).then((result) => {
       try {
         if (result.isConfirmed) {
-          axios.delete(`/1.0.0/drivers/${id}`).then((response) => {
+          api.delete(`/1.0.0/drivers/${id}`).then((response) => {
             Swal.fire("Terhapus!", "Data telah dihapus.", "success");
             console.log(response);
             getData();
@@ -225,7 +328,9 @@ function Driver() {
       </div>
       <div className="d-flex flex-row justify-content-between pb-4">
         {/* <ExportExcel excelData={logsExcel} fileName={"Laporan Log Absen"} /> */}
-        <button className="btn btn-primary">Sync Delamenta</button>
+        <button className="btn btn-primary" onClick={handleSync}>
+          Sync Delamenta
+        </button>
       </div>
       {renderTable}
     </div>

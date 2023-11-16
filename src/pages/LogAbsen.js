@@ -6,6 +6,7 @@ import Swal from "sweetalert2";
 import { Helmet } from "react-helmet";
 import ExportExcel from "../components/ExcelExport";
 import { DatePicker } from "antd";
+import secureLocalStorage from "react-secure-storage";
 
 const { RangePicker } = DatePicker;
 

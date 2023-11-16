@@ -4,6 +4,7 @@ import axios from "../api/axios";
 import Swal from "sweetalert2";
 import { Helmet } from "react-helmet";
 import Places from "./MapEdit";
+import secureLocalStorage from "react-secure-storage";
 
 function EditRoute() {
   const { id } = useParams();
@@ -77,6 +78,17 @@ function EditRoute() {
       });
     } catch (error) {
       console.log(error);
+      localStorage.removeItem("token");
+      secureLocalStorage.removeItem("role");
+      localStorage.removeItem("delamenta-token");
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Coba login kembali",
+      });
+      setTimeout(function () {
+        window.location.reload();
+      }, 1000);
     }
   };
 
@@ -183,6 +195,7 @@ function EditRoute() {
             value={state.number}
             onChange={handleChange}
             required
+            disabled
           />
         </div>
         <div class="col-md-6">

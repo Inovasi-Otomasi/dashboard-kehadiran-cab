@@ -3,6 +3,7 @@ import axios from "../api/axios";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import { Helmet } from "react-helmet";
+import secureLocalStorage from "react-secure-storage";
 
 function EditLogAbsen() {
   const navigate = useNavigate();
@@ -50,7 +51,20 @@ function EditLogAbsen() {
             remark: res.data.remark,
           });
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          console.log(err);
+          localStorage.removeItem("token");
+          secureLocalStorage.removeItem("role");
+          localStorage.removeItem("delamenta-token");
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "Coba login kembali",
+          });
+          setTimeout(function () {
+            window.location.reload();
+          }, 1000);
+        });
       setIsLoaded(true);
     }
   }, []);

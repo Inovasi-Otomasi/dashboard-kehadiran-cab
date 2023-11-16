@@ -3,6 +3,7 @@ import { useNavigate, useParams, Link } from "react-router-dom";
 import axios from "../api/axios";
 import Swal from "sweetalert2";
 import { Helmet } from "react-helmet";
+import secureLocalStorage from "react-secure-storage";
 
 function EditDriver() {
   const { id } = useParams();
@@ -39,7 +40,20 @@ function EditDriver() {
             status: res.data.status,
           })
         )
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          console.log(err);
+          localStorage.removeItem("token");
+          secureLocalStorage.removeItem("role");
+          localStorage.removeItem("delamenta-token");
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "Coba login kembali",
+          });
+          setTimeout(function () {
+            window.location.reload();
+          }, 1000);
+        });
 
       setIsLoaded(true);
     }
@@ -127,14 +141,15 @@ function EditDriver() {
             Nomor
           </label>
           <input
-            type="number"
+            type="text"
             class="form-control"
-            id="Contoh: "
+            id="Contoh: 123"
             placeholder="123456"
             name="number"
             value={state.number}
             onChange={handleChange}
             required
+            disabled
           />
         </div>
         <div class="col-md-6">
@@ -145,7 +160,7 @@ function EditDriver() {
             type="text"
             class="form-control"
             id="validationCustom02"
-            placeholder="Contoh: "
+            placeholder="Contoh: Bambang"
             name="name"
             value={state.name}
             onChange={handleChange}
@@ -161,7 +176,7 @@ function EditDriver() {
             type="text"
             class="form-control"
             id="validationCustom03"
-            placeholder="Contoh: "
+            placeholder="Contoh: 327xxxxx"
             name="nik"
             value={state.nik}
             onChange={handleChange}
@@ -176,7 +191,7 @@ function EditDriver() {
             type="text"
             class="form-control"
             id="validationCustom03"
-            placeholder="Contoh: "
+            placeholder="Contoh: 123xxxxx"
             name="no_sim"
             value={state.no_sim}
             onChange={handleChange}
@@ -192,7 +207,7 @@ function EditDriver() {
             type="text"
             class="form-control"
             id="validationCustom03"
-            placeholder="Contoh: "
+            placeholder="Contoh: 123xxxxx"
             name="rfid"
             value={state.rfid}
             onChange={handleChange}
@@ -208,7 +223,7 @@ function EditDriver() {
             type="text"
             class="form-control"
             id="validationCustom03"
-            placeholder="Contoh: "
+            placeholder="Contoh: Jakarta"
             name="address"
             value={state.address}
             onChange={handleChange}
