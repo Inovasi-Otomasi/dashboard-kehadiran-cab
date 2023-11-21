@@ -35,23 +35,41 @@ function EditRoute() {
   };
 
   const onMapClick = (e) => {
-    setCoordinates((current) => [
-      ...current,
-      {
-        lat: e.latLng.lat(),
-        lng: e.latLng.lng(),
-      },
-    ]);
+    if (coordinates === null) {
+      setCoordinates([
+        {
+          lat: e.latLng.lat(),
+          lng: e.latLng.lng(),
+        },
+      ]);
+    } else {
+      setCoordinates((current) => [
+        ...current,
+        {
+          lat: e.latLng.lat(),
+          lng: e.latLng.lng(),
+        },
+      ]);
+    }
   };
 
   const onSelect = (lat, lng) => {
-    setCoordinates((current) => [
-      ...current,
-      {
-        lat: lat,
-        lng: lng,
-      },
-    ]);
+    if (coordinates === null) {
+      setCoordinates([
+        {
+          lat: lat,
+          lng: lng,
+        },
+      ]);
+    } else {
+      setCoordinates((current) => [
+        ...current,
+        {
+          lat: lat,
+          lng: lng,
+        },
+      ]);
+    }
   };
 
   const resetCoordinates = () => {

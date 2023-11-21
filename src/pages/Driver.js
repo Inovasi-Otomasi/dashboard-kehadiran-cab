@@ -56,16 +56,16 @@ function Driver() {
       wrap: true,
     },
     { name: "Status", selector: (row) => row[8], sortable: true, wrap: true },
-    {
-      name: "Detail",
-      cell: (row) => (
-        <button
-          className="btn btn-success btn-sm"
-          onClick={() => navigate(`/driver/details/${row[0]}`)}>
-          <i className="fa fa-search-plus"></i>
-        </button>
-      ),
-    },
+    // {
+    //   name: "Detail",
+    //   cell: (row) => (
+    //     <button
+    //       className="btn btn-success btn-sm"
+    //       onClick={() => navigate(`/driver/details/${row[0]}`)}>
+    //       <i className="fa fa-search-plus"></i>
+    //     </button>
+    //   ),
+    // },
     {
       name: "Edit",
       cell: (row) => (
@@ -165,7 +165,7 @@ function Driver() {
       Swal.fire({
         icon: "error",
         title: "Menambahkan Data Driver",
-        text: `Driver sudah ada atau tidak bisa ditambah! ${error}`,
+        text: "Driver sudah ada atau tidak bisa ditambah!",
       });
     }
   };
@@ -257,6 +257,10 @@ function Driver() {
           icon: "error",
           text: error,
         });
+        localStorage.removeItem("token");
+        secureLocalStorage.removeItem("role");
+        localStorage.removeItem("delamenta-token");
+        window.location.reload(true);
       }
     });
   };

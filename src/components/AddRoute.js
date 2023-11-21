@@ -238,20 +238,6 @@ function AddRoute() {
                 </div>
               </form>
             </div>
-            {/* <div class="modal-footer d-flex flex-row justify-content-center">
-              <button
-                type="button"
-                class="btn btn-secondary"
-                data-bs-dismiss="modal">
-                Tutup
-              </button>
-              <button
-                class="btn btn-success"
-                type="submit"
-                onClick={handleSubmit}>
-                Submit
-              </button>
-            </div> */}
           </div>
         </div>
       </div>

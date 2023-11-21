@@ -97,6 +97,19 @@ function LogAbsen() {
       });
     } catch (error) {
       console.log(error);
+      // setIsLoading(false)
+      console.log(error);
+      localStorage.removeItem("token");
+      secureLocalStorage.removeItem("role");
+      localStorage.removeItem("delamenta-token");
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Coba login kembali",
+      });
+      setTimeout(function () {
+        window.location.reload();
+      }, 1000);
     }
   };
 
@@ -209,7 +222,7 @@ function LogAbsen() {
         </div>
         <div>
           <button className="btn btn-success btn-sm" onClick={getDataByRange}>
-            Set Range
+            Set
           </button>
           <span> </span>
           <button className="btn btn-danger btn-sm" onClick={resetData}>

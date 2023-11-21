@@ -193,22 +193,5 @@ const PlacesAutocomplete = ({ setSelected, setZoom, onSelect }) => {
       {/* We can use the "status" to decide whether we should display the dropdown or not */}
       {status === "OK" && <ul>{renderSuggestions()}</ul>}
     </div>
-    // <Combobox onSelect={handleSelect}>
-    //   <ComboboxInput
-    //     value={value}
-    //     onChange={(e) => setValue(e.target.value)}
-    //     disabled={!ready}
-    //     className="combobox-input"
-    //     placeholder="Search an address"
-    //   />
-    //   <ComboboxPopover>
-    //     <ComboboxList>
-    //       {status === "OK" &&
-    //         data.map(({ place_id, description }) => (
-    //           <ComboboxOption key={place_id} value={description} />
-    //         ))}
-    //     </ComboboxList>
-    //   </ComboboxPopover>
-    // </Combobox>
   );
 };

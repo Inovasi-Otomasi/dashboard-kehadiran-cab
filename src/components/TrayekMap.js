@@ -58,7 +58,7 @@ function Map({ coordinates }) {
 
   useEffect(() => {
     calculateRoute(coordinates);
-  }, []);
+  }, [coordinates]);
 
   return (
     <>
@@ -77,7 +77,8 @@ function Map({ coordinates }) {
             mapTypeControl: true,
             fullscreenControl: false,
           }}
-          onLoad={(map) => setMap(map)}>
+          // onLoad={(map) => setMap(map)}
+        >
           {directionsResponse && (
             <DirectionsRenderer directions={directionsResponse} />
           )}
