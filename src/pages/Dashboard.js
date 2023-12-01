@@ -246,7 +246,7 @@ function Dashboard() {
       {/* <TestChart /> */}
 
       <PendapatanGraph trayekDates={trayekDates} sData={sData} />
-      <KaryawanTable />
+      {/* <KaryawanTable /> */}
     </div>
   );
 }

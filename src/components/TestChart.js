@@ -15,28 +15,13 @@ function TestChart({ trayekCodes, trayekNumbers }) {
             },
             noData: { text: "Loading Data..." },
             labels: trayekCodes,
-            // responsive: [
-            //   {
-            //     breakpoint: 480,
-            //     options: {
-            //       chart: {
-            //         width: 200,
-            //       },
-            //       legend: {
-            //         position: "bottom",
-            //       },
-            //     },
-            //   },
-            // ],
+            legend: {
+              showForSingleSeries: true,
+            },
             chart: {
               events: {
                 dataPointSelection: (event, chartContext, config) => {
                   console.log(config.w.config.labels[config.dataPointIndex]);
-                  // navigate(
-                  //   `/location/details/${
-                  //     config.w.config.labels[config.dataPointIndex]
-                  //   }`
-                  // );
                 },
               },
             },

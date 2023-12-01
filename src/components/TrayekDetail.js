@@ -76,8 +76,8 @@ function TrayekDetail() {
 
   useEffect(() => {
     if (!isLoaded) {
-      getCoordinates();
       getData();
+      getCoordinates();
 
       setIsLoaded(true);
     }
@@ -100,7 +100,7 @@ function TrayekDetail() {
           <h5>{state.complete_route}</h5>
         </div>
 
-        <div className="col-md-6">
+        {/* <div className="col-md-6">
           <label>Total Pendapatan</label>
           <h5>Rp. {state.number}</h5>
         </div>
@@ -112,7 +112,7 @@ function TrayekDetail() {
         <div className="col-12">
           <label>Unit</label>
           <h5>B 4204 DB</h5>
-        </div>
+        </div> */}
 
         <div class="col-12 pt-5">
           <button

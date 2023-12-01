@@ -49,17 +49,17 @@ function Location() {
     { name: "Kode", selector: (row) => row[2], sortable: true, wrap: true },
     { name: "Awal", selector: (row) => row[3], sortable: true, wrap: true },
     { name: "Akhir", selector: (row) => row[4], sortable: true, wrap: true },
-    // {
-    //   name: "Detail",
-    //   cell: (row) => (
-    //     <button
-    //       className="btn btn-success btn-sm"
-    //       onClick={() => navigate(`/location/details/${row[0]}`)}
-    //       id={row[0]}>
-    //       <i className="fa fa-search-plus"></i>
-    //     </button>
-    //   ),
-    // },
+    {
+      name: "Detail",
+      cell: (row) => (
+        <button
+          className="btn btn-success btn-sm"
+          onClick={() => navigate(`/location/details/${row[0]}`)}
+          id={row[0]}>
+          <i className="fa fa-search-plus"></i>
+        </button>
+      ),
+    },
     {
       name: "Edit",
       cell: (row) => (

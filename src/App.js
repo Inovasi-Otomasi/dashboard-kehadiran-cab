@@ -27,6 +27,7 @@ function App() {
     <Router>
       <div className="App">
         <Sidebar />
+
         <main className="container">
           <User />
           <Routes>

@@ -18,7 +18,7 @@ function PendapatanGraph({ sData, trayekDates }) {
                 categories: trayekDates,
               },
               yaxis: {
-                title: { text: "Dalam Jutaan Rupiah" },
+                title: { text: "Dalam Rupiah" },
               },
               legend: {
                 position: "top",

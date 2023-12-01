@@ -57,7 +57,9 @@ function Map({ coordinates }) {
   }
 
   useEffect(() => {
-    calculateRoute(coordinates);
+    if (coordinates.length > 0) {
+      calculateRoute(coordinates);
+    }
   }, [coordinates]);
 
   return (
