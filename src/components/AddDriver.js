@@ -94,11 +94,6 @@ function AddDriver() {
         data-bs-target="#exampleModal">
         <i className="fa fa-plus"></i>
       </button>
-      <span
-        className="px-2"
-        style={{ fontSize: "1.1rem", fontWeight: "bolder" }}>
-        Driver
-      </span>
 
       <div
         class="modal fade"

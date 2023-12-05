@@ -7,7 +7,7 @@ function AbsenPie() {
   const series = [120, 30, 5];
 
   return (
-    <div className="card" style={{ width: "100vw" }}>
+    <div className="card">
       <div className="card-body">
         <Chart
           options={{

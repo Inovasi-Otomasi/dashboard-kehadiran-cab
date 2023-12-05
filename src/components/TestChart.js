@@ -4,7 +4,7 @@ import Chart from "react-apexcharts";
 
 function TestChart({ trayekCodes, trayekNumbers }) {
   return (
-    <div className="card" style={{ width: "100vw" }}>
+    <div className="card">
       <div className="card-body">
         <Chart
           options={{
@@ -15,16 +15,6 @@ function TestChart({ trayekCodes, trayekNumbers }) {
             },
             noData: { text: "Loading Data..." },
             labels: trayekCodes,
-            legend: {
-              showForSingleSeries: true,
-            },
-            chart: {
-              events: {
-                dataPointSelection: (event, chartContext, config) => {
-                  console.log(config.w.config.labels[config.dataPointIndex]);
-                },
-              },
-            },
           }}
           series={trayekNumbers}
           type="pie"

@@ -25,9 +25,9 @@ const ExportExcel = ({ excelData, fileName }) => {
   return (
     <>
       <button
-        className="btn btn-success"
+        className="btn btn-success shadow rounded"
         onClick={(e) => exportToExcel(fileName)}>
-        Export
+        <i className="fa fa-file-excel"></i> Export
       </button>
     </>
   );

@@ -45,7 +45,7 @@ function Location() {
 
   const columns = [
     { name: "ID", selector: (row) => row[0], sortable: true, wrap: true },
-    { name: "Nomor", selector: (row) => row[1], sortable: true, wrap: true },
+
     { name: "Kode", selector: (row) => row[2], sortable: true, wrap: true },
     { name: "Awal", selector: (row) => row[3], sortable: true, wrap: true },
     { name: "Akhir", selector: (row) => row[4], sortable: true, wrap: true },
@@ -107,7 +107,7 @@ function Location() {
         text: "Coba login kembali",
       });
       setTimeout(function () {
-        window.location.reload();
+        window.location.reload(true);
       }, 1000);
     }
   };
@@ -312,11 +312,13 @@ function Location() {
   );
 
   return (
-    <div className="py-4">
+    <div className="dashboard-wrapper">
       <Helmet>
         <title>Data Absensi CAB | Trayek</title>
       </Helmet>
-      <h1>Data Trayek CAB</h1>
+      <label className="mb-3">CAB/Trayek</label>
+
+      <h1>Trayek</h1>
       <hr />
       <div className="d-flex flex-row justify-content-between pb-4">
         <AddRoute />
@@ -327,8 +329,8 @@ function Location() {
       </div>
       <div className="d-flex flex-row justify-content-between pb-4">
         {/* <ExportExcel excelData={logsExcel} fileName={"Laporan Log Absen"} /> */}
-        <button className="btn btn-primary" onClick={handleSync}>
-          Sync Delamenta
+        <button className="btn btn-primary shadow rounded" onClick={handleSync}>
+          <i className="fa fa-refresh"></i> Sync
         </button>
       </div>
       {renderTable}

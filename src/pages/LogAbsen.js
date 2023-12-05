@@ -7,6 +7,7 @@ import { Helmet } from "react-helmet";
 import ExportExcel from "../components/ExcelExport";
 import { DatePicker } from "antd";
 import secureLocalStorage from "react-secure-storage";
+import dayjs from "dayjs";
 
 const { RangePicker } = DatePicker;
 
@@ -32,7 +33,9 @@ function LogAbsen() {
 
   let currentDate = `${currentYear}-${currentMonth}-${currentDay}`;
 
-  const [startDate, setStartDate] = useState("2023-08-30");
+  let startofMonth = `${currentYear}-${currentMonth}-01`;
+
+  const [startDate, setStartDate] = useState(startofMonth);
   const [endDate, setEndDate] = useState(currentDate);
 
   const [logAbsen, setLogAbsen] = useState([]);
@@ -108,7 +111,7 @@ function LogAbsen() {
         text: "Coba login kembali",
       });
       setTimeout(function () {
-        window.location.reload();
+        window.location.reload(true);
       }, 1000);
     }
   };
@@ -209,30 +212,39 @@ function LogAbsen() {
   );
 
   return (
-    <div className="py-4">
+    <div className="dashboard-wrapper">
       <Helmet>
         <title>Data Absensi CAB | Log Absen</title>
       </Helmet>
-      <h1>Data Log Absen CAB</h1>
+      <label className="mb-3">CAB/Log Absen</label>
+
+      <h1>Log Absen Driver</h1>
       <hr />
-      <div className="d-flex justify-content-between my-4">
+      <div className=" my-4">
         <div>
-          <span>Pilih range data: </span>
-          <RangePicker onChange={handleChangeDebut} />
-        </div>
-        <div>
-          <button className="btn btn-success btn-sm" onClick={getDataByRange}>
+          <RangePicker
+            onChange={handleChangeDebut}
+            defaultValue={[dayjs(startofMonth), dayjs(currentDate)]}
+          />
+          <span> </span>
+          <button
+            className="btn btn-success btn-sm shadow rounded"
+            onClick={getDataByRange}>
             Set
           </button>
           <span> </span>
-          <button className="btn btn-danger btn-sm" onClick={resetData}>
+          <button
+            className="btn btn-danger btn-sm shadow rounded"
+            onClick={resetData}>
             Reset
           </button>
         </div>
       </div>
       <div className="d-flex flex-row justify-content-between pb-4">
         <ExportExcel excelData={logsExcel} fileName={"Laporan Log Absen"} />
-        <button className="btn btn-primary">Sync Delamenta</button>
+        <button className="btn btn-primary shadow rounded">
+          <i className="fa fa-refresh"></i> Sync
+        </button>
       </div>
       {renderTable}
     </div>

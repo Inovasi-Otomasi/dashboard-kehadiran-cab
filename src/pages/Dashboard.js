@@ -9,6 +9,8 @@ import { DatePicker } from "antd";
 import { Helmet } from "react-helmet";
 import TestChart from "../components/TestChart";
 import delamenta from "../api/delamenta";
+import dayjs from "dayjs";
+import secureLocalStorage from "react-secure-storage";
 
 const { RangePicker } = DatePicker;
 
@@ -25,7 +27,9 @@ function Dashboard() {
 
   let currentDate = `${currentYear}-${currentMonth}-${currentDay}`;
 
-  const [startDate, setStartDate] = useState("2023-10-01");
+  let startofMonth = `${currentYear}-${currentMonth}-01`;
+
+  const [startDate, setStartDate] = useState(startofMonth);
   const [endDate, setEndDate] = useState(currentDate);
 
   // for pie
@@ -110,6 +114,17 @@ function Dashboard() {
         });
     } catch (error) {
       console.log(error);
+      localStorage.removeItem("token");
+      secureLocalStorage.removeItem("role");
+      localStorage.removeItem("delamenta-token");
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Coba login kembali",
+      });
+      setTimeout(function () {
+        window.location.reload(true);
+      }, 1000);
     }
   };
 
@@ -199,7 +214,6 @@ function Dashboard() {
   const handleChangeDebut = (range) => {
     setStartDate(range[0].format("YYYY-MM-DD"));
     setEndDate(range[1].format("YYYY-MM-DD"));
-    console.log(startDate, endDate);
   };
 
   useEffect(() => {
@@ -210,31 +224,36 @@ function Dashboard() {
   }, []);
 
   return (
-    <div className="dashboard-wrapper py-4">
+    <div className="dashboard-wrapper">
       <Helmet>
         <title>Data Absensi CAB | Dashboard</title>
       </Helmet>
-      <div className="d-md-flex flex-row justify-content-around">
-        <h1>Dashboard</h1>
-      </div>
+      <label className="mb-3">CAB/Performance</label>
 
-      <div className="d-flex justify-content-between my-5">
+      <h1>Performance</h1>
+
+      <hr />
+
+      <div className="d-flex justify-content-between my-4">
         <div>
-          <span>Pilih range data: </span>
-          <RangePicker onChange={handleChangeDebut} />
-        </div>
-        <div>
-          <button
-            className="btn btn-success btn-sm text-start"
-            onClick={getDataByRange}>
-            Set
-          </button>
-          <span> </span>
-          <button
-            className="btn btn-danger btn-sm text-end"
-            onClick={resetData}>
-            Reset
-          </button>
+          <div>
+            <RangePicker
+              onChange={handleChangeDebut}
+              defaultValue={[dayjs(startofMonth), dayjs(currentDate)]}
+            />
+            <span> </span>
+            <button
+              className="btn btn-success btn-sm shadow rounded"
+              onClick={getDataByRange}>
+              Set
+            </button>
+            <span> </span>
+            <button
+              className="btn btn-danger btn-sm shadow rounded"
+              onClick={resetData}>
+              Reset
+            </button>
+          </div>
         </div>
       </div>
 

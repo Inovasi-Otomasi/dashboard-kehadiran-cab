@@ -2,7 +2,7 @@ import React from "react";
 
 function Footer() {
   return (
-    <footer className="footer pt-3">
+    <footer className="footer py-5">
       <div className="container-fluid">
         <div className="row justify-content-around">
           <div class="col-6">

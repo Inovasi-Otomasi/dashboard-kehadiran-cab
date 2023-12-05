@@ -5,11 +5,10 @@ function User() {
   const role = secureLocalStorage.getItem("role");
 
   return (
-    <div className="d-flex justify-content-end px-5 mb-3">
+    <div className="d-flex justify-content-end">
       {role ? (
-        <div className="text-center">
-          <i class="fa-solid fa-user"></i>
-
+        <div className="d-flex flex-column">
+          <i className="fa-solid fa-user text-center"></i>
           <label>{role}</label>
         </div>
       ) : null}
