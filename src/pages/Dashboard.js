@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
-import TrayekPie from "../components/TrayekPie";
+
 import AbsenPie from "../components/AbsenPie";
 import PendapatanGraph from "../components/PendapatanGraph";
 import KaryawanTable from "../components/KaryawanTable";
@@ -40,6 +40,7 @@ function Dashboard() {
   const codes = [];
 
   const [trayekData, setTrayekData] = useState([]);
+  const [fTrayekData, setFTrayekData] = useState([]);
 
   //for line
   const [sData, setSData] = useState([]);
@@ -66,15 +67,21 @@ function Dashboard() {
 
           const tanggalSaved = {};
           const hasil = {};
+          const trak = {};
 
           for (const data of res.data.data) {
             if (!hasil.hasOwnProperty(data.trayek)) {
               hasil[data.trayek] = {};
             }
 
+            if (!trak.hasOwnProperty(data.trayek)) {
+              trak[data.trayek] = {};
+            }
+
             const tanggal = data.tanggal;
             tanggalSaved[tanggal] = true;
             hasil[data.trayek][tanggal] = data.total_pendapatan;
+            trak[data.trayek][tanggal] = data.total_transaksi;
           }
 
           const tanggalArr = Object.keys(tanggalSaved);
@@ -85,7 +92,14 @@ function Dashboard() {
             );
           }
 
+          for (const trayek in trak) {
+            trak[trayek] = tanggalArr.map(
+              (tanggal) => trak[trayek][tanggal] ?? 0
+            );
+          }
+
           const keys = Object.keys(hasil);
+          const key = Object.keys(trak);
 
           //line chart
           keys.forEach((key, index) => {
@@ -97,16 +111,16 @@ function Dashboard() {
 
           //pie chart
           keys.forEach((key, index) => {
-            trayekData.push({ name: key, data: hasil[key] });
+            trayekData.push({ value: trak[key], name: key });
           });
 
           trayekData.forEach((obj) => {
-            const sum = obj.data.reduce((acc, curr) => acc + curr, 0);
-            obj.data = sum;
+            const sum = obj.value.reduce((acc, curr) => acc + curr, 0);
+            obj.value = sum;
           });
           trayekData.forEach((obj) => {
             codes.push(obj.name);
-            numbers.push(obj.data);
+            numbers.push(obj.value);
           });
 
           setTrayekCodes(codes);
@@ -150,18 +164,26 @@ function Dashboard() {
 
           const tanggalSaved = {};
           const hasil = {};
+          const trak = {};
 
           for (const data of res.data.data) {
             if (!hasil.hasOwnProperty(data.trayek)) {
               hasil[data.trayek] = {};
             }
 
+            if (!trak.hasOwnProperty(data.trayek)) {
+              trak[data.trayek] = {};
+            }
+
             const tanggal = data.tanggal;
             tanggalSaved[tanggal] = true;
             hasil[data.trayek][tanggal] = data.total_pendapatan;
+            trak[data.trayek][tanggal] = data.total_transaksi;
           }
 
           const tanggalArr = Object.keys(tanggalSaved);
+
+          console.log(tanggalArr);
 
           for (const trayek in hasil) {
             hasil[trayek] = tanggalArr.map(
@@ -169,30 +191,43 @@ function Dashboard() {
             );
           }
 
+          for (const trayek in trak) {
+            trak[trayek] = tanggalArr.map(
+              (tanggal) => trak[trayek][tanggal] ?? 0
+            );
+          }
+
           const keys = Object.keys(hasil);
+          const key = Object.keys(trak);
+
+          console.log(keys);
+          console.log(key);
 
           //line chart
           keys.forEach((key, index) => {
             rtemp.push({ name: key, data: hasil[key] });
           });
 
+          console.log(rtemp);
+
           setSData(rtemp);
           setTrayekDates(rdates);
 
           //pie chart
           keys.forEach((key, index) => {
-            rTrayekData.push({ name: key, data: hasil[key] });
+            rTrayekData.push({ value: trak[key], name: key });
           });
 
           rTrayekData.forEach((obj) => {
-            const sum = obj.data.reduce((acc, curr) => acc + curr, 0);
-            obj.data = sum;
+            const sum = obj.value.reduce((acc, curr) => acc + curr, 0);
+            obj.value = sum;
           });
+
           rTrayekData.forEach((obj) => {
             rcodes.push(obj.name);
-            rnumbers.push(obj.data);
+            rnumbers.push(obj.value);
           });
-
+          setTrayekData(rTrayekData);
           setTrayekCodes(rcodes);
           setTrayekNumbers(rnumbers);
           Swal.fire({
@@ -257,12 +292,19 @@ function Dashboard() {
         </div>
       </div>
 
-      <div className="d-lg-flex flex-row justify-content-between mb-5">
-        <TestChart trayekCodes={trayekCodes} trayekNumbers={trayekNumbers} />
-        {/* <TrayekPie /> */}
-        <AbsenPie />
+      <div className="d-lg-flex flex-row justify-content-between gap-5 mb-5">
+        <div className="container">
+          <TestChart
+            trayekCodes={trayekCodes}
+            trayekNumbers={trayekNumbers}
+            trayekData={trayekData}
+          />
+        </div>
+
+        <div className="container">
+          <AbsenPie />
+        </div>
       </div>
-      {/* <TestChart /> */}
 
       <PendapatanGraph trayekDates={trayekDates} sData={sData} />
       {/* <KaryawanTable /> */}

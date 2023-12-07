@@ -69,7 +69,7 @@ function Driver() {
       name: "Edit",
       cell: (row) => (
         <button
-          className="btn btn-primary btn-sm"
+          className="btn btn-primary btn-sm shadow rounded"
           onClick={() => navigate(`/driver/edit/${row[0]}`)}
           id={row[0]}>
           <i className="fa fa-edit"></i>
@@ -80,7 +80,7 @@ function Driver() {
       name: "Hapus",
       cell: (row) => (
         <button
-          className="btn btn-danger btn-sm"
+          className="btn btn-danger btn-sm shadow rounded"
           onClick={() => deleteData(row[0])}>
           <i className="fa fa-trash"></i>
         </button>
@@ -324,19 +324,17 @@ function Driver() {
 
       <h1>Driver</h1>
       <hr />
-      <div className="d-flex flex-row justify-content-between pb-4">
+      <div className="d-flex flex-row gap-4 pb-4">
         <AddDriver />
+        <button className="btn btn-primary shadow rounded" onClick={handleSync}>
+          <i className="fa fa-refresh"></i> Sync
+        </button>
         <ExportExcel
           excelData={driversExcel}
           fileName={"Laporan Data Driver"}
         />
       </div>
-      <div className="d-flex flex-row justify-content-between pb-4">
-        {/* <ExportExcel excelData={logsExcel} fileName={"Laporan Log Absen"} /> */}
-        <button className="btn btn-primary shadow rounded" onClick={handleSync}>
-          <i className="fa fa-refresh"></i> Sync
-        </button>
-      </div>
+
       {renderTable}
     </div>
   );

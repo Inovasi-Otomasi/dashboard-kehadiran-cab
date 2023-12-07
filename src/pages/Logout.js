@@ -55,7 +55,9 @@ function Logout() {
         class="container d-flex flex-column align-items-center justify-content-center"
         style={{ paddingTop: "15rem" }}>
         <h1 class="fw-bold py-4">Anda Yakin mau Logout?</h1>
-        <button className="btn btn-dark" onClick={handleLogout}>
+        <button
+          className="btn btn-danger shadow rounded"
+          onClick={handleLogout}>
           Logout
         </button>
       </div>

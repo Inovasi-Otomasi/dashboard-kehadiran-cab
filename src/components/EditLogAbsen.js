@@ -106,17 +106,19 @@ function EditLogAbsen() {
   };
 
   return (
-    <div className="container-fluid text-lg-start mb-4">
+    <div>
       <Helmet>
         <title>Data Absensi CAB | Edit Log Absen</title>
       </Helmet>
+
+      <h1>Edit Data</h1>
+
+      <hr />
 
       <form
         className="row g-3 needs-validation"
         autoComplete="off"
         onSubmit={handleSubmit}>
-        <h1>Edit Data</h1>
-
         <div class="col-md-6">
           <label for="validationNama" class="form-label">
             Nama
@@ -207,11 +209,13 @@ function EditLogAbsen() {
         <div class="row g-3 pt-4">
           <div className="col-6 text-end">
             <Link to="/log-absen">
-              <button className="btn btn-secondary">Kembali</button>
+              <button className="btn btn-secondary shadow rounded">
+                Kembali
+              </button>
             </Link>
           </div>
           <div className="col-6 text-start">
-            <button class="btn btn-success" type="submit">
+            <button class="btn btn-success shadow rounded" type="submit">
               Submit
             </button>
           </div>

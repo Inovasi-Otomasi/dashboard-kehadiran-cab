@@ -269,12 +269,14 @@ function EditDriver() {
         <div class="row g-3 pt-4">
           <div className="col-6 text-end">
             <Link to="/driver">
-              <button className="btn btn-secondary">Kembali</button>
+              <button className="btn btn-secondary shadow rounded">
+                Kembali
+              </button>
             </Link>
           </div>
           <div className="col-6 text-start">
             <button
-              class="btn btn-success"
+              class="btn btn-success shadow rounded"
               type="button"
               onClick={handleSubmit}>
               Submit

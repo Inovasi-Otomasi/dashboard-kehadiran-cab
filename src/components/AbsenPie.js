@@ -4,12 +4,44 @@ import * as echarts from "echarts";
 import Chart from "react-apexcharts";
 
 function AbsenPie() {
-  const series = [120, 30, 5];
+  const option = {
+    title: {
+      text: "Absensi Driver",
+      subtext: "Fake Data",
+      left: "center",
+    },
+    tooltip: {
+      trigger: "item",
+    },
+    legend: {
+      orient: "vertical",
+      bottom: "left",
+    },
+    series: [
+      {
+        name: "Jumlah Data",
+        type: "pie",
+        radius: "50%",
+        data: [
+          { value: 120, name: "Masuk" },
+          { value: 30, name: "Alpha" },
+          { value: 5, name: "Cuti" },
+        ],
+        emphasis: {
+          itemStyle: {
+            shadowBlur: 10,
+            shadowOffsetX: 0,
+            shadowColor: "rgba(0, 0, 0, 0.5)",
+          },
+        },
+      },
+    ],
+  };
 
   return (
     <div className="card">
       <div className="card-body">
-        <Chart
+        {/* <Chart
           options={{
             width: "100%",
             title: {
@@ -22,6 +54,10 @@ function AbsenPie() {
           type="pie"
           width="100%"
           height="auto"
+        /> */}
+        <EChartsReact
+          option={option}
+          style={{ height: "500px", width: "100%" }}
         />
       </div>
     </div>

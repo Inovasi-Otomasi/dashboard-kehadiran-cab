@@ -15,7 +15,7 @@ function Error() {
           <span class="text-danger">Oops!</span> Halaman tidak ditemukan.
         </p>
         <p class="lead">Halaman yang kau cari tidak ada.</p>
-        <Link to="/" className="btn btn-primary">
+        <Link to="/" className="btn btn-primary shadow rounded">
           Back to Login or Dashboard
         </Link>
       </div>

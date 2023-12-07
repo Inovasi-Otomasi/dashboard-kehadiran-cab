@@ -116,7 +116,7 @@ function TrayekDetail() {
 
         <div class="col-12 pt-5">
           <button
-            class="btn btn-secondary"
+            class="btn btn-secondary shadow rounded"
             type="submit"
             onClick={() => navigate(-1)}>
             Kembali

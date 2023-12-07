@@ -136,7 +136,7 @@ function Login() {
           />
         </div>
         <div className="d-flex flex-row justify-content-center">
-          <button type="submit" className="btn btn-success">
+          <button type="submit" className="btn btn-success shadow rounded">
             Submit
           </button>
         </div>

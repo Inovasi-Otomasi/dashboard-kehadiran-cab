@@ -65,7 +65,7 @@ function LogAbsen() {
       name: "Edit",
       cell: (row) => (
         <button
-          className="btn btn-primary btn-sm"
+          className="btn btn-primary btn-sm shadow rounded"
           onClick={() => navigate(`/log-absen/edit/${row[0]}`)}
           id={row[0]}>
           <i className="fa fa-edit"></i>
@@ -218,9 +218,9 @@ function LogAbsen() {
       </Helmet>
       <label className="mb-3">CAB/Log Absen</label>
 
-      <h1>Log Absen Driver</h1>
+      <h1>Log Absensi Driver</h1>
       <hr />
-      <div className=" my-4">
+      <div className="d-flex flex-row gap-4 my-4">
         <div>
           <RangePicker
             onChange={handleChangeDebut}
@@ -239,13 +239,12 @@ function LogAbsen() {
             Reset
           </button>
         </div>
-      </div>
-      <div className="d-flex flex-row justify-content-between pb-4">
-        <ExportExcel excelData={logsExcel} fileName={"Laporan Log Absen"} />
         <button className="btn btn-primary shadow rounded">
           <i className="fa fa-refresh"></i> Sync
         </button>
+        <ExportExcel excelData={logsExcel} fileName={"Laporan Log Absen"} />
       </div>
+
       {renderTable}
     </div>
   );

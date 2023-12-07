@@ -28,7 +28,7 @@ function App() {
       <div className="App">
         <Sidebar />
 
-        <main className="container">
+        <main className="container-fluid">
           <User />
           <Routes>
             <Route exact path="/" element={<Login />} />

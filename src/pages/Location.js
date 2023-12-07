@@ -53,7 +53,7 @@ function Location() {
       name: "Detail",
       cell: (row) => (
         <button
-          className="btn btn-success btn-sm"
+          className="btn btn-success btn-sm shadow rounded"
           onClick={() => navigate(`/location/details/${row[0]}`)}
           id={row[0]}>
           <i className="fa fa-search-plus"></i>
@@ -64,7 +64,7 @@ function Location() {
       name: "Edit",
       cell: (row) => (
         <button
-          className="btn btn-primary btn-sm"
+          className="btn btn-primary btn-sm shadow rounded"
           onClick={() => navigate(`/location/edit/${row[0]}`)}
           id={row[0]}>
           <i className="fa fa-edit"></i>
@@ -320,19 +320,17 @@ function Location() {
 
       <h1>Trayek</h1>
       <hr />
-      <div className="d-flex flex-row justify-content-between pb-4">
+      <div className="d-flex flex-row gap-4 pb-4">
         <AddRoute />
+        <button className="btn btn-primary shadow rounded" onClick={handleSync}>
+          <i className="fa fa-refresh"></i> Sync
+        </button>
         <ExportExcel
           excelData={routesExcel}
           fileName={"Laporan Data Rute Trayek"}
         />
       </div>
-      <div className="d-flex flex-row justify-content-between pb-4">
-        {/* <ExportExcel excelData={logsExcel} fileName={"Laporan Log Absen"} /> */}
-        <button className="btn btn-primary shadow rounded" onClick={handleSync}>
-          <i className="fa fa-refresh"></i> Sync
-        </button>
-      </div>
+
       {renderTable}
     </div>
   );

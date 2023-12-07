@@ -92,7 +92,7 @@ function AddDriver() {
         className="btn btn-primary shadow rounded"
         data-bs-toggle="modal"
         data-bs-target="#exampleModal">
-        <i className="fa fa-plus"></i>
+        <i className="fa fa-plus"></i> Driver
       </button>
 
       <div
@@ -245,13 +245,15 @@ function AddDriver() {
                   <div className="col-6 text-end mt-4">
                     <button
                       type="button"
-                      class="btn btn-secondary"
+                      class="btn btn-secondary shadow rounded"
                       data-bs-dismiss="modal">
                       Tutup
                     </button>
                   </div>
                   <div className="col-6 text-start mt-4">
-                    <button class="btn btn-success" type="submit">
+                    <button
+                      class="btn btn-success shadow rounded"
+                      type="submit">
                       Submit
                     </button>
                   </div>
