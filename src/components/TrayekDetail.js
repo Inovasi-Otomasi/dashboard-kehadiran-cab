@@ -22,6 +22,7 @@ function TrayekDetail() {
   });
 
   const [coordinates, setCoordinates] = useState([]);
+  const [vehicles, setVehicles] = useState([]);
 
   const getData = async () => {
     try {
@@ -57,6 +58,7 @@ function TrayekDetail() {
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
       await axios.get("1.0.0/routes/" + id).then((res) => {
         setCoordinates(JSON.parse(res.data.coordinates));
+        setVehicles(JSON.parse(res.data.vehicles));
       });
     } catch (error) {
       console.log(error);
@@ -91,13 +93,18 @@ function TrayekDetail() {
       <h1 className="text-center mb-4">Detail Trayek {id}</h1>
       <Map coordinates={coordinates} />
       <div className="row g-3 text-center">
-        <div className="col-md-6">
+        <div className="col-md-4">
           <label>Kode Trayek</label>
           <h5>{state.code}</h5>
         </div>
-        <div className="col-md-6">
+        <div className="col-md-4">
           <label>Trayek Komplit</label>
           <h5>{state.complete_route}</h5>
+        </div>
+
+        <div className="col-md-4">
+          <label>Jumlah Fleet</label>
+          <h5>{vehicles.length}</h5>
         </div>
 
         {/* <div className="col-md-6">

@@ -50,6 +50,13 @@ function Location() {
     { name: "Awal", selector: (row) => row[3], sortable: true, wrap: true },
     { name: "Akhir", selector: (row) => row[4], sortable: true, wrap: true },
     {
+      name: "Kendaraan",
+      selector: (row) =>
+        row[7] === "null" ? <span>&#10060;</span> : <span>&#10004;</span>,
+      sortable: true,
+      wrap: true,
+    },
+    {
       name: "Detail",
       cell: (row) => (
         <button
