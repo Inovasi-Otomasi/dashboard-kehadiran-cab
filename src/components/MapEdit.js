@@ -94,7 +94,7 @@ function Map({
           mapTypeControl: false,
           fullscreenControl: false,
         }}>
-        <div className="pt-2">
+        <div className="places-container pt-2">
           <div className="row g-3">
             <div className="col-md-8">
               <PlacesAutocomplete

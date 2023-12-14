@@ -348,7 +348,7 @@ function EditRoute() {
             onChange={handleSelect}
             isSearchable={true}
             options={vehicles}
-            className="basic-multi-select"
+            className="basic-multi-select selector-container"
             classNamePrefix="select"
           />
         </div>

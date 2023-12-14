@@ -1,5 +1,5 @@
 div.pac-container {
-    z-index: 99999999999 !important;
+    z-index: 9999999999 !important;
 }
 
 .map-container {
@@ -8,12 +8,12 @@ div.pac-container {
 }
 
 .places-container{
-    z-index: 0 !important;
+    z-index: 100 !important;
     position: relative;
 }
 
 .places-container ul, li{
-    z-index: 0 !important;
+    z-index: 100 !important;
     position: relative;
     background-color: rgb(255, 255, 255);
 }

@@ -11,6 +11,7 @@ import TestChart from "../components/TestChart";
 import delamenta from "../api/delamenta";
 import dayjs from "dayjs";
 import secureLocalStorage from "react-secure-storage";
+import VehicleList from "../components/VehicleList";
 
 const { RangePicker } = DatePicker;
 
@@ -308,6 +309,11 @@ function Dashboard() {
 
       <PendapatanGraph trayekDates={trayekDates} sData={sData} />
       {/* <KaryawanTable /> */}
+
+      <h1 className="mt-5">List Kendaraan</h1>
+      <hr />
+
+      <VehicleList />
     </div>
   );
 }
