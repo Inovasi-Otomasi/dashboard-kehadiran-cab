@@ -4,6 +4,8 @@ import * as echarts from "echarts";
 import Chart from "react-apexcharts";
 
 function AbsenPie() {
+  var colorArray = ["#001852", "#e01f54", "#f5e8c8"];
+
   const option = {
     title: {
       text: "Absensi Driver",
@@ -17,6 +19,7 @@ function AbsenPie() {
       orient: "vertical",
       bottom: "left",
     },
+    color: colorArray,
     series: [
       {
         name: "Jumlah Data",
@@ -40,6 +43,10 @@ function AbsenPie() {
 
   return (
     <div className="card">
+      <div
+        class="card-header"
+        style={{ backgroundColor: "rgba(255, 0, 0, 0.5)" }}></div>
+
       <div className="card-body">
         {/* <Chart
           options={{

@@ -225,6 +225,7 @@ function LogAbsen() {
           <RangePicker
             onChange={handleChangeDebut}
             defaultValue={[dayjs(startofMonth), dayjs(currentDate)]}
+            allowClear={false}
           />
           <span> </span>
           <button

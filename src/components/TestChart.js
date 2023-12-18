@@ -5,6 +5,8 @@ import EChartsReact from "echarts-for-react";
 import * as echarts from "echarts";
 
 function TestChart({ trayekCodes, trayekNumbers, trayekData }) {
+  var colorArray = ["#001852", "#e01f54", "#f5e8c8"];
+
   const option = {
     title: {
       text: "Performansi Trayek",
@@ -14,6 +16,7 @@ function TestChart({ trayekCodes, trayekNumbers, trayekData }) {
     tooltip: {
       trigger: "item",
     },
+    color: colorArray,
     legend: {
       orient: "vertical",
       bottom: "left",
@@ -41,6 +44,9 @@ function TestChart({ trayekCodes, trayekNumbers, trayekData }) {
 
   return (
     <div className="card">
+      <div
+        class="card-header"
+        style={{ backgroundColor: "rgba(255, 0, 0, 0.5)" }}></div>
       <div className="card-body">
         {/* <Chart
           options={{

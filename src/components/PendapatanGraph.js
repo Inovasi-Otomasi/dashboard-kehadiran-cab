@@ -9,10 +9,15 @@ function PendapatanGraph({ sData, trayekDates }) {
   return (
     <>
       <div className="card">
+        <div
+          class="card-header"
+          style={{ backgroundColor: "rgba(255, 0, 0, 0.5)" }}>
+          <h5 className="fw-bold text-center">Pendapatan Trayek CAB</h5>
+        </div>
+
         <div className="card-body">
           <Chart
             options={{
-              title: { text: "Pendapatan Trayek CAB" },
               xaxis: {
                 title: { text: "Waktu" },
                 categories: trayekDates,
@@ -30,7 +35,7 @@ function PendapatanGraph({ sData, trayekDates }) {
               markers: {
                 size: 1,
               },
-              colors: ["#77B6EA", "#545454", "#72ab65", "#862e4a"],
+              colors: ["#001852", "#e01f54", "#f5e8c8"],
               dataLabels: {
                 enabled: true,
               },

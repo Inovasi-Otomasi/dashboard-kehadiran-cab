@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import api from "../api/axios";
 // import DataTable from "react-data-table-component";
+import Swal from "sweetalert2";
+import secureLocalStorage from "react-secure-storage";
 
 const token = localStorage.getItem("token");
 
@@ -15,6 +17,17 @@ function VehicleList() {
       });
     } catch (e) {
       console.log(e);
+      localStorage.removeItem("token");
+      secureLocalStorage.removeItem("role");
+      localStorage.removeItem("delamenta-token");
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Coba login kembali",
+      });
+      setTimeout(function () {
+        window.location.reload(true);
+      }, 1000);
     }
   };
 
