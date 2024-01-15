@@ -1,24 +1,29 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import DataTable, { createTheme } from "react-data-table-component";
-import axios from "../api/axios";
+import api from "../api/axios";
+import delamenta from "../api/delamenta";
 // import Spinner from "../components/Spinner";
 import AddDriver from "../components/AddDriver";
 import ExportExcel from "../components/ExcelExport";
 import Swal from "sweetalert2";
 import { Helmet } from "react-helmet";
+import secureLocalStorage from "react-secure-storage";
 
 const GET_URL = "/1.0.0/drivers_datatables";
 
 function Driver() {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
+  const dmtoken = localStorage.getItem("delamenta-token");
+
+  const [isLoaded, setIsLoaded] = useState(false);
 
   const [page, setPage] = useState(1);
   const [start, setStart] = useState(0);
   const [sortColumn, setSortColumn] = useState(0);
   const [dir, setDir] = useState("desc");
-  const countPerPage = 2;
+  const countPerPage = 10;
 
   const [drivers, setDrivers] = useState([]);
   const [filterDrivers, setFilterDrivers] = useState("");
@@ -36,63 +41,35 @@ function Driver() {
 
   // const [isLoading, setIsLoading] = useState(false);
 
-  createTheme(
-    "solarized",
-    {
-      text: {
-        primary: "#FFFFFF",
-        secondary: "#FFFFFF",
-      },
-      background: {
-        default: "#0A1929",
-      },
-      context: {
-        background: "#cb4b16",
-        text: "#FFFFFF",
-      },
-      divider: {
-        default: "#FFFFFF",
-      },
-      action: {
-        button: "rgba(0,0,0,.54)",
-        hover: "rgba(0,0,0,.08)",
-        disabled: "rgba(0,0,0,.12)",
-      },
-    },
-    "dark"
-  );
-
   const columns = [
-    { name: "ID", selector: (row) => row[0], sortable: true },
-    { name: "Username", selector: (row) => row[14], sortable: true },
-    // { name: "Nomor", selector: (row) => row[1], sortable: true},
-    // { name: "Shift ID", selector: (row) => row[6], sortable: true},
-    { name: "Nama", selector: (row) => row[2], sortable: true },
-    // { name: "NIK", selector: (row) => row[3], sortable: true},
-    // { name: "Nomor SIM", selector: (row) => row[4], sortable: true},
-    // { name: "RFID", selector: (row) => row[5], sortable: true},
-    // { name: "Mulai Shift", selector: (row) => row[7], sortable: true},
-    // { name: "Akhir Shift", selector: (row) => row[8], sortable: true},
-    // { name: "Alamat", selector: (row) => row[9], sortable: true},
-    // { name: "Mulai Bekerja", selector: (row) => row[10], sortable: true},
-    { name: "Jabatan", selector: (row) => row[11], sortable: true },
-    { name: "Level Menu", selector: (row) => row[12], sortable: true },
-    { name: "Status", selector: (row) => row[13], sortable: true },
+    { name: "ID", selector: (row) => row[0], sortable: true, wrap: true },
+    { name: "Nama", selector: (row) => row[2], sortable: true, wrap: true },
+    { name: "NIK", selector: (row) => row[3], sortable: true, wrap: true },
+    { name: "SIM", selector: (row) => row[4], sortable: true, wrap: true },
+    { name: "RFID", selector: (row) => row[5], sortable: true, wrap: true },
+    { name: "Alamat", selector: (row) => row[6], sortable: true, wrap: true },
     {
-      name: "Detail",
-      cell: (row) => (
-        <button
-          className="btn btn-light btn-sm"
-          onClick={() => navigate(`/driver/details/${row[0]}`)}>
-          <i className="fa fa-search-plus"></i>
-        </button>
-      ),
+      name: "Tanggal Masuk",
+      selector: (row) => row[7],
+      sortable: true,
+      wrap: true,
     },
+    { name: "Status", selector: (row) => row[8], sortable: true, wrap: true },
+    // {
+    //   name: "Detail",
+    //   cell: (row) => (
+    //     <button
+    //       className="btn btn-success btn-sm"
+    //       onClick={() => navigate(`/driver/details/${row[0]}`)}>
+    //       <i className="fa fa-search-plus"></i>
+    //     </button>
+    //   ),
+    // },
     {
-      name: "Edit Data",
+      name: "Edit",
       cell: (row) => (
         <button
-          className="btn btn-light btn-sm"
+          className="btn btn-primary btn-sm shadow rounded"
           onClick={() => navigate(`/driver/edit/${row[0]}`)}
           id={row[0]}>
           <i className="fa fa-edit"></i>
@@ -100,10 +77,10 @@ function Driver() {
       ),
     },
     {
-      name: "Hapus Data",
+      name: "Hapus",
       cell: (row) => (
         <button
-          className="btn btn-light btn-sm"
+          className="btn btn-danger btn-sm shadow rounded"
           onClick={() => deleteData(row[0])}>
           <i className="fa fa-trash"></i>
         </button>
@@ -126,8 +103,8 @@ function Driver() {
 
   const getData = async () => {
     try {
-      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-      await axios({
+      api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      await api({
         method: "post",
         url: GET_URL,
         data: bodyFormData,
@@ -139,13 +116,113 @@ function Driver() {
     } catch (error) {
       // setIsLoading(false);
       console.log(error);
+      localStorage.removeItem("token");
+      secureLocalStorage.removeItem("role");
+      localStorage.removeItem("delamenta-token");
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Coba login kembali",
+      });
+      setTimeout(function () {
+        window.location.reload(true);
+      }, 1000);
+    }
+  };
+
+  const getDelamentaData = async (id) => {
+    let temp = [];
+    console.log(id);
+
+    delamenta.defaults.headers.common["Authorization"] = `Bearer ${dmtoken}`;
+    try {
+      await delamenta.get("/driver?status=active").then((response) => {
+        temp = response.data.data;
+        console.log(response.data.data);
+      });
+
+      let objData = temp.find((o) => o.id_driver === id);
+      console.log(objData);
+
+      const driverData = {
+        number: objData.id_driver,
+        rfid: objData.nomor_kartu,
+        name: objData.nama,
+        status: "Aktif",
+      };
+
+      await api.post("/1.0.0/drivers", driverData);
+
+      temp = [];
+      Swal.fire({
+        icon: "success",
+        title: "Menambahkan Data Driver",
+        text: "Sukses menambahkan Driver!",
+      });
+      getData();
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Menambahkan Data Driver",
+        text: "Driver sudah ada atau tidak bisa ditambah!",
+      });
+    }
+  };
+
+  const handleSync = async () => {
+    const tempDmId = [];
+    const tempId = [];
+
+    api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    delamenta.defaults.headers.common["Authorization"] = `Bearer ${dmtoken}`;
+
+    Swal.fire({
+      title: "Syncing",
+      icon: "info",
+      timer: 4000,
+      timerProgressBar: true,
+    });
+
+    try {
+      await delamenta.get("/driver?status=active").then((response) => {
+        response.data.data.forEach((element) => {
+          tempDmId.push(element.id_driver);
+        });
+      });
+
+      await api({
+        method: "post",
+        url: GET_URL,
+        data: bodyFormData,
+        headers: { "Content-Type": "multipart/form-data" },
+      }).then((res) => {
+        res.data.data.forEach((element) => {
+          tempId.push(element[1]);
+        });
+
+        let uniqueDm = tempDmId.filter((o) => tempId.indexOf(o) === -1);
+        let unique = tempId.filter((o) => tempDmId.indexOf(o) === -1);
+        console.log(uniqueDm.concat(unique));
+
+        const tempUnique = uniqueDm.concat(unique);
+
+        console.log(tempId);
+        console.log(tempDmId);
+        console.log(tempUnique);
+
+        tempUnique.forEach((id) => {
+          getDelamentaData(id);
+        });
+      });
+    } catch (e) {
+      console.log(e);
     }
   };
 
   const getExcel = async () => {
     try {
-      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-      await axios.get("/1.0.0/drivers").then((response) => {
+      api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      await api.get("/1.0.0/drivers").then((response) => {
         setDriversExcel(response.data);
       });
     } catch (error) {
@@ -154,19 +231,19 @@ function Driver() {
   };
 
   const deleteData = async (id) => {
-    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
     await Swal.fire({
       title: "Penghapusan Data Driver",
       text: "Apakah anda yakin ingin menghapus data ini?",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
       confirmButtonText: "Hapus Data!",
     }).then((result) => {
       try {
         if (result.isConfirmed) {
-          axios.delete(`/1.0.0/drivers/${id}`).then((response) => {
+          api.delete(`/1.0.0/drivers/${id}`).then((response) => {
             Swal.fire("Terhapus!", "Data telah dihapus.", "success");
             console.log(response);
             getData();
@@ -179,6 +256,10 @@ function Driver() {
           icon: "error",
           text: error,
         });
+        localStorage.removeItem("token");
+        secureLocalStorage.removeItem("role");
+        localStorage.removeItem("delamenta-token");
+        navigate("/");
       }
     });
   };
@@ -187,8 +268,13 @@ function Driver() {
     if (!localStorage.getItem("token")) {
       navigate("/");
     }
+
     getData();
-    getExcel();
+    if (!isLoaded) {
+      getExcel();
+
+      setIsLoaded(true);
+    }
   }, [page, filterDrivers, dir, sortColumn, start]);
 
   const renderTable = (
@@ -198,7 +284,7 @@ function Driver() {
           type="text"
           placeholder="Search"
           onChange={handleFilter}
-          className="mb-3"
+          className="form-control mb-3"
         />
       </div>
 
@@ -210,7 +296,6 @@ function Driver() {
             pagination
             highlightOnHover
             paginationServer
-            theme="solarized"
             fixedHeader
             fixedHeaderScrollHeight="400px"
             paginationTotalRows={drivers.recordsFiltered}
@@ -231,19 +316,25 @@ function Driver() {
   );
 
   return (
-    <div className="p-4">
+    <div className="dashboard-wrapper">
       <Helmet>
-        <title>Data Driver CAB | Driver</title>
+        <title>Data Absensi CAB | Driver</title>
       </Helmet>
-      <h1>Data Driver CAB</h1>
+      <label className="mb-3">CAB/Driver</label>
+
+      <h1>Driver</h1>
       <hr />
-      <div className="d-flex flex-row justify-content-between pb-4">
+      <div className="d-flex flex-row gap-4 pb-4">
         <AddDriver />
+        <button className="btn btn-primary shadow rounded" onClick={handleSync}>
+          <i className="fa fa-refresh"></i> Sync
+        </button>
         <ExportExcel
           excelData={driversExcel}
           fileName={"Laporan Data Driver"}
         />
       </div>
+
       {renderTable}
     </div>
   );

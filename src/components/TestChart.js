@@ -1,35 +1,32 @@
 import React from "react";
+
+import Chart from "react-apexcharts";
 import EChartsReact from "echarts-for-react";
 import * as echarts from "echarts";
-import Chart from "react-apexcharts";
 
-function AbsenPie() {
+function TestChart({ trayekCodes, trayekNumbers, trayekData }) {
   var colorArray = ["#001852", "#e01f54", "#f5e8c8"];
 
   const option = {
     title: {
-      text: "Absensi Driver",
-      subtext: "Fake Data",
+      text: "Performansi Trayek",
+      subtext: "Delamenta Data",
       left: "center",
     },
     tooltip: {
       trigger: "item",
     },
+    color: colorArray,
     legend: {
       orient: "vertical",
       bottom: "left",
     },
-    color: colorArray,
     series: [
       {
-        name: "Jumlah Data",
+        name: "Jumlah Transaksi",
         type: "pie",
         radius: "50%",
-        data: [
-          { value: 120, name: "Masuk" },
-          { value: 30, name: "Alpha" },
-          { value: 5, name: "Cuti" },
-        ],
+        data: trayekData,
         emphasis: {
           itemStyle: {
             shadowBlur: 10,
@@ -41,23 +38,27 @@ function AbsenPie() {
     ],
   };
 
+  console.log(trayekData);
+  console.log(trayekCodes);
+  console.log(trayekNumbers);
+
   return (
     <div className="card">
       <div
         class="card-header"
         style={{ backgroundColor: "rgba(255, 0, 0, 0.5)" }}></div>
-
       <div className="card-body">
         {/* <Chart
           options={{
             width: "100%",
+            type: "pie",
             title: {
-              text: "Absensi Driver",
+              text: "Performansi Trayek",
             },
-            labels: ["Masuk", "Alpha", "Cuti"],
             noData: { text: "Loading Data..." },
+            labels: trayekCodes,
           }}
-          series={series}
+          series={trayekNumbers}
           type="pie"
           width="100%"
           height="auto"
@@ -71,4 +72,4 @@ function AbsenPie() {
   );
 }
 
-export default AbsenPie;
+export default TestChart;

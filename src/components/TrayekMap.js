@@ -17,7 +17,6 @@ function Map({ coordinates }) {
     libraries: ["places"],
   });
 
-  const [loaded, setLoaded] = useState(false);
   const [map, setMap] = useState(null);
   const [directionsResponse, setDirectionsResponse] = useState(null);
 
@@ -59,37 +58,35 @@ function Map({ coordinates }) {
 
   useEffect(() => {
     if (coordinates.length > 0) {
-      setLoaded(true);
+      calculateRoute(coordinates);
     }
-    console.log();
+  }, [coordinates]);
 
-    calculateRoute(coordinates);
-  }, [coordinates, loaded]);
-
-  return isLoaded ? (
-    <div className="container-fluid">
-      <GoogleMap
-        center={center}
-        zoom={10}
-        mapContainerStyle={{
-          width: "100%",
-          height: "400px",
-          marginBottom: "2rem",
-        }}
-        options={{
-          zoomControl: true,
-          streetViewControl: false,
-          mapTypeControl: true,
-          fullscreenControl: false,
-        }}
-        onLoad={(map) => setMap(map)}>
-        {directionsResponse && (
-          <DirectionsRenderer directions={directionsResponse} />
-        )}
-      </GoogleMap>
-    </div>
-  ) : (
-    <></>
+  return (
+    <>
+      <div className="container-fluid">
+        <GoogleMap
+          center={center}
+          zoom={10}
+          mapContainerStyle={{
+            width: "100%",
+            height: "400px",
+            marginBottom: "2rem",
+          }}
+          options={{
+            zoomControl: true,
+            streetViewControl: false,
+            mapTypeControl: true,
+            fullscreenControl: false,
+          }}
+          // onLoad={(map) => setMap(map)}
+        >
+          {directionsResponse && (
+            <DirectionsRenderer directions={directionsResponse} />
+          )}
+        </GoogleMap>
+      </div>
+    </>
   );
 }
 

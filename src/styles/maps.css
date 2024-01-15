@@ -1,5 +1,5 @@
 div.pac-container {
-    z-index: 99999999999 !important;
+    z-index: 9999999999 !important;
 }
 
 .map-container {
@@ -8,12 +8,12 @@ div.pac-container {
 }
 
 .places-container{
-    z-index: 99999999999 !important;
+    z-index: 100 !important;
     position: relative;
 }
 
 .places-container ul, li{
-    z-index: 99999999999 !important;
+    z-index: 100 !important;
     position: relative;
     background-color: rgb(255, 255, 255);
 }
@@ -23,13 +23,3 @@ div.pac-container {
     position: relative;
 } */
 
-.trayek-container, ul li{
-    z-index: 1 !important;
-    position: relative;
-    background-color: rgb(255, 255, 255);
-    opacity: 100%;
-}
-
-.btn-container {
-    z-index: 1 !important
-}

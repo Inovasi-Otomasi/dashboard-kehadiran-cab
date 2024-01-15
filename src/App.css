@@ -1,16 +1,14 @@
-body {
-    margin: 0;
-    padding: 0;
-    background-color: #ECF8F9;
-  }
+.App {
+  display: flex;
   
-   
-  .App {
-    display: flex;
-  }
-   
-  main {
-    padding: 10px;
-  }
+}
 
+.selector-container{
+  z-index: 200 !important;
   
+}
+
+/* iframe {
+  display: none
+} */
+

@@ -1,27 +1,35 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import DataTable, { createTheme } from "react-data-table-component";
-import axios from "../api/axios";
+import api from "../api/axios";
+import delamenta from "../api/delamenta";
 // import Spinner from "../components/Spinner";
 import AddRoute from "../components/AddRoute";
 import ExportExcel from "../components/ExcelExport";
 import Swal from "sweetalert2";
 import { Helmet } from "react-helmet";
+import secureLocalStorage from "react-secure-storage";
 
 const GET_URL = "/1.0.0/routes_datatables";
 
 function Location() {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
+  const dmtoken = localStorage.getItem("delamenta-token");
+
+  const [isLoaded, setIsLoaded] = useState(false);
 
   const [page, setPage] = useState(1);
   const [start, setStart] = useState(0);
   const [sortColumn, setSortColumn] = useState(0);
   const [dir, setDir] = useState("desc");
-  const countPerPage = 2;
+  const countPerPage = 10;
 
   // const [isLoading, setIsLoading] = useState(false);
   const [locations, setLocations] = useState([]);
+
+  const [locationsId, setLocationsId] = useState([]);
+  const [dmDataId, setDmDataId] = useState([]);
   const [filterLocations, setFilterLocations] = useState("");
   const [routesExcel, setRoutesExcel] = useState([]);
 
@@ -35,43 +43,35 @@ function Location() {
   bodyFormData.append("search[value]", filterLocations);
   bodyFormData.append("columns[0][search][value]", "");
 
-  createTheme(
-    "solarized",
-    {
-      text: {
-        primary: "#FFFFFF",
-        secondary: "#FFFFFF",
-      },
-      background: {
-        default: "#0A1929",
-      },
-      context: {
-        background: "#cb4b16",
-        text: "#FFFFFF",
-      },
-      divider: {
-        default: "#FFFFFF",
-      },
-      action: {
-        button: "rgba(0,0,0,.54)",
-        hover: "rgba(0,0,0,.08)",
-        disabled: "rgba(0,0,0,.12)",
-      },
-    },
-    "dark"
-  );
-
   const columns = [
-    { name: "ID", selector: (row) => row[0], sortable: true },
-    { name: "Nomor", selector: (row) => row[1], sortable: true },
-    { name: "Kode", selector: (row) => row[2], sortable: true },
-    { name: "Titik Awal", selector: (row) => row[3], sortable: true },
-    { name: "Titik Akhir", selector: (row) => row[4], sortable: true },
+    { name: "ID", selector: (row) => row[0], sortable: true, wrap: true },
+
+    { name: "Kode", selector: (row) => row[2], sortable: true, wrap: true },
+    { name: "Awal", selector: (row) => row[3], sortable: true, wrap: true },
+    { name: "Akhir", selector: (row) => row[4], sortable: true, wrap: true },
     {
-      name: "Edit Data",
+      name: "Kendaraan",
+      selector: (row) =>
+        row[7] === "null" ? <span>&#10060;</span> : <span>&#10004;</span>,
+      sortable: true,
+      wrap: true,
+    },
+    {
+      name: "Detail",
       cell: (row) => (
         <button
-          className="btn btn-light btn-sm"
+          className="btn btn-success btn-sm shadow rounded"
+          onClick={() => navigate(`/location/details/${row[0]}`)}
+          id={row[0]}>
+          <i className="fa fa-search-plus"></i>
+        </button>
+      ),
+    },
+    {
+      name: "Edit",
+      cell: (row) => (
+        <button
+          className="btn btn-primary btn-sm shadow rounded"
           onClick={() => navigate(`/location/edit/${row[0]}`)}
           id={row[0]}>
           <i className="fa fa-edit"></i>
@@ -79,10 +79,10 @@ function Location() {
       ),
     },
     {
-      name: "Hapus Data",
+      name: "Hapus",
       cell: (row) => (
         <button
-          className="btn btn-light btn-sm"
+          className="btn btn-danger btn-sm"
           onClick={() => deleteData(row[0])}>
           <i className="fa fa-trash"></i>
         </button>
@@ -91,9 +91,9 @@ function Location() {
   ];
 
   const getData = async () => {
-    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
     try {
-      await axios({
+      await api({
         method: "post",
         url: GET_URL,
         data: bodyFormData,
@@ -104,13 +104,113 @@ function Location() {
     } catch (error) {
       console.log(error);
       // setIsLoading(false)
+      console.log(error);
+      localStorage.removeItem("token");
+      secureLocalStorage.removeItem("role");
+      localStorage.removeItem("delamenta-token");
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Coba login kembali",
+      });
+      setTimeout(function () {
+        window.location.reload(true);
+      }, 1000);
+    }
+  };
+
+  const getDelamentaData = async (id) => {
+    let temp = [];
+    console.log(id);
+
+    delamenta.defaults.headers.common["Authorization"] = `Bearer ${dmtoken}`;
+    try {
+      await delamenta
+        .get("http://103.165.135.134:6005/api/trayek/master")
+        .then((response) => {
+          temp = response.data.data.rows;
+        });
+
+      let objData = temp.find((o) => parseInt(o.id_trayek) === id);
+      console.log(objData);
+
+      const trayekData = {
+        number: parseInt(objData.id_trayek),
+        code: objData.deskripsi,
+        complete_route: objData.trayek,
+      };
+
+      await api.post("/1.0.0/routes", trayekData);
+
+      temp = [];
+      Swal.fire({
+        icon: "success",
+        title: "Menambahkan Data Trayek",
+        text: "Sukses menambahkan Trayek!",
+      });
+      getData();
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Menambahkan Data Trayek",
+        text: "Gagal menambahkan Trayek!",
+      });
+    }
+  };
+
+  const handleSync = async () => {
+    const tempDmId = [];
+    const tempId = [];
+
+    api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    delamenta.defaults.headers.common["Authorization"] = `Bearer ${dmtoken}`;
+    Swal.fire({
+      title: "Syncing",
+      icon: "info",
+      timer: 4000,
+      timerProgressBar: true,
+    });
+    try {
+      await delamenta
+        .get("http://103.165.135.134:6005/api/trayek/master")
+        .then((response) => {
+          // setDmDataId(response.data.data.rows.trayek);
+          response.data.data.rows.forEach((element) => {
+            tempDmId.push(parseInt(element.id_trayek));
+          });
+          setDmDataId(tempDmId);
+        });
+
+      await api({
+        method: "post",
+        url: GET_URL,
+        data: bodyFormData,
+        headers: { "Content-Type": "multipart/form-data" },
+      }).then((res) => {
+        res.data.data.forEach((element) => {
+          tempId.push(element[1]);
+        });
+        setLocationsId(tempId);
+      });
+
+      let uniqueDm = tempDmId.filter((o) => tempId.indexOf(o) === -1);
+      let unique = tempId.filter((o) => tempDmId.indexOf(o) === -1);
+      console.log(uniqueDm.concat(unique));
+
+      const tempUnique = uniqueDm.concat(unique);
+
+      tempUnique.forEach((id) => {
+        getDelamentaData(id);
+      });
+    } catch (e) {
+      console.log(e);
     }
   };
 
   const getExcel = async () => {
-    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
     try {
-      await axios.get("/1.0.0/routes").then((response) => {
+      await api.get("/1.0.0/routes").then((response) => {
         setRoutesExcel(response.data);
       });
     } catch (error) {
@@ -119,19 +219,19 @@ function Location() {
   };
 
   const deleteData = async (id) => {
-    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
     await Swal.fire({
       title: "Penghapusan Data Rute",
       text: "Apakah anda yakin ingin menghapus data ini?",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
       confirmButtonText: "Hapus Data!",
     }).then((result) => {
       try {
         if (result.isConfirmed) {
-          axios.delete(`/1.0.0/routes/${id}`).then((response) => {
+          api.delete(`/1.0.0/routes/${id}`).then((response) => {
             Swal.fire("Terhapus!", "Data telah dihapus.", "success");
             console.log(response);
             getData();
@@ -143,6 +243,10 @@ function Location() {
           icon: "error",
           text: "Gagal menghapus data",
         });
+        localStorage.removeItem("token");
+        secureLocalStorage.removeItem("role");
+        localStorage.removeItem("delamenta-token");
+        window.location.reload(true);
       }
     });
   };
@@ -170,8 +274,13 @@ function Location() {
     if (!localStorage.getItem("token")) {
       navigate("/");
     }
-    getData();
-    getExcel();
+    if (!isLoaded) {
+      getData();
+      getExcel();
+      // handleSync();
+
+      setIsLoaded(true);
+    }
   }, [page, filterLocations, start, dir, sortColumn]);
 
   const renderTable = (
@@ -182,7 +291,7 @@ function Location() {
           placeholder="Search"
           onChange={handleFilter}
           value={filterLocations}
-          className="mb-3"
+          className="form-control mb-3"
         />
       </div>
       <div className="card bg-light">
@@ -193,7 +302,6 @@ function Location() {
             pagination
             highlightOnHover
             paginationServer
-            theme="solarized"
             fixedHeader
             fixedHeaderScrollHeight="300px"
             paginationTotalRows={locations.recordsFiltered}
@@ -211,19 +319,25 @@ function Location() {
   );
 
   return (
-    <div className="p-4">
+    <div className="dashboard-wrapper">
       <Helmet>
-        <title>Data Driver CAB | Rute</title>
+        <title>Data Absensi CAB | Trayek</title>
       </Helmet>
-      <h1>Data Rute CAB</h1>
+      <label className="mb-3">CAB/Trayek</label>
+
+      <h1>Trayek</h1>
       <hr />
-      <div className="d-flex flex-row justify-content-between pb-4">
+      <div className="d-flex flex-row gap-4 pb-4">
         <AddRoute />
+        <button className="btn btn-primary shadow rounded" onClick={handleSync}>
+          <i className="fa fa-refresh"></i> Sync
+        </button>
         <ExportExcel
           excelData={routesExcel}
           fileName={"Laporan Data Rute Trayek"}
         />
       </div>
+
       {renderTable}
     </div>
   );

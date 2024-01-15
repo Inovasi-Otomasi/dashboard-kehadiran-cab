@@ -1,3 +1,10 @@
 body{
+  margin: 0;
   font-family: 'Rubik', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+label {
+  font-weight: bold;
 }

@@ -1,9 +1,12 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import axios from "../api/axios";
+import api from "../api/axios";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import secureLocalStorage from "react-secure-storage";
 import Swal from "sweetalert2";
+import { Helmet } from "react-helmet";
+import logo from "../assets/logo.png";
 
 const login_URL = "/login";
 
@@ -24,7 +27,25 @@ function Login() {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      await axios
+      await axios("http://103.165.135.134:6005/api/users/login", {
+        method: "POST",
+
+        data: {
+          username: "reader30",
+          password: "AdminDb1407!",
+        },
+      })
+        .then((response) => {
+          localStorage.setItem(
+            "delamenta-token",
+            response.data.data.token.split(" ")[1]
+          );
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+
+      await api
         .post(
           login_URL,
           {
@@ -50,7 +71,7 @@ function Login() {
               text: "Berhasil login!",
             });
             setTimeout(() => {
-              navigate("/dashboard");
+              window.location.reload();
             }, 1000);
           } else {
             Swal.fire({
@@ -73,8 +94,16 @@ function Login() {
 
   return (
     <div className="container-fluid">
+      <Helmet>
+        <title>Data Absensi CAB | Login</title>
+      </Helmet>
+      <div className="d-flex flex-row justify-content-center">
+        <img src={logo} className="img-fluid" width={200} height={200} />
+      </div>
+      <h1 className="text-center">DATA ABSENSI CAB</h1>
+
       <form className="p-5" onSubmit={handleLogin}>
-        <h1 className="text-center">Login</h1>
+        <h3 className="text-center">Login</h3>
         <div className="mb-3">
           <label for="exampleInputEmail1" className="form-label">
             Alamat Email
@@ -107,9 +136,11 @@ function Login() {
             autoComplete="off"
           />
         </div>
-        <button type="submit" className="btn btn-primary">
-          Submit
-        </button>
+        <div className="d-flex flex-row justify-content-center">
+          <button type="submit" className="btn btn-success shadow rounded">
+            Submit
+          </button>
+        </div>
       </form>
     </div>
   );

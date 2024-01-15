@@ -1,7 +1,10 @@
-import React, { useState } from "react";
-import axios from "../api/axios";
+import React, { useEffect, useState } from "react";
+import api from "../api/axios";
 // import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import axios from "axios";
+import secureLocalStorage from "react-secure-storage";
+import Select from "react-select";
 import Places from "./MapInput";
 
 const BASE_URL = "/1.0.0/routes";
@@ -11,6 +14,11 @@ function AddRoute() {
 
   const [coordinates, setCoordinates] = useState([]);
 
+  const [zoom, setZoom] = useState(10);
+
+  const [vehicles, setVehicles] = useState([]);
+  const [vehiclesData, setVehiclesData] = useState();
+
   const [state, setState] = useState({
     number: null,
     code: "",
@@ -19,12 +27,51 @@ function AddRoute() {
     complete_route: "",
   });
 
+  const getVehiclesList = () => {
+    const temparray = [];
+
+    try {
+      axios
+        .get(
+          "http://127.0.0.1:8080/api/1.0.0/public/vehicle/?api_key=21232f297a57a5a743894a0e4a801fc3"
+        )
+        .then((res) => {
+          console.log(res.data);
+          res.data.map((item) => {
+            temparray.push({ value: item.id, label: item.no_plat });
+          });
+          console.log(temparray);
+          setVehicles(temparray);
+        });
+    } catch (e) {
+      console.log(e);
+      // localStorage.removeItem("token");
+      // secureLocalStorage.removeItem("role");
+      // localStorage.removeItem("delamenta-token");
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: e,
+      });
+      setTimeout(function () {
+        window.location.reload();
+      }, 1000);
+    }
+  };
+
   const handleChange = (e) => {
     const value = e.target.value;
     setState({
       ...state,
       [e.target.name]: value,
     });
+  };
+
+  const handleSelect = (data) => {
+    // let tempArray = data;
+    // let tempArray2 = tempArray.map(({ value }) => ({ value }));
+    setVehiclesData(data);
+    console.log(vehiclesData);
   };
 
   const onMapClick = (e) => {
@@ -37,9 +84,28 @@ function AddRoute() {
     ]);
   };
 
+  const onSelect = (lat, lng) => {
+    setCoordinates((current) => [
+      ...current,
+      {
+        lat: lat,
+        lng: lng,
+      },
+    ]);
+  };
+
   const resetCoordinates = () => {
     setCoordinates([]);
+    setZoom(10);
+    Swal.fire({
+      icon: "success",
+      title: "Berhasil reset data",
+    });
   };
+
+  // const deleteCoordinate = () => {
+  //   await Swal.fire()
+  // }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -50,9 +116,10 @@ function AddRoute() {
       end_point: state.end_point,
       complete_route: state.complete_route,
       coordinates: coordinates,
+      vehicles: vehiclesData,
     };
     try {
-      const response = await axios.post(BASE_URL, routeData);
+      const response = await api.post(BASE_URL, routeData);
       console.log(response.status, response.data);
       setState({
         number: 0,
@@ -63,10 +130,11 @@ function AddRoute() {
         complete_route: "",
       });
       setCoordinates([]);
+      setVehiclesData();
       Swal.fire({
         icon: "success",
-        title: "Menambahkan Data Rute",
-        text: "Sukses menambahkan rute!",
+        title: "Menambahkan Data Trayek",
+        text: "Sukses menambahkan Trayek!",
       });
       setTimeout(function () {
         window.location.reload();
@@ -74,20 +142,24 @@ function AddRoute() {
     } catch (error) {
       Swal.fire({
         icon: "error",
-        title: "Menambahkan Data Rute",
-        text: "Gagal menambahkan rute!",
+        title: "Menambahkan Data Trayek",
+        text: "Gagal menambahkan Trayek!",
       });
     }
   };
+
+  useEffect(() => {
+    getVehiclesList();
+  }, []);
 
   return (
     <div>
       <button
         type="button"
-        class="btn btn-dark"
+        className="btn btn-primary shadow rounded"
         data-bs-toggle="modal"
         data-bs-target="#exampleModal">
-        Daftar Data Route
+        <i className="fa fa-plus"></i> Trayek
       </button>
 
       <div
@@ -100,13 +172,13 @@ function AddRoute() {
           <div class="modal-content">
             <div class="modal-header">
               <h1 class="modal-title fs-5" id="exampleModalLabel">
-                Data Route
+                Data Trayek
               </h1>
             </div>
             <div class="modal-body">
               <form
                 class="row g-3 needs-validation px-5"
-                novalidate
+                onSubmit={handleSubmit}
                 autoComplete="off">
                 <div class="col-md-6">
                   <label for="validationCustom01" class="form-label">
@@ -116,7 +188,7 @@ function AddRoute() {
                     type="number"
                     class="form-control"
                     id="validationCustom01"
-                    placeholder="123456"
+                    placeholder="Contoh: 123"
                     name="number"
                     value={state.number}
                     onChange={handleChange}
@@ -131,7 +203,7 @@ function AddRoute() {
                     type="text"
                     class="form-control"
                     id="validationCustom02"
-                    placeholder="Axxxxx"
+                    placeholder="Contoh: DPK-001"
                     name="code"
                     value={state.code}
                     onChange={handleChange}
@@ -141,13 +213,13 @@ function AddRoute() {
 
                 <div class="col-md-6">
                   <label for="validationCustom03" class="form-label">
-                    Titik Awal Rute
+                    Titik Awal Trayek
                   </label>
                   <input
                     type="text"
                     class="form-control"
                     id="validationCustom03"
-                    placeholder="Depok"
+                    placeholder="Contoh: Depok"
                     name="start_point"
                     value={state.start_point}
                     onChange={handleChange}
@@ -156,13 +228,13 @@ function AddRoute() {
                 </div>
                 <div class="col-md-6">
                   <label for="validationCustom04" class="form-label">
-                    Titik Akhir Rute
+                    Titik Akhir Trayek
                   </label>
                   <input
                     type="text"
                     class="form-control"
                     id="validationCustom03"
-                    placeholder="Kemanggisan"
+                    placeholder="Contoh: Sudirman"
                     name="end_point"
                     value={state.end_point}
                     onChange={handleChange}
@@ -170,39 +242,64 @@ function AddRoute() {
                   />
                 </div>
 
-                <div class="col-md-12">
+                <div class="col-md-6">
                   <label for="validationCustom04" class="form-label">
-                    Rute Complete
+                    Trayek Komplit
                   </label>
                   <input
                     type="text"
                     class="form-control"
                     id="validationCustom03"
-                    placeholder="Kemanggisan-Depok"
+                    placeholder="Contoh: Depok-Sudirman"
                     name="complete_route"
                     value={state.complete_route}
                     onChange={handleChange}
                     required
                   />
                 </div>
+                <div class="col-md-6">
+                  <label for="validationCustom04" class="form-label">
+                    Kendaraan
+                  </label>
+                  <Select
+                    isMulti
+                    placeholder="Pilih Kendaraan (Bisa lebih dari 1)"
+                    value={vehiclesData}
+                    onChange={handleSelect}
+                    isSearchable={true}
+                    options={vehicles}
+                    className="basic-multi-select selector-container"
+                    classNamePrefix="select"
+                  />
+                </div>
 
                 <Places
                   onMapClick={onMapClick}
                   coordinates={coordinates}
+                  zoom={zoom}
+                  setZoom={setZoom}
                   resetCoordinates={resetCoordinates}
+                  onSelect={onSelect}
                 />
+
+                <div class="row g-3 pt-4">
+                  <div className="col-6 text-end mt-4">
+                    <button
+                      type="button"
+                      class="btn btn-secondary shadow rounded"
+                      data-bs-dismiss="modal">
+                      Tutup
+                    </button>
+                  </div>
+                  <div className="col-6 text-start mt-4">
+                    <button
+                      class="btn btn-success shadow rounded"
+                      type="submit">
+                      Submit
+                    </button>
+                  </div>
+                </div>
               </form>
-            </div>
-            <div class="modal-footer d-flex flex-row justify-content-center">
-              <button
-                type="button"
-                class="btn btn-secondary"
-                data-bs-dismiss="modal">
-                Tutup
-              </button>
-              <button class="btn btn-dark" type="submit" onClick={handleSubmit}>
-                Tambahkan Data
-              </button>
             </div>
           </div>
         </div>

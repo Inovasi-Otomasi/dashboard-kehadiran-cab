@@ -1,7 +1,7 @@
-import React, {useState} from "react";
-import DataTable, {createTheme} from "react-data-table-component";
+import React, { useState } from "react";
+import DataTable, { createTheme } from "react-data-table-component";
 import { Modal, Button, Col, Container, Row } from "react-bootstrap";
-import profile_pic from '../assets/profile.png'
+import profile_pic from "../assets/profile.png";
 
 function KaryawanTable() {
   const [show, setShow] = useState(false);
@@ -12,44 +12,21 @@ function KaryawanTable() {
   const customStyles = {
     columns: {
       style: {
-        minWidth: '100px',
-      }
-    }
-  }
-
-  createTheme('solarized', {
-    text: {
-      primary: '#FFFFFF',
-      secondary: '#FFFFFF',
+        minWidth: "100px",
+      },
     },
-    background: {
-      default: '#0A1929',
-    },
-    context: {
-      background: '#cb4b16',
-      text: '#FFFFFF',
-    },
-    divider: {
-      default: '#FFFFFF',
-    },
-    action: {
-      button: 'rgba(0,0,0,.54)',
-      hover: 'rgba(0,0,0,.08)',
-      disabled: 'rgba(0,0,0,.12)',
-    },
-  }, 'dark');
+  };
 
   const columns = [
     { name: "Nomor ID", selector: (row) => row.id },
     { name: "Nama", selector: (row) => row.nama },
     { name: "Trayek", selector: (row) => row.trayek },
     { name: "Total Penghasilan", selector: (row) => row.penghasilan },
-    { name: "Jam Operasional Kerja", selector: (row) => row.jam_operasional },
-    { name: "Penggajian", selector: (row) => row.penggajian },
+
     {
       name: "Detail",
       cell: (row) => (
-        <button onClick={handleShow} className="btn btn-light btn-sm">
+        <button onClick={handleShow} className="btn btn-success btn-sm">
           <i className="fa fa-search-plus"></i>
         </button>
       ),
@@ -62,15 +39,23 @@ function KaryawanTable() {
       nama: "Joni",
       trayek: "A",
       penghasilan: "Rp. 5000000",
-      jam_operasional: '30 Hari',
-      penggajian: 'Rp.XXXXXXXX'
     },
   ];
 
   return (
-    <div className="p-4">
-      <DataTable columns={columns} data={data} theme="solarized" pagination title="Detail Performa Driver" customStyles={customStyles} />
-      
+    <div className="mt-5">
+      <div className="card">
+        <div className="card-body">
+          <DataTable
+            columns={columns}
+            data={data}
+            pagination
+            title="Detail Performa Driver"
+            customStyles={customStyles}
+          />
+        </div>
+      </div>
+
       {/* Modal Detail */}
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
@@ -79,13 +64,13 @@ function KaryawanTable() {
         <Modal.Body>
           <Container className="py-2 text-center container-fluid">
             <Col md={12}>
-              <img src={profile_pic} width={'50%'} height={200}/>
+              <img src={profile_pic} width={"50%"} height={200} />
             </Col>
             <Row className="py-1">
               <Col md={6}>
                 <label>Nama</label>
                 <h5>Joni</h5>
-              </Col> 
+              </Col>
               <Col md={6}>
                 <label>Trayek</label>
                 <h5>A</h5>

@@ -1,78 +1,66 @@
-import React from 'react'
-import EChartsReact from 'echarts-for-react'
-import * as echarts from 'echarts'
+import React from "react";
+import Chart from "react-apexcharts";
 
-function PendapatanGraph() {
-
-    const option = {
-        title: {
-            text: 'Pendapatan Trayek'
-        },
-        tooltip: {
-            trigger: 'axis'
-        },
-        // legend: {
-        //     data: ['Trayek A', 'Trayek B', 'Trayek C', 'Trayek D', 'Trayek E']
-        // },
-        grid: {
-            left: '3%',
-            right: '4%',
-            bottom: '3%',
-            containLabel: true
-        },
-        toolbox:{
-            feature: {
-                saveAsImage: {}
-            }
-        },
-        xAxis:{
-            type: 'category',
-            boundaryGap: false,
-            data: ['Maret', 'April', 'Mei', 'Juni', 'Juli']
-        },
-        yAxis:{
-            type: 'value'
-        },
-        series: [
-            {
-                name: 'Trayek A',
-                type: 'line',
-                // stack: 'x',
-                data: [100, 150, 120, 140, 160]
-            },
-            {
-                name: 'Trayek B',
-                type: 'line',
-                // stack: 'x',
-                data: [90, 160, 110, 130, 120]
-            },
-            {
-                name: 'Trayek C',
-                type: 'line',
-                // stack: 'x',
-                data: [130, 120, 130, 150, 170]
-            },
-            {
-                name: 'Trayek D',
-                type: 'line',
-                // stack: 'x',
-                data: [70, 100, 140, 170, 140]
-            },
-            {
-                name: 'Trayek E',
-                type: 'line',
-                // stack: 'x',
-                data: [110, 140, 160, 120, 100]
-            },
-        ]
-    }
+function PendapatanGraph({ sData, trayekDates }) {
+  // const reset = () => {
+  //   window.location.reload(true);
+  // };
 
   return (
-    <EChartsReact 
-        option={option}
-        style={{height: 400, width: '100%'}}
-    />
-  )
+    <>
+      <div className="card">
+        <div
+          class="card-header"
+          style={{ backgroundColor: "rgba(255, 0, 0, 0.5)" }}>
+          <h5 className="fw-bold text-center">Pendapatan Trayek CAB</h5>
+        </div>
+
+        <div className="card-body">
+          <Chart
+            options={{
+              xaxis: {
+                title: { text: "Waktu" },
+                categories: trayekDates,
+              },
+              yaxis: {
+                title: { text: "Dalam Rupiah" },
+              },
+              legend: {
+                position: "top",
+                horizontalAlign: "right",
+                floating: true,
+                offsetY: -25,
+                offsetX: -5,
+              },
+              markers: {
+                size: 1,
+              },
+              colors: ["#001852", "#e01f54", "#f5e8c8"],
+              dataLabels: {
+                enabled: true,
+              },
+              stroke: {
+                curve: "straight",
+              },
+              grid: {
+                borderColor: "#e7e7e7",
+                row: {
+                  colors: ["#f3f3f3", "transparent"], // takes an array which will be repeated on columns
+                  opacity: 0.5,
+                },
+              },
+            }}
+            series={sData}
+            type="line"
+            height={500}
+          />
+        </div>
+      </div>
+      {/* <button className="btn btn-danger mt-4" onClick={reset}>
+        Reset
+      </button> */}
+    </>
+  );
 }
 
-export default PendapatanGraph
+export default PendapatanGraph;
