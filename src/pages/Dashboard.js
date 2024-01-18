@@ -12,6 +12,7 @@ import delamenta from "../api/delamenta";
 import dayjs from "dayjs";
 import secureLocalStorage from "react-secure-storage";
 import VehicleList from "../components/VehicleList";
+import Carousel from "../components/Carousel";
 
 const { RangePicker } = DatePicker;
 
@@ -315,6 +316,10 @@ function Dashboard() {
       <hr />
 
       <VehicleList />
+
+      <br />
+
+      <Carousel />
     </div>
   );
 }

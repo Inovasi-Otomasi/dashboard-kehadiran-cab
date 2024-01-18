@@ -32,9 +32,14 @@ function AddRoute() {
 
     try {
       axios
-        .get(
-          "http://127.0.0.1:8080/api/1.0.0/public/vehicle/?api_key=21232f297a57a5a743894a0e4a801fc3"
-        )
+        .get("http://demo.colinn.id:8891/api/1.0.0/public/vehicle", {
+          params: {
+            api_key: "21232f297a57a5a743894a0e4a801fc3",
+          },
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+          },
+        })
         .then((res) => {
           console.log(res.data);
           res.data.map((item) => {

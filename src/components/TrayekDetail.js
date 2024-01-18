@@ -58,7 +58,11 @@ function TrayekDetail() {
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
       await axios.get("1.0.0/routes/" + id).then((res) => {
         setCoordinates(JSON.parse(res.data.coordinates));
-        setVehicles(JSON.parse(res.data.vehicles));
+        if (res.data.vehicles === "null" || res.data.vehicles === null) {
+          setVehicles(null);
+        } else {
+          setVehicles(JSON.parse(res.data.vehicles));
+        }
       });
     } catch (error) {
       console.log(error);
@@ -104,7 +108,11 @@ function TrayekDetail() {
 
         <div className="col-md-4">
           <label>Jumlah Fleet</label>
-          <h5>{vehicles.length}</h5>
+          {vehicles === "null" || vehicles === null ? (
+            <h5>Tidak ada kendaraan</h5>
+          ) : (
+            <h5>{vehicles.length}</h5>
+          )}
         </div>
 
         {/* <div className="col-md-6">

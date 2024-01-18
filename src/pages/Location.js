@@ -52,20 +52,27 @@ function Location() {
     {
       name: "Kendaraan",
       selector: (row) =>
-        row[7] === "null" ? <span>&#10060;</span> : <span>&#10004;</span>,
+        row[7] === "null" || row[7] === null ? (
+          <span>&#10060;</span>
+        ) : (
+          <span>&#10004;</span>
+        ),
       sortable: true,
       wrap: true,
     },
     {
       name: "Detail",
-      cell: (row) => (
-        <button
-          className="btn btn-success btn-sm shadow rounded"
-          onClick={() => navigate(`/location/details/${row[0]}`)}
-          id={row[0]}>
-          <i className="fa fa-search-plus"></i>
-        </button>
-      ),
+      cell: (row) =>
+        row[6] === "null" || null ? (
+          <span>&#10060;</span>
+        ) : (
+          <button
+            className="btn btn-success btn-sm shadow rounded"
+            onClick={() => navigate(`/location/details/${row[0]}`)}
+            id={row[0]}>
+            <i className="fa fa-search-plus"></i>
+          </button>
+        ),
     },
     {
       name: "Edit",

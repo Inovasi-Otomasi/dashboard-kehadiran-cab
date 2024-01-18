@@ -9,6 +9,15 @@ const token = localStorage.getItem("token");
 function VehicleList() {
   const [routes, setRoutes] = useState([]);
 
+  const getVehiclesRow = (test) => {
+    const temp2 = [];
+    const temp = JSON.parse(test);
+    temp.forEach((element) => {
+      temp2.push(element.label);
+    });
+    return temp2.toString();
+  };
+
   const columns = [
     {
       name: "ID",
@@ -24,14 +33,10 @@ function VehicleList() {
     },
     {
       name: "Kendaraan",
-      selector: (row) => {
-        const temp2 = [];
-        const temp = JSON.parse(row.vehicles);
-        temp.forEach((element) => {
-          temp2.push(element.label);
-        });
-        return temp2.toString();
-      },
+      selector: (row) =>
+        row.vehicles !== "null" || null
+          ? getVehiclesRow(row.vehicles)
+          : "0 Kendaraan",
       sortable: true,
       wrap: true,
     },
