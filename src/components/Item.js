@@ -1,14 +1,10 @@
 import React from "react";
-import { Paper, Button, Card } from "@mui/material";
-import { te } from "date-fns/locale";
-import { getValue } from "@testing-library/user-event/dist/utils";
 
 function Item(props) {
-  const temp2 = [];
-  const temp3 = "";
+  let temp2 = [];
+  let temp3 = "";
 
   if (props.item.vehicles !== "null" || null) {
-    const temp2 = [];
     const temp = JSON.parse(props.item.vehicles);
     temp.forEach((element) => {
       temp2.push(element.label);
