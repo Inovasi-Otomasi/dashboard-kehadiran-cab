@@ -15,6 +15,7 @@ function EditLogAbsen() {
     { value: "Masuk", label: "Masuk" },
     { value: "Alpha", label: "Alpha" },
     { value: "Cuti", label: "Cuti" },
+    { value: "Libur", label: "Libur" },
   ];
 
   const [state, setState] = useState({
@@ -49,6 +50,7 @@ function EditLogAbsen() {
             tap_in_time: res.data.tap_in_time,
             tap_out_time: res.data.tap_out_time,
             remark: res.data.remark,
+            notes: res.data.notes,
           });
         })
         .catch((err) => {
@@ -77,6 +79,7 @@ function EditLogAbsen() {
       tap_in_time: state.tap_in_time,
       tap_out_time: state.tap_out_time,
       remark: state.remark,
+      notes: state.notes,
     };
 
     try {
@@ -87,6 +90,7 @@ function EditLogAbsen() {
         tap_in_time: "",
         tap_out_time: "",
         remark: "",
+        notes: "",
       });
       Swal.fire({
         icon: "success",
@@ -118,7 +122,8 @@ function EditLogAbsen() {
       <form
         className="row g-3 needs-validation"
         autoComplete="off"
-        onSubmit={handleSubmit}>
+        onSubmit={handleSubmit}
+      >
         <div class="col-md-6">
           <label for="validationNama" class="form-label">
             Nama
@@ -196,7 +201,8 @@ function EditLogAbsen() {
             required
             onChange={(value) => handleChange(value)}
             value={state.remark}
-            name="remark">
+            name="remark"
+          >
             <option selected disabled>
               Pilih Remark
             </option>
@@ -204,6 +210,21 @@ function EditLogAbsen() {
               <option value={remark.value}>{remark.label}</option>
             ))}
           </select>
+        </div>
+        <div className="col-md-6">
+          <label for="validationNotes" class="form-label">
+            Notes
+          </label>
+          <textarea
+            className="form-control"
+            id="validationNotes"
+            placeholder="Contoh: Supir Pengganti"
+            name="notes"
+            value={state.notes}
+            onChange={handleChange}
+            required
+            rows={4}
+          ></textarea>
         </div>
 
         <div class="row g-3 pt-4">

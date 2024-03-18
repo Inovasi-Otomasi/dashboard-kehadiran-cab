@@ -69,7 +69,8 @@ function Location() {
           <button
             className="btn btn-success btn-sm shadow rounded"
             onClick={() => navigate(`/location/details/${row[0]}`)}
-            id={row[0]}>
+            id={row[0]}
+          >
             <i className="fa fa-search-plus"></i>
           </button>
         ),
@@ -80,7 +81,8 @@ function Location() {
         <button
           className="btn btn-primary btn-sm shadow rounded"
           onClick={() => navigate(`/location/edit/${row[0]}`)}
-          id={row[0]}>
+          id={row[0]}
+        >
           <i className="fa fa-edit"></i>
         </button>
       ),
@@ -90,7 +92,8 @@ function Location() {
       cell: (row) => (
         <button
           className="btn btn-danger btn-sm"
-          onClick={() => deleteData(row[0])}>
+          onClick={() => deleteData(row[0])}
+        >
           <i className="fa fa-trash"></i>
         </button>
       ),
@@ -126,45 +129,6 @@ function Location() {
     }
   };
 
-  const getDelamentaData = async (id) => {
-    let temp = [];
-    console.log(id);
-
-    delamenta.defaults.headers.common["Authorization"] = `Bearer ${dmtoken}`;
-    try {
-      await delamenta
-        .get("http://103.165.135.134:6005/api/trayek/master")
-        .then((response) => {
-          temp = response.data.data.rows;
-        });
-
-      let objData = temp.find((o) => parseInt(o.id_trayek) === id);
-      console.log(objData);
-
-      const trayekData = {
-        number: parseInt(objData.id_trayek),
-        code: objData.deskripsi,
-        complete_route: objData.trayek,
-      };
-
-      await api.post("/1.0.0/routes", trayekData);
-
-      temp = [];
-      Swal.fire({
-        icon: "success",
-        title: "Menambahkan Data Trayek",
-        text: "Sukses menambahkan Trayek!",
-      });
-      getData();
-    } catch (error) {
-      Swal.fire({
-        icon: "error",
-        title: "Menambahkan Data Trayek",
-        text: "Gagal menambahkan Trayek!",
-      });
-    }
-  };
-
   const handleSync = async () => {
     const tempDmId = [];
     const tempId = [];
@@ -178,15 +142,13 @@ function Location() {
       timerProgressBar: true,
     });
     try {
-      await delamenta
-        .get("http://103.165.135.134:6005/api/trayek/master")
-        .then((response) => {
-          // setDmDataId(response.data.data.rows.trayek);
-          response.data.data.rows.forEach((element) => {
-            tempDmId.push(parseInt(element.id_trayek));
-          });
-          setDmDataId(tempDmId);
+      await delamenta.get("/trayek/master").then((response) => {
+        // setDmDataId(response.data.data.rows.trayek);
+        response.data.data.rows.forEach((element) => {
+          tempDmId.push(element.id_trayek);
         });
+        setDmDataId(tempDmId);
+      });
 
       await api({
         method: "post",
@@ -211,6 +173,43 @@ function Location() {
       });
     } catch (e) {
       console.log(e);
+    }
+  };
+
+  const getDelamentaData = async (id) => {
+    let temp = [];
+    console.log(id);
+
+    delamenta.defaults.headers.common["Authorization"] = `Bearer ${dmtoken}`;
+    try {
+      await delamenta.get("/trayek/master").then((response) => {
+        temp = response.data.data.rows;
+      });
+
+      let objData = temp.find((o) => o.id_trayek === id);
+      console.log(objData);
+
+      const trayekData = {
+        number: objData.smt_trayek,
+        code: objData.id_trayek,
+        complete_route: objData.trayek,
+      };
+
+      await api.post("/1.0.0/routes", trayekData);
+
+      temp = [];
+      Swal.fire({
+        icon: "success",
+        title: "Menambahkan Data Trayek",
+        text: "Sukses menambahkan Trayek!",
+      });
+      getData();
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Menambahkan Data Trayek",
+        text: "Gagal menambahkan Trayek!",
+      });
     }
   };
 

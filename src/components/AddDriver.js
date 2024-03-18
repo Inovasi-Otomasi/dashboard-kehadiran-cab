@@ -91,7 +91,8 @@ function AddDriver() {
         type="button"
         className="btn btn-primary shadow rounded"
         data-bs-toggle="modal"
-        data-bs-target="#exampleModal">
+        data-bs-target="#exampleModal"
+      >
         <i className="fa fa-plus"></i> Driver
       </button>
 
@@ -100,7 +101,8 @@ function AddDriver() {
         id="exampleModal"
         tabindex="-1"
         aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
+        aria-hidden="true"
+      >
         <div class="modal-dialog modal-dialog-scrollable modal-xl modal-fullscreen-md-down">
           <div class="modal-content">
             <div class="modal-header">
@@ -112,7 +114,8 @@ function AddDriver() {
               <form
                 class="row g-3 needs-validation px-5"
                 onSubmit={handleSubmit}
-                autoComplete="off">
+                autoComplete="off"
+              >
                 <div class="col-md-6">
                   <label for="validationCustom01" class="form-label">
                     Nomor
@@ -192,7 +195,7 @@ function AddDriver() {
                 </div>
                 <div class="col-md-6">
                   <label for="validationCustom03" class="form-label">
-                    Address
+                    Alamat
                   </label>
                   <input
                     type="text"
@@ -231,7 +234,8 @@ function AddDriver() {
                     aria-label="Default select example"
                     required
                     onChange={(value) => handleChange(value)}
-                    name="status">
+                    name="status"
+                  >
                     <option selected disabled>
                       Pilih Status
                     </option>
@@ -246,14 +250,16 @@ function AddDriver() {
                     <button
                       type="button"
                       class="btn btn-secondary shadow rounded"
-                      data-bs-dismiss="modal">
+                      data-bs-dismiss="modal"
+                    >
                       Tutup
                     </button>
                   </div>
                   <div className="col-6 text-start mt-4">
                     <button
                       class="btn btn-success shadow rounded"
-                      type="submit">
+                      type="submit"
+                    >
                       Submit
                     </button>
                   </div>

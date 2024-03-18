@@ -27,12 +27,12 @@ function Login() {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      await axios("http://103.165.135.134:6005/api/users/login", {
+      await axios("https://pubcab.enco.id/api/users/login", {
         method: "POST",
 
         data: {
-          username: "reader30",
-          password: "AdminDb1407!",
+          username: "cab_iot",
+          password: "12345",
         },
       })
         .then((response) => {
@@ -98,7 +98,13 @@ function Login() {
         <title>Data Absensi CAB | Login</title>
       </Helmet>
       <div className="d-flex flex-row justify-content-center">
-        <img src={logo} className="img-fluid" width={200} height={200} />
+        <img
+          src={logo}
+          className="img-fluid"
+          width={200}
+          alt="cab"
+          height={200}
+        />
       </div>
       <h1 className="text-center">DATA ABSENSI CAB</h1>
 

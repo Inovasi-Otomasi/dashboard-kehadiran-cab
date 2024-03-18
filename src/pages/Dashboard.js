@@ -23,11 +23,13 @@ function Dashboard() {
   const navigate = useNavigate();
   const date = new Date();
 
-  let currentDay = String(date.getDate()).padStart(2, "0");
+  let currentDay = String(date.getDate() + 1).padStart(2, "0");
+  let currentDayV2 = String(date.getDate()).padStart(2, "0");
   let currentMonth = String(date.getMonth() + 1).padStart(2, "0");
   let currentYear = date.getFullYear();
 
   let currentDate = `${currentYear}-${currentMonth}-${currentDay}`;
+  let currentDateV2 = `${currentYear}-${currentMonth}-${currentDayV2}`;
 
   let startofMonth = `${currentYear}-${currentMonth}-01`;
 
@@ -136,7 +138,7 @@ function Dashboard() {
       Swal.fire({
         icon: "error",
         title: "Error",
-        text: "Coba login kembali",
+        text: "Data Reader tidak ada",
       });
       setTimeout(function () {
         window.location.reload(true);
@@ -234,8 +236,8 @@ function Dashboard() {
           setTrayekNumbers(rnumbers);
           Swal.fire({
             icon: "success",
-            title: "Berhasil Load Data",
-            text: `Range dari ${startDate} hingga ${endDate} `,
+            title: "Load Data Dashboard",
+            text: `Berhasil load data!`,
           });
         });
     } catch (error) {
@@ -250,7 +252,7 @@ function Dashboard() {
 
   const handleChangeDebut = (range) => {
     setStartDate(range[0].format("YYYY-MM-DD"));
-    setEndDate(range[1].format("YYYY-MM-DD"));
+    setEndDate(range[1].add(1, "day").format("YYYY-MM-DD"));
   };
 
   useEffect(() => {
@@ -276,19 +278,21 @@ function Dashboard() {
           <div>
             <RangePicker
               onChange={handleChangeDebut}
-              defaultValue={[dayjs(startofMonth), dayjs(currentDate)]}
+              defaultValue={[dayjs(startofMonth), dayjs(currentDateV2)]}
               allowClear={false}
             />
             <span> </span>
             <button
               className="btn btn-success btn-sm shadow rounded"
-              onClick={getDataByRange}>
+              onClick={getDataByRange}
+            >
               Set
             </button>
             <span> </span>
             <button
               className="btn btn-danger btn-sm shadow rounded"
-              onClick={resetData}>
+              onClick={resetData}
+            >
               Reset
             </button>
           </div>

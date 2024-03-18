@@ -32,7 +32,7 @@ function AddRoute() {
 
     try {
       axios
-        .get("http://demo.colinn.id:8891/api/1.0.0/public/vehicle", {
+        .get("https://demo.colinn.id:8899/api/1.0.0/public/vehicle", {
           params: {
             api_key: "21232f297a57a5a743894a0e4a801fc3",
           },
@@ -163,7 +163,8 @@ function AddRoute() {
         type="button"
         className="btn btn-primary shadow rounded"
         data-bs-toggle="modal"
-        data-bs-target="#exampleModal">
+        data-bs-target="#exampleModal"
+      >
         <i className="fa fa-plus"></i> Trayek
       </button>
 
@@ -172,7 +173,8 @@ function AddRoute() {
         id="exampleModal"
         tabindex="-1"
         aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
+        aria-hidden="true"
+      >
         <div class="modal-dialog modal-dialog-scrollable modal-xl modal-fullscreen-md-down">
           <div class="modal-content">
             <div class="modal-header">
@@ -184,7 +186,8 @@ function AddRoute() {
               <form
                 class="row g-3 needs-validation px-5"
                 onSubmit={handleSubmit}
-                autoComplete="off">
+                autoComplete="off"
+              >
                 <div class="col-md-6">
                   <label for="validationCustom01" class="form-label">
                     Nomor
@@ -292,14 +295,16 @@ function AddRoute() {
                     <button
                       type="button"
                       class="btn btn-secondary shadow rounded"
-                      data-bs-dismiss="modal">
+                      data-bs-dismiss="modal"
+                    >
                       Tutup
                     </button>
                   </div>
                   <div className="col-6 text-start mt-4">
                     <button
                       class="btn btn-success shadow rounded"
-                      type="submit">
+                      type="submit"
+                    >
                       Submit
                     </button>
                   </div>

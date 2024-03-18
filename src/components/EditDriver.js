@@ -134,7 +134,8 @@ function EditDriver() {
       <form
         class="row g-3 needs-validation"
         onSubmit={handleSubmit}
-        autoComplete="off">
+        autoComplete="off"
+      >
         <h1>Edit Data</h1>
         <div class="col-md-6">
           <label for="validationCustom01" class="form-label">
@@ -217,7 +218,7 @@ function EditDriver() {
 
         <div class="col-md-6">
           <label for="validationCustom03" class="form-label">
-            Address
+            Alamat
           </label>
           <input
             type="text"
@@ -256,7 +257,8 @@ function EditDriver() {
             required
             onChange={(value) => handleChange(value)}
             value={state.status}
-            name="status">
+            name="status"
+          >
             <option selected disabled>
               Pilih Status
             </option>
@@ -278,7 +280,8 @@ function EditDriver() {
             <button
               class="btn btn-success shadow rounded"
               type="button"
-              onClick={handleSubmit}>
+              onClick={handleSubmit}
+            >
               Submit
             </button>
           </div>

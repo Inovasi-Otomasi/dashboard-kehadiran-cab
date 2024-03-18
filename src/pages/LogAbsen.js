@@ -8,6 +8,7 @@ import ExportExcel from "../components/ExcelExport";
 import { DatePicker } from "antd";
 import secureLocalStorage from "react-secure-storage";
 import dayjs from "dayjs";
+// import moment from "moment";
 
 const { RangePicker } = DatePicker;
 
@@ -54,20 +55,40 @@ function LogAbsen() {
   bodyFormData.append("start_date", startDate);
   bodyFormData.append("end_date", endDate);
 
+  function diff_hours(dt2, dt1) {
+    // Calculate the difference in milliseconds between the two provided Date objects by subtracting the milliseconds value of dt1 from the milliseconds value of dt2
+    var diff = (dt2 - dt1) / 1000;
+    // Convert the difference from milliseconds to hours by dividing it by the number of seconds in an hour (3600)
+    diff /= 60 * 60;
+    console.log(diff);
+    // Return the absolute value of the rounded difference in hours
+    return `${Math.abs(Math.round(diff))} hours`;
+  }
+
   const columns = [
     { name: "ID", selector: (row) => row[0], sortable: true, wrap: true },
     { name: "Nama", selector: (row) => row[1], sortable: true, wrap: true },
     { name: "Tanggal", selector: (row) => row[2], sortable: true, wrap: true },
     { name: "Tap-In", selector: (row) => row[3], sortable: true, wrap: true },
     { name: "Tap-Out", selector: (row) => row[4], sortable: true, wrap: true },
+    {
+      name: "Jam Kerja",
+      selector: (row) => {
+        diff_hours(row[4], row[3]);
+      },
+      sortable: true,
+      wrap: true,
+    },
     { name: "Remark", selector: (row) => row[5], sortable: true, wrap: true },
+    { name: "Notes", selector: (row) => row[6], sortable: true, wrap: true },
     {
       name: "Edit",
       cell: (row) => (
         <button
           className="btn btn-primary btn-sm shadow rounded"
           onClick={() => navigate(`/log-absen/edit/${row[0]}`)}
-          id={row[0]}>
+          id={row[0]}
+        >
           <i className="fa fa-edit"></i>
         </button>
       ),
@@ -132,14 +153,14 @@ function LogAbsen() {
         setLogAbsen(response.data);
         Swal.fire({
           icon: "success",
-          title: "Load Data Issue",
+          title: "Load Data Log Absen",
           text: `Range dari ${startDate} hingga ${endDate} `,
         });
       });
     } catch (error) {
       Swal.fire({
         icon: "error",
-        title: "Load Data Issue",
+        title: "Load Data Log Absen",
         text: "Gagal mengload data",
       });
     }
@@ -230,13 +251,15 @@ function LogAbsen() {
           <span> </span>
           <button
             className="btn btn-success btn-sm shadow rounded"
-            onClick={getDataByRange}>
+            onClick={getDataByRange}
+          >
             Set
           </button>
           <span> </span>
           <button
             className="btn btn-danger btn-sm shadow rounded"
-            onClick={resetData}>
+            onClick={resetData}
+          >
             Reset
           </button>
         </div>

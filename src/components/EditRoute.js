@@ -42,7 +42,7 @@ function EditRoute() {
 
     try {
       axios
-        .get("http://demo.colinn.id:8891/api/1.0.0/public/vehicle", {
+        .get("https://demo.colinn.id:8899/api/1.0.0/public/vehicle", {
           params: {
             api_key: "21232f297a57a5a743894a0e4a801fc3",
           },
@@ -382,7 +382,8 @@ function EditRoute() {
           <button
             class="btn btn-success shadow rounded"
             type="button"
-            onClick={handleSubmit}>
+            onClick={handleSubmit}
+          >
             Submit
           </button>
         </div>
