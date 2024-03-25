@@ -157,7 +157,7 @@ function Location() {
         headers: { "Content-Type": "multipart/form-data" },
       }).then((res) => {
         res.data.data.forEach((element) => {
-          tempId.push(element[1]);
+          tempId.push(element[2]);
         });
         setLocationsId(tempId);
       });

@@ -71,7 +71,8 @@ function Driver() {
         <button
           className="btn btn-primary btn-sm shadow rounded"
           onClick={() => navigate(`/driver/edit/${row[0]}`)}
-          id={row[0]}>
+          id={row[0]}
+        >
           <i className="fa fa-edit"></i>
         </button>
       ),
@@ -81,7 +82,8 @@ function Driver() {
       cell: (row) => (
         <button
           className="btn btn-danger btn-sm shadow rounded"
-          onClick={() => deleteData(row[0])}>
+          onClick={() => deleteData(row[0])}
+        >
           <i className="fa fa-trash"></i>
         </button>
       ),
@@ -130,6 +132,59 @@ function Driver() {
     }
   };
 
+  const handleSync = async () => {
+    const tempDmId = [];
+    const tempId = [];
+
+    api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    delamenta.defaults.headers.common["Authorization"] = `Bearer ${dmtoken}`;
+
+    Swal.fire({
+      title: "Syncing",
+      icon: "info",
+      timer: 4000,
+      timerProgressBar: true,
+    });
+
+    try {
+      await delamenta.get("/driver?status=active").then((response) => {
+        response.data.data.forEach((element) => {
+          tempDmId.push(element.nomor_kartu);
+        });
+      });
+
+      await api({
+        method: "post",
+        url: GET_URL,
+        data: bodyFormData,
+        headers: { "Content-Type": "multipart/form-data" },
+      }).then((res) => {
+        res.data.data.forEach((element) => {
+          tempId.push(element[5]);
+        });
+
+        let uniqueDm = tempDmId.filter((o) => tempId.indexOf(o) === -1);
+        let unique = tempId.filter((o) => tempDmId.indexOf(o) === -1);
+        console.log(uniqueDm.concat(unique));
+        console.log(uniqueDm.concat(uniqueDm));
+
+        const tempUnique = uniqueDm.concat(unique);
+
+        console.log(tempId);
+        console.log(tempDmId);
+        console.log(tempUnique);
+
+        console.log(tempUnique);
+
+        tempUnique.forEach((id) => {
+          getDelamentaData(id);
+        });
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   const getDelamentaData = async (id) => {
     let temp = [];
     console.log(id);
@@ -141,7 +196,7 @@ function Driver() {
         console.log(response.data.data);
       });
 
-      let objData = temp.find((o) => o.id_driver === id);
+      let objData = temp.find((o) => o.nomor_kartu === id);
       console.log(objData);
 
       const driverData = {
@@ -166,56 +221,6 @@ function Driver() {
         title: "Menambahkan Data Driver",
         text: "Driver sudah ada atau tidak bisa ditambah!",
       });
-    }
-  };
-
-  const handleSync = async () => {
-    const tempDmId = [];
-    const tempId = [];
-
-    api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-    delamenta.defaults.headers.common["Authorization"] = `Bearer ${dmtoken}`;
-
-    Swal.fire({
-      title: "Syncing",
-      icon: "info",
-      timer: 4000,
-      timerProgressBar: true,
-    });
-
-    try {
-      await delamenta.get("/driver?status=active").then((response) => {
-        response.data.data.forEach((element) => {
-          tempDmId.push(element.id_driver);
-        });
-      });
-
-      await api({
-        method: "post",
-        url: GET_URL,
-        data: bodyFormData,
-        headers: { "Content-Type": "multipart/form-data" },
-      }).then((res) => {
-        res.data.data.forEach((element) => {
-          tempId.push(element[1]);
-        });
-
-        let uniqueDm = tempDmId.filter((o) => tempId.indexOf(o) === -1);
-        let unique = tempId.filter((o) => tempDmId.indexOf(o) === -1);
-        console.log(uniqueDm.concat(unique));
-
-        const tempUnique = uniqueDm.concat(unique);
-
-        console.log(tempId);
-        console.log(tempDmId);
-        console.log(tempUnique);
-
-        tempUnique.forEach((id) => {
-          getDelamentaData(id);
-        });
-      });
-    } catch (e) {
-      console.log(e);
     }
   };
 

@@ -8,7 +8,7 @@ import ExportExcel from "../components/ExcelExport";
 import { DatePicker } from "antd";
 import secureLocalStorage from "react-secure-storage";
 import dayjs from "dayjs";
-// import moment from "moment";
+import moment from "moment";
 
 const { RangePicker } = DatePicker;
 
@@ -74,7 +74,9 @@ function LogAbsen() {
     {
       name: "Jam Kerja",
       selector: (row) => {
-        diff_hours(row[4], row[3]);
+        return moment
+          .utc(moment(row[4], "HH:mm:ss").diff(moment(row[3], "HH:mm:ss")))
+          .format("HH:mm:ss");
       },
       sortable: true,
       wrap: true,
