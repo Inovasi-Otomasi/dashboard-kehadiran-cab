@@ -28,7 +28,13 @@ function App() {
       <div className="App">
         <Sidebar />
 
-        <main className="container-fluid">
+        <main
+          className="container-fluid"
+          style={{
+            // height: "100vh",
+            overflowY: "hidden",
+          }}
+        >
           <User />
           <Routes>
             <Route exact path="/" element={<Login />} />

@@ -9,6 +9,7 @@ import { DatePicker } from "antd";
 import secureLocalStorage from "react-secure-storage";
 import dayjs from "dayjs";
 import moment from "moment";
+import SyncLogAbsen from "../components/SyncLogAbsen";
 
 const { RangePicker } = DatePicker;
 
@@ -54,16 +55,6 @@ function LogAbsen() {
   // bodyFormData.append("columns[0][search][value]", "");
   bodyFormData.append("start_date", startDate);
   bodyFormData.append("end_date", endDate);
-
-  function diff_hours(dt2, dt1) {
-    // Calculate the difference in milliseconds between the two provided Date objects by subtracting the milliseconds value of dt1 from the milliseconds value of dt2
-    var diff = (dt2 - dt1) / 1000;
-    // Convert the difference from milliseconds to hours by dividing it by the number of seconds in an hour (3600)
-    diff /= 60 * 60;
-    console.log(diff);
-    // Return the absolute value of the rounded difference in hours
-    return `${Math.abs(Math.round(diff))} hours`;
-  }
 
   const columns = [
     { name: "ID", selector: (row) => row[0], sortable: true, wrap: true },
@@ -265,9 +256,7 @@ function LogAbsen() {
             Reset
           </button>
         </div>
-        <button className="btn btn-primary shadow rounded">
-          <i className="fa fa-refresh"></i> Sync
-        </button>
+        <SyncLogAbsen />
         <ExportExcel excelData={logsExcel} fileName={"Laporan Log Absen"} />
       </div>
 
