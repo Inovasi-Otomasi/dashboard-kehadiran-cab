@@ -9,6 +9,8 @@ const GET_URL = "/1.0.0/shifts_datatables";
 function SyncLogAbsen() {
   const token = localStorage.getItem("token");
   const dmtoken = localStorage.getItem("delamenta-token");
+
+  // for datatable from backend API
   const [page, setPage] = useState(1);
   const [start, setStart] = useState(0);
   const [sortColumn, setSortColumn] = useState(0);
@@ -33,6 +35,7 @@ function SyncLogAbsen() {
   const [logAbsen, setLogAbsen] = useState([]);
   const [vehicleList, setVehicleList] = useState([]);
 
+  // for log absen datatables
   var bodyFormData = new FormData();
 
   bodyFormData.append("draw", page);
@@ -117,6 +120,7 @@ function SyncLogAbsen() {
     });
 
     try {
+      // get all the driver id from each vehicle delameta based on selected date
       for (const item of vehicleList) {
         await delamenta
           .get(
@@ -126,7 +130,7 @@ function SyncLogAbsen() {
             tempDmId.push(res.data.data.id_driver);
           });
       }
-
+      // get all the driver number from log absen datatable based on selected date
       await api({
         method: "post",
         url: GET_URL,
@@ -137,13 +141,13 @@ function SyncLogAbsen() {
           tempId.push(element[2]);
         });
       });
-
+      // compare which id is unique (not from both array)
       let uniqueDm = tempDmId.filter((o) => tempId.indexOf(o) === -1);
       let unique = tempId.filter((o) => tempDmId.indexOf(o) === -1);
       console.log(uniqueDm.concat(unique));
 
       const tempUnique = uniqueDm.concat(unique);
-
+      // call function each unique id
       tempUnique.forEach((id) => {
         getDelamentaData(id);
       });
@@ -155,7 +159,7 @@ function SyncLogAbsen() {
   const getDelamentaData = async (id) => {
     const temp = [];
     delamenta.defaults.headers.common["Authorization"] = `Bearer ${dmtoken}`;
-
+    // push all the log absen data of the selected date from delameta
     try {
       for (const item of vehicleList) {
         await delamenta
@@ -166,8 +170,9 @@ function SyncLogAbsen() {
             temp.push(res.data.data);
           });
       }
-
+      // check if there is a match between the id we passed and the id_driver
       let objData = temp.find((o) => o.id_driver === id);
+      // create a new object if theres a match
       console.log(objData);
 
       const absenData = {
@@ -176,8 +181,8 @@ function SyncLogAbsen() {
         tap_in_time: objData.waktu_login,
         tap_out_time: objData.waktu_logout,
       };
-
-      await api.post("/1.0.0/shifts");
+      // post the data to the backend
+      await api.post("/1.0.0/shifts", absenData);
       temp = [];
     } catch (e) {
       console.log(e);

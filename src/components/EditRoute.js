@@ -81,6 +81,7 @@ function EditRoute() {
     console.log(vehiclesData);
   };
 
+  // Add location pins in the map
   const onMapClick = (e) => {
     if (coordinates === null) {
       setCoordinates([
@@ -100,6 +101,7 @@ function EditRoute() {
     }
   };
 
+  // function for selecting coordinates and adding pin after entering the auto complete from google map
   const onSelect = (lat, lng) => {
     if (coordinates === null) {
       setCoordinates([
@@ -357,7 +359,7 @@ function EditRoute() {
             classNamePrefix="select"
           />
         </div>
-
+        {/* Google Map Componenent */}
         <Places
           onMapClick={onMapClick}
           resetCoordinates={resetCoordinates}

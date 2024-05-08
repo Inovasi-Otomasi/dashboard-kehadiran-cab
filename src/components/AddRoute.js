@@ -79,6 +79,7 @@ function AddRoute() {
     console.log(vehiclesData);
   };
 
+  //function to click on google map
   const onMapClick = (e) => {
     setCoordinates((current) => [
       ...current,
@@ -89,6 +90,7 @@ function AddRoute() {
     ]);
   };
 
+  // function to select on google maps autocomplete
   const onSelect = (lat, lng) => {
     setCoordinates((current) => [
       ...current,
@@ -99,6 +101,7 @@ function AddRoute() {
     ]);
   };
 
+  // reset the location pins in the map
   const resetCoordinates = () => {
     setCoordinates([]);
     setZoom(10);
@@ -280,7 +283,7 @@ function AddRoute() {
                     classNamePrefix="select"
                   />
                 </div>
-
+                {/* Google Map */}
                 <Places
                   onMapClick={onMapClick}
                   coordinates={coordinates}

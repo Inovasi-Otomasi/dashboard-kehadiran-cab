@@ -33,6 +33,7 @@ export default function Places({
   );
 }
 
+// Google map component
 function Map({
   onMapClick,
   coordinates,
@@ -60,7 +61,8 @@ function Map({
           streetViewControl: false,
           mapTypeControl: false,
           fullscreenControl: false,
-        }}>
+        }}
+      >
         <div className="places-container pt-2">
           <div className="row g-3">
             <div className="col-md-8">
@@ -74,7 +76,8 @@ function Map({
               <button
                 className="btn btn-danger"
                 type="button"
-                onClick={resetCoordinates}>
+                onClick={resetCoordinates}
+              >
                 Reset
               </button>
             </div>
@@ -95,6 +98,7 @@ function Map({
   );
 }
 
+// Autocomplete component
 const PlacesAutocomplete = ({ setSelected, setZoom, onSelect }) => {
   const {
     ready,
@@ -134,7 +138,7 @@ const PlacesAutocomplete = ({ setSelected, setZoom, onSelect }) => {
       });
       clearSuggestions();
     };
-
+  // render the suggestions in the autocomplete
   const renderSuggestions = () =>
     data.map((suggestion) => {
       const {

@@ -7,6 +7,7 @@ import usePlacesAutocomplete, {
 import "../styles/maps.css";
 import useOnclickOutside from "react-cool-onclickoutside";
 
+// Google Map page for editing route
 export default function Places({
   onMapClick,
   coordinates,
@@ -18,6 +19,7 @@ export default function Places({
   onMarkerDragEnd,
   onMarkerDragStart,
 }) {
+  // Load the google map API key
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
     libraries: ["places"],
@@ -93,10 +95,12 @@ function Map({
           streetViewControl: false,
           mapTypeControl: false,
           fullscreenControl: false,
-        }}>
+        }}
+      >
         <div className="places-container pt-2">
           <div className="row g-3">
             <div className="col-md-8">
+              {/* Autocomplete input */}
               <PlacesAutocomplete
                 setSelected={setSelected}
                 setZoom={setZoom}
@@ -107,7 +111,8 @@ function Map({
               <button
                 className="btn btn-danger"
                 type="button"
-                onClick={resetCoordinates}>
+                onClick={resetCoordinates}
+              >
                 Reset
               </button>
             </div>
@@ -127,7 +132,7 @@ function Map({
     </>
   );
 }
-
+// Autocomplete component
 const PlacesAutocomplete = ({ setSelected, setZoom, onSelect }) => {
   const {
     ready,
@@ -166,7 +171,7 @@ const PlacesAutocomplete = ({ setSelected, setZoom, onSelect }) => {
       });
       clearSuggestions();
     };
-
+  // Render the autocomplete
   const renderSuggestions = () =>
     data.map((suggestion) => {
       const {
