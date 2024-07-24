@@ -9,7 +9,8 @@ import { DatePicker } from "antd";
 import secureLocalStorage from "react-secure-storage";
 import dayjs from "dayjs";
 import moment from "moment";
-import SyncLogAbsen from "../components/SyncLogAbsen";
+// import SyncLogAbsen from "../components/SyncLogAbsen";
+import SyncAbsen from "../components/SyncAbsen";
 
 const { RangePicker } = DatePicker;
 
@@ -58,22 +59,28 @@ function LogAbsen() {
 
   const columns = [
     { name: "ID", selector: (row) => row[0], sortable: true, wrap: true },
+    // {
+    //   name: "ID Driver",
+    //   selector: (row) => row[2],
+    //   sortable: true,
+    //   wrap: true,
+    // },
     { name: "Nama", selector: (row) => row[1], sortable: true, wrap: true },
-    { name: "Tanggal", selector: (row) => row[2], sortable: true, wrap: true },
-    { name: "Tap-In", selector: (row) => row[3], sortable: true, wrap: true },
-    { name: "Tap-Out", selector: (row) => row[4], sortable: true, wrap: true },
+    { name: "Tanggal", selector: (row) => row[3], sortable: true, wrap: true },
+    { name: "Tap-In", selector: (row) => row[4], sortable: true, wrap: true },
+    { name: "Tap-Out", selector: (row) => row[5], sortable: true, wrap: true },
     {
       name: "Jam Kerja",
       selector: (row) => {
         return moment
-          .utc(moment(row[4], "HH:mm:ss").diff(moment(row[3], "HH:mm:ss")))
+          .utc(moment(row[5], "HH:mm:ss").diff(moment(row[4], "HH:mm:ss")))
           .format("HH:mm:ss");
       },
       sortable: true,
       wrap: true,
     },
-    { name: "Remark", selector: (row) => row[5], sortable: true, wrap: true },
-    { name: "Notes", selector: (row) => row[6], sortable: true, wrap: true },
+    { name: "Remark", selector: (row) => row[6], sortable: true, wrap: true },
+    { name: "Notes", selector: (row) => row[7], sortable: true, wrap: true },
     {
       name: "Edit",
       cell: (row) => (
@@ -256,7 +263,8 @@ function LogAbsen() {
             Reset
           </button>
         </div>
-        <SyncLogAbsen />
+        {/* <SyncLogAbsen /> */}
+        <SyncAbsen />
         <ExportExcel excelData={logsExcel} fileName={"Laporan Log Absen"} />
       </div>
 

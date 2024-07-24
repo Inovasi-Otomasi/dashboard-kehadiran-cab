@@ -95,6 +95,7 @@ function TrayekDetail() {
         <title>Data Absensi CAB | Detail Trayek</title>
       </Helmet>
       <h1 className="text-center mb-4">Detail Trayek {id}</h1>
+      {/* Map component */}
       <Map coordinates={coordinates} />
       <div className="row g-3 text-center">
         <div className="col-md-4">
@@ -133,7 +134,8 @@ function TrayekDetail() {
           <button
             class="btn btn-secondary shadow rounded"
             type="submit"
-            onClick={() => navigate(-1)}>
+            onClick={() => navigate(-1)}
+          >
             Kembali
           </button>
         </div>

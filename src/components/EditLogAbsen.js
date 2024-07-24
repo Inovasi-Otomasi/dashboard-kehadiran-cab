@@ -19,11 +19,12 @@ function EditLogAbsen() {
   ];
 
   const [state, setState] = useState({
+    number: "",
     name: "",
     date: "",
     tap_in_time: "",
     tap_out_time: "",
-    remark: "",
+    remark: "Masuk",
   });
 
   const handleChange = (e) => {
@@ -45,6 +46,7 @@ function EditLogAbsen() {
         .then((res) => {
           setState({
             ...state,
+            number: res.data.number,
             name: res.data.name,
             date: res.data.date,
             tap_in_time: res.data.tap_in_time,
@@ -124,7 +126,23 @@ function EditLogAbsen() {
         autoComplete="off"
         onSubmit={handleSubmit}
       >
-        <div class="col-md-6">
+        <div class="col-md-4">
+          <label for="validationNama" class="form-label">
+            ID Driver
+          </label>
+          <input
+            type="text"
+            class="form-control"
+            id="validationNama"
+            placeholder="Contoh: 12"
+            name="number"
+            value={state.number}
+            onChange={handleChange}
+            required
+            disabled
+          />
+        </div>
+        <div class="col-md-4">
           <label for="validationNama" class="form-label">
             Nama
           </label>
@@ -132,15 +150,14 @@ function EditLogAbsen() {
             type="text"
             class="form-control"
             id="validationNama"
-            placeholder="Bambang"
+            placeholder="Contoh: Bambang"
             name="name"
             value={state.name}
             onChange={handleChange}
             required
-            disabled
           />
         </div>
-        <div class="col-md-6">
+        <div class="col-md-4">
           <label for="validationTanggal" class="form-label">
             Tanggal
           </label>
@@ -186,7 +203,6 @@ function EditLogAbsen() {
             value={state.tap_out_time}
             onChange={handleChange}
             required
-            disabled
           />
         </div>
 
@@ -222,7 +238,7 @@ function EditLogAbsen() {
             name="notes"
             value={state.notes}
             onChange={handleChange}
-            required
+            // required
             rows={4}
           ></textarea>
         </div>

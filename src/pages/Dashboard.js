@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 import AbsenPie from "../components/AbsenPie";
 import PendapatanGraph from "../components/PendapatanGraph";
-import KaryawanTable from "../components/KaryawanTable";
+// import KaryawanTable from "../components/KaryawanTable";
 import { DatePicker } from "antd";
 import { Helmet } from "react-helmet";
 import TestChart from "../components/TestChart";
@@ -13,11 +13,16 @@ import dayjs from "dayjs";
 import secureLocalStorage from "react-secure-storage";
 import VehicleList from "../components/VehicleList";
 import Carousel from "../components/Carousel";
+import axios from "../api/axios";
+
+import moment from "moment";
 
 const { RangePicker } = DatePicker;
 
 const token = localStorage.getItem("token");
 const dmtoken = localStorage.getItem("delamenta-token");
+
+const GET_URL = "/1.0.0/shifts_datatables";
 
 function Dashboard() {
   const navigate = useNavigate();
@@ -44,7 +49,8 @@ function Dashboard() {
   const codes = [];
 
   const [trayekData, setTrayekData] = useState([]);
-  const [fTrayekData, setFTrayekData] = useState([]);
+  // const [fTrayekData, setFTrayekData] = useState([]);
+  const [absenData, setAbsenData] = useState([]);
 
   //for line
   const [sData, setSData] = useState([]);
@@ -57,15 +63,86 @@ function Dashboard() {
     window.location.reload();
   };
 
+  // const [page, setPage] = useState(1);
+  // const [start, setStart] = useState(0);
+  // const [sortColumn, setSortColumn] = useState(0);
+  // const [dir, setDir] = useState("desc");
+  // const countPerPage = 10;
+  // const [filterLog, setFilterLog] = useState("");
+
+  // var bodyFormData = new FormData();
+
+  // bodyFormData.append("draw", page);
+  // bodyFormData.append("length", countPerPage);
+  // bodyFormData.append("order[0][column]", sortColumn);
+  // bodyFormData.append("order[0][dir]", dir);
+  // bodyFormData.append("start", start);
+  // bodyFormData.append("search[value]", filterLog);
+  // // bodyFormData.append("columns[0][search][value]", "");
+  // bodyFormData.append("start_date", startDate);
+  // bodyFormData.append("end_date", endDate);
+
+  const getAbsenData = async () => {
+    const temp = [];
+
+    try {
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      await axios
+        .get(`/1.0.0/shifts?start_date=${startDate}&end_date=${endDate}`)
+        .then((response) => {
+          processStatusData(response.data);
+        });
+    } catch (error) {
+      console.log(error);
+      // setIsLoading(false)
+      console.log(error);
+      localStorage.removeItem("token");
+      secureLocalStorage.removeItem("role");
+      localStorage.removeItem("delamenta-token");
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Coba login kembali",
+      });
+      setTimeout(function () {
+        window.location.reload(true);
+      }, 1000);
+    }
+  };
+
+  const processStatusData = (data) => {
+    const statusCount = data.reduce((acc, item) => {
+      let status = item.remark;
+      if (status === null || status === "") {
+        status = "Alpha";
+      }
+      if (!acc[status]) {
+        acc[status] = 0;
+      }
+      acc[status]++;
+      return acc;
+    }, {});
+
+    const statusArray = Object.keys(statusCount).map((status) => ({
+      name: status,
+      value: statusCount[status],
+    }));
+
+    setAbsenData(statusArray);
+    // console.log(statusArray);
+  };
+
   const getData = async () => {
+    const tempData = [];
+
     delamenta.defaults.headers.common["Authorization"] = `Bearer ${dmtoken}`;
     try {
       await delamenta
         .get(`/trayek/table?startDate=${startDate}&endDate=${endDate}`)
         .then((res) => {
           res.data.data.forEach((item) => {
-            if (!dates.includes(item.tanggal.split("T")[0])) {
-              dates.push(item.tanggal.split("T")[0]);
+            if (!dates.includes(moment(item.tanggal).format("YYYY-MM-DD"))) {
+              dates.push(moment(item.tanggal).format("YYYY-MM-DD"));
             }
           });
 
@@ -104,6 +181,7 @@ function Dashboard() {
 
           const keys = Object.keys(hasil);
           const key = Object.keys(trak);
+          console.log(keys, key);
 
           //line chart
           keys.forEach((key, index) => {
@@ -115,18 +193,21 @@ function Dashboard() {
 
           //pie chart
           keys.forEach((key, index) => {
-            trayekData.push({ value: trak[key], name: key });
+            tempData.push({ value: trak[key], name: key });
           });
 
-          trayekData.forEach((obj) => {
+          tempData.forEach((obj) => {
             const sum = obj.value.reduce((acc, curr) => acc + curr, 0);
             obj.value = sum;
           });
-          trayekData.forEach((obj) => {
+          tempData.forEach((obj) => {
             codes.push(obj.name);
             numbers.push(obj.value);
           });
 
+          console.log(tempData);
+
+          setTrayekData(tempData);
           setTrayekCodes(codes);
           setTrayekNumbers(numbers);
         });
@@ -161,8 +242,8 @@ function Dashboard() {
         .get(`/trayek/table?startDate=${startDate}&endDate=${endDate}`)
         .then((res) => {
           res.data.data.forEach((item) => {
-            if (!rdates.includes(item.tanggal.split("T")[0])) {
-              rdates.push(item.tanggal.split("T")[0]);
+            if (!rdates.includes(moment(item.tanggal).format("YYYY-MM-DD"))) {
+              rdates.push(moment(item.tanggal).format("YYYY-MM-DD"));
             }
           });
 
@@ -260,6 +341,7 @@ function Dashboard() {
       navigate("/");
     }
     getData();
+    getAbsenData();
   }, []);
 
   return (
@@ -284,7 +366,10 @@ function Dashboard() {
             <span> </span>
             <button
               className="btn btn-success btn-sm shadow rounded"
-              onClick={getDataByRange}
+              onClick={() => {
+                getDataByRange();
+                getAbsenData();
+              }}
             >
               Set
             </button>
@@ -302,14 +387,14 @@ function Dashboard() {
       <div className="d-lg-flex flex-row justify-content-between gap-5 mb-5">
         <div className="container">
           <TestChart
-            trayekCodes={trayekCodes}
-            trayekNumbers={trayekNumbers}
+            // trayekCodes={trayekCodes}
+            // trayekNumbers={trayekNumbers}
             trayekData={trayekData}
           />
         </div>
 
         <div className="container">
-          <AbsenPie />
+          <AbsenPie absenData={absenData} />
         </div>
       </div>
 

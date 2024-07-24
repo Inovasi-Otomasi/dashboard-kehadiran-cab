@@ -6,7 +6,7 @@ import api from "../api/axios";
 
 const GET_URL = "/1.0.0/shifts_datatables";
 
-function SyncLogAbsen() {
+function SyncAbsen() {
   const token = localStorage.getItem("token");
   const dmtoken = localStorage.getItem("delamenta-token");
 
@@ -20,7 +20,7 @@ function SyncLogAbsen() {
 
   const date = new Date();
 
-  let currentDay = String(date.getDate() + 1).padStart(2, "0");
+  let currentDay = String(date.getDate() - 1).padStart(2, "0");
   let currentDayV2 = String(date.getDate()).padStart(2, "0");
   let currentMonth = String(date.getMonth() + 1).padStart(2, "0");
   let currentYear = date.getFullYear();
@@ -32,7 +32,8 @@ function SyncLogAbsen() {
   const [endDate, setEndtDate] = useState(currentDate);
 
   const [selectedDate, setSelectedDate] = useState(currentDate);
-  const [logAbsen, setLogAbsen] = useState([]);
+  // const [logAbsen, setLogAbsen] = useState([]);
+  const [driverList, setDriverList] = useState([]);
   const [vehicleList, setVehicleList] = useState([]);
 
   // for log absen datatables
@@ -76,21 +77,15 @@ function SyncLogAbsen() {
     }
   };
 
-  const getLogAbsenDB = async () => {
+  const getDriverList = async () => {
+    delamenta.defaults.headers.common["Authorization"] = `Bearer ${dmtoken}`;
     try {
-      api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-      await api({
-        method: "post",
-        url: GET_URL,
-        data: bodyFormData,
-        headers: { "Content-Type": "multipart/form-data" },
-      }).then((response) => {
-        setLogAbsen(response.data);
-        console.log(response.data);
+      await delamenta.get("/driver?status=active").then((res) => {
+        setDriverList(res.data.data);
+        console.log(res.data.data);
       });
     } catch (error) {
       console.log(error);
-      // setIsLoading(false)
       localStorage.removeItem("token");
       secureLocalStorage.removeItem("role");
       localStorage.removeItem("delamenta-token");
@@ -99,13 +94,12 @@ function SyncLogAbsen() {
         title: "Error",
         text: "Coba login kembali",
       });
-      // setTimeout(function () {
-      //   window.location.reload(true);
-      // }, 1000);
     }
   };
 
-  const handleSync = async () => {
+  const handleSync = async (event) => {
+    event.preventDefault();
+    const temp = [];
     const tempDmId = [];
     const tempId = [];
 
@@ -120,83 +114,80 @@ function SyncLogAbsen() {
     });
 
     try {
-      // get all the driver id from each vehicle delameta based on selected date
       for (const item of vehicleList) {
-        await delamenta
-          .get(
-            `/transaksi-in/kendaraan?id_kendaraan=${item.id}&create_date=${selectedDate}`
-          )
-          .then((res) => {
-            tempDmId.push(res.data.data.id_driver);
-          });
-      }
-      // get all the driver number from log absen datatable based on selected date
-      await api({
-        method: "post",
-        url: GET_URL,
-        data: bodyFormData,
-        headers: { "Content-Type": "multipart/form-data" },
-      }).then((res) => {
-        res.data.data.forEach((element) => {
-          tempId.push(element[2]);
-        });
-      });
-      // compare which id is unique (not from both array)
-      let uniqueDm = tempDmId.filter((o) => tempId.indexOf(o) === -1);
-      let unique = tempId.filter((o) => tempDmId.indexOf(o) === -1);
-      console.log(uniqueDm.concat(unique));
+        try {
+          const res = await delamenta.get(
+            `/transaksi-in/kendaraan?id_kendaraan=${item.id_kendaraan}&create_date=${selectedDate}`
+          );
 
-      const tempUnique = uniqueDm.concat(unique);
-      // call function each unique id
-      tempUnique.forEach((id) => {
-        getDelamentaData(id);
-      });
+          if (res.data.statusCode !== 404) {
+            tempDmId.push(res.data.data.id_driver);
+            temp.push(res.data.data);
+          }
+        } catch (error) {
+          if (error.response && error.response.status !== 404) {
+            console.error("API call failed:", error);
+          }
+          // Ignore 404 errors and continue the loop
+        }
+        // get all the driver number from log absen datatable based on selected date
+        await api({
+          method: "post",
+          url: GET_URL,
+          data: bodyFormData,
+          headers: { "Content-Type": "multipart/form-data" },
+        }).then((res) => {
+          res.data.data.forEach((element) => {
+            tempId.push(element[2]);
+          });
+        });
+        // compare which id is unique (not from both array)
+        let uniqueDm = tempDmId.filter((o) => tempId.indexOf(o) === -1);
+        let unique = tempId.filter((o) => tempDmId.indexOf(o) === -1);
+        console.log(uniqueDm.concat(unique));
+
+        const tempUnique = uniqueDm.concat(unique);
+
+        tempUnique.forEach((id) => {
+          let objData = temp.find((o) => o.id_driver === id);
+          console.log(objData);
+
+          let objData2 = driverList.find((o) => o.id_driver === id);
+          console.log(objData2);
+
+          const absenData = {
+            name: objData2.nama,
+            number: objData.id_driver,
+            date: selectedDate,
+            tap_in_time: objData.waktu_login,
+            tap_out_time: objData.waktu_logout,
+            remark: objData.waktu_login ? "Masuk" : "Alpha",
+          };
+          // post the data to the backend
+          api.post("/1.0.0/shifts", absenData);
+          Swal.fire({
+            icon: "success",
+            title: "Menambahkan Data Log Absen",
+            text: "Sukses menambahkan Log Absen!",
+          });
+        });
+      }
+      setTimeout(function () {
+        window.location.reload();
+      }, 1000);
     } catch (error) {
       console.log(error);
-    }
-  };
-
-  const getDelamentaData = async (id) => {
-    const temp = [];
-    delamenta.defaults.headers.common["Authorization"] = `Bearer ${dmtoken}`;
-    // push all the log absen data of the selected date from delameta
-    try {
-      for (const item of vehicleList) {
-        await delamenta
-          .get(
-            `/transaksi-in/kendaraan?id_kendaraan=${item.id}&create_date=${currentDate}`
-          )
-          .then((res) => {
-            temp.push(res.data.data);
-          });
-      }
-      // check if there is a match between the id we passed and the id_driver
-      let objData = temp.find((o) => o.id_driver === id);
-      // create a new object if theres a match
-      console.log(objData);
-
-      const absenData = {
-        number: objData.id_driver,
-        date: selectedDate,
-        tap_in_time: objData.waktu_login,
-        tap_out_time: objData.waktu_logout,
-      };
-      // post the data to the backend
-      await api.post("/1.0.0/shifts", absenData);
-      temp = [];
-    } catch (e) {
-      console.log(e);
       Swal.fire({
         icon: "error",
-        title: "Menambahkan Data Log Absen",
-        text: "Gagal menambahkan log absen!",
+        title: "Error",
+        text: "Data sudah ada atau gagal syncing",
       });
     }
   };
 
   useEffect(() => {
-    getLogAbsenDB();
     getVehicleList();
+    getDriverList();
   }, []);
 
   return (
@@ -225,11 +216,7 @@ function SyncLogAbsen() {
               </h1>
             </div>
             <div class="modal-body">
-              <form
-                class="row g-3 needs-validation px-5"
-                onSubmit={handleSync}
-                autoComplete="off"
-              >
+              <form class="row g-3 needs-validation px-5" autoComplete="off">
                 <div class="row g-3 pt-4">
                   <div class="col-md-12">
                     <label for="validationTanggalBC" class="form-label">
@@ -258,7 +245,7 @@ function SyncLogAbsen() {
                   <div className="col-6 text-start mt-4">
                     <button
                       class="btn btn-success shadow rounded"
-                      type="submit"
+                      onClick={handleSync}
                     >
                       Sync
                     </button>
@@ -273,4 +260,4 @@ function SyncLogAbsen() {
   );
 }
 
-export default SyncLogAbsen;
+export default SyncAbsen;
