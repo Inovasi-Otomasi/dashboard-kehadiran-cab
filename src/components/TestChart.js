@@ -43,7 +43,7 @@ function TestChart({ trayekCodes, trayekNumbers, trayekData }) {
   // console.log(trayekNumbers);
 
   return (
-    <div className="card">
+    <div className="card w-100">
       <div
         class="card-header"
         style={{ backgroundColor: "rgba(255, 0, 0, 0.5)" }}

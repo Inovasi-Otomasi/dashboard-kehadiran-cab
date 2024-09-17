@@ -5,6 +5,7 @@ import axios from "../api/axios";
 import Swal from "sweetalert2";
 import { Helmet } from "react-helmet";
 import ExportExcel from "../components/ExcelExport";
+import ExcelLogAbsen from "../components/ExcelLogAbsen";
 import { DatePicker } from "antd";
 import secureLocalStorage from "react-secure-storage";
 import dayjs from "dayjs";
@@ -87,8 +88,7 @@ function LogAbsen() {
         <button
           className="btn btn-primary btn-sm shadow rounded"
           onClick={() => navigate(`/log-absen/edit/${row[0]}`)}
-          id={row[0]}
-        >
+          id={row[0]}>
           <i className="fa fa-edit"></i>
         </button>
       ),
@@ -174,9 +174,11 @@ function LogAbsen() {
   const getExcel = async () => {
     try {
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-      await axios.get("/1.0.0/shifts").then((response) => {
-        setLogsExcel(response.data);
-      });
+      await axios
+        .get(`/1.0.0/shifts?start_date=${startDate}&end_date=${endDate}`)
+        .then((response) => {
+          setLogsExcel(response.data);
+        });
     } catch (error) {
       console.log(error);
     }
@@ -186,9 +188,9 @@ function LogAbsen() {
     if (!token) {
       navigate("/");
     }
-    getData();
     if (!isLoaded) {
       getExcel();
+      getData();
 
       setIsLoaded(true);
     }
@@ -251,21 +253,27 @@ function LogAbsen() {
           <span> </span>
           <button
             className="btn btn-success btn-sm shadow rounded"
-            onClick={getDataByRange}
-          >
+            onClick={() => {
+              getDataByRange();
+              getExcel();
+            }}>
             Set
           </button>
           <span> </span>
           <button
             className="btn btn-danger btn-sm shadow rounded"
-            onClick={resetData}
-          >
+            onClick={resetData}>
             Reset
           </button>
         </div>
         {/* <SyncLogAbsen /> */}
         <SyncAbsen />
-        <ExportExcel excelData={logsExcel} fileName={"Laporan Log Absen"} />
+        {/* <ExportExcel excelData={logsExcel} fileName={"Laporan Log Absen"} /> */}
+        <ExcelLogAbsen
+          data={logsExcel}
+          startDate={startDate}
+          endDate={endDate}
+        />
       </div>
 
       {renderTable}

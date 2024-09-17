@@ -39,7 +39,7 @@ function Dashboard() {
   let startofMonth = `${currentYear}-${currentMonth}-01`;
 
   const [startDate, setStartDate] = useState(startofMonth);
-  const [endDate, setEndDate] = useState(currentDate);
+  const [endDate, setEndDate] = useState(currentDateV2);
 
   // for pie
   const [trayekNumbers, setTrayekNumbers] = useState([]);
@@ -333,7 +333,7 @@ function Dashboard() {
 
   const handleChangeDebut = (range) => {
     setStartDate(range[0].format("YYYY-MM-DD"));
-    setEndDate(range[1].add(1, "day").format("YYYY-MM-DD"));
+    setEndDate(range[1].format("YYYY-MM-DD"));
   };
 
   useEffect(() => {
@@ -384,31 +384,27 @@ function Dashboard() {
         </div>
       </div>
 
-      <div className="d-lg-flex flex-row justify-content-between gap-5 mb-5">
-        <div className="container">
-          <TestChart
-            // trayekCodes={trayekCodes}
-            // trayekNumbers={trayekNumbers}
-            trayekData={trayekData}
-          />
-        </div>
+      <div className="d-lg-flex flex-row mb-5 gap-5">
+        <TestChart
+          // trayekCodes={trayekCodes}
+          // trayekNumbers={trayekNumbers}
+          trayekData={trayekData}
+        />
 
-        <div className="container">
-          <AbsenPie absenData={absenData} />
-        </div>
+        <AbsenPie absenData={absenData} />
       </div>
 
       <PendapatanGraph trayekDates={trayekDates} sData={sData} />
       {/* <KaryawanTable /> */}
 
-      <h1 className="mt-5">List Kendaraan</h1>
+      {/* <h1 className="mt-5">List Kendaraan</h1>
       <hr />
 
       <VehicleList />
 
       <br />
 
-      <Carousel />
+      <Carousel /> */}
     </div>
   );
 }

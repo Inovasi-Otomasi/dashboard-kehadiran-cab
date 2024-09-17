@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import DataTable, { createTheme } from "react-data-table-component";
+import DataTable from "react-data-table-component";
 import api from "../api/axios";
 import delamenta from "../api/delamenta";
 // import Spinner from "../components/Spinner";
@@ -69,8 +69,7 @@ function Location() {
           <button
             className="btn btn-success btn-sm shadow rounded"
             onClick={() => navigate(`/location/details/${row[0]}`)}
-            id={row[0]}
-          >
+            id={row[0]}>
             <i className="fa fa-search-plus"></i>
           </button>
         ),
@@ -81,8 +80,7 @@ function Location() {
         <button
           className="btn btn-primary btn-sm shadow rounded"
           onClick={() => navigate(`/location/edit/${row[0]}`)}
-          id={row[0]}
-        >
+          id={row[0]}>
           <i className="fa fa-edit"></i>
         </button>
       ),
@@ -92,8 +90,7 @@ function Location() {
       cell: (row) => (
         <button
           className="btn btn-danger btn-sm"
-          onClick={() => deleteData(row[0])}
-        >
+          onClick={() => deleteData(row[0])}>
           <i className="fa fa-trash"></i>
         </button>
       ),
