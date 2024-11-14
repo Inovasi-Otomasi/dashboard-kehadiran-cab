@@ -1,16 +1,18 @@
 import React from "react";
 import Chart from "react-apexcharts";
-import moment from "moment";
 
 function PendapatanGraph({ sData, trayekDates }) {
+  // const reset = () => {
+  //   window.location.reload(true);
+  // };
+
   return (
     <>
       <div className="card">
         <div
-          className="card-header"
-          style={{ backgroundColor: "rgba(255, 0, 0, 0.5)" }}
-        >
-          <h5 className="fw-bold text-center">Transaksi Harian Trayek CAB</h5>
+          class="card-header"
+          style={{ backgroundColor: "rgba(255, 0, 0, 0.5)" }}>
+          <h5 className="fw-bold text-center">Pendapatan Trayek CAB</h5>
         </div>
 
         <div className="card-body">
@@ -19,10 +21,6 @@ function PendapatanGraph({ sData, trayekDates }) {
               xaxis: {
                 title: { text: "Waktu" },
                 categories: trayekDates,
-                type: "datetime", // Set x-axis type to datetime
-                labels: {
-                  format: "dd MMM", // Format date as "dd MMM" (e.g., "03 Nov")
-                },
               },
               yaxis: {
                 title: { text: "Dalam Rupiah" },
@@ -47,13 +45,8 @@ function PendapatanGraph({ sData, trayekDates }) {
               grid: {
                 borderColor: "#e7e7e7",
                 row: {
-                  colors: ["#f3f3f3", "transparent"],
+                  colors: ["#f3f3f3", "transparent"], // takes an array which will be repeated on columns
                   opacity: 0.5,
-                },
-              },
-              tooltip: {
-                x: {
-                  formatter: (val) => moment(val).format("YYYY-MM-DD"), // Format tooltip date
                 },
               },
             }}
@@ -63,6 +56,9 @@ function PendapatanGraph({ sData, trayekDates }) {
           />
         </div>
       </div>
+      {/* <button className="btn btn-danger mt-4" onClick={reset}>
+        Reset
+      </button> */}
     </>
   );
 }
