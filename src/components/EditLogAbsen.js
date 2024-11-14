@@ -124,8 +124,7 @@ function EditLogAbsen() {
       <form
         className="row g-3 needs-validation"
         autoComplete="off"
-        onSubmit={handleSubmit}
-      >
+        onSubmit={handleSubmit}>
         <div class="col-md-4">
           <label for="validationNama" class="form-label">
             ID Driver
@@ -198,7 +197,8 @@ function EditLogAbsen() {
             type="time"
             class="form-control"
             id="validationTapOut"
-            placeholder="00:00"
+            placeholder="00:00:00"
+            step="1"
             name="tap_out_time"
             value={state.tap_out_time}
             onChange={handleChange}
@@ -217,8 +217,7 @@ function EditLogAbsen() {
             required
             onChange={(value) => handleChange(value)}
             value={state.remark}
-            name="remark"
-          >
+            name="remark">
             <option selected disabled>
               Pilih Remark
             </option>
@@ -239,8 +238,7 @@ function EditLogAbsen() {
             value={state.notes}
             onChange={handleChange}
             // required
-            rows={4}
-          ></textarea>
+            rows={4}></textarea>
         </div>
 
         <div class="row g-3 pt-4">
