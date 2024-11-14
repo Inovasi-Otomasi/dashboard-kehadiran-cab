@@ -59,6 +59,8 @@ function Dashboard() {
   const dates = [];
   const temp = [];
 
+  const [transaksiData, setTransaksiData] = useState([]);
+
   const resetData = async () => {
     window.location.reload();
   };
@@ -147,8 +149,8 @@ function Dashboard() {
           });
 
           const tanggalSaved = {};
-          const hasil = {};
-          const trak = {};
+          const hasil = {}; // For total_pendapatan
+          const trak = {}; // For total_transaksi
 
           for (const data of res.data.data) {
             if (!hasil.hasOwnProperty(data.trayek)) {
@@ -190,6 +192,16 @@ function Dashboard() {
 
           setSData(temp);
           setTrayekDates(dates);
+
+          const tempTransaksiData = []; // For total_transaksi line chart
+
+          keys.forEach((key) => {
+            temp.push({ name: key, data: hasil[key] }); // Existing pendapatan line
+            tempTransaksiData.push({ name: key, data: trak[key] }); // New transaksi line
+          });
+
+          setSData(temp); // Set pendapatan data
+          setTransaksiData(tempTransaksiData); // Set transaksi data
 
           //pie chart
           keys.forEach((key, index) => {
@@ -248,8 +260,8 @@ function Dashboard() {
           });
 
           const tanggalSaved = {};
-          const hasil = {};
-          const trak = {};
+          const hasil = {}; // For total_pendapatan
+          const trak = {}; // For total_transaksi
 
           for (const data of res.data.data) {
             if (!hasil.hasOwnProperty(data.trayek)) {
@@ -297,6 +309,16 @@ function Dashboard() {
 
           setSData(rtemp);
           setTrayekDates(rdates);
+
+          const tempTransaksiData = []; // For total_transaksi line chart
+
+          keys.forEach((key) => {
+            temp.push({ name: key, data: hasil[key] }); // Existing pendapatan line
+            tempTransaksiData.push({ name: key, data: trak[key] }); // New transaksi line
+          });
+
+          setSData(temp); // Set pendapatan data
+          setTransaksiData(tempTransaksiData); // Set transaksi data
 
           //pie chart
           keys.forEach((key, index) => {
@@ -395,6 +417,9 @@ function Dashboard() {
       </div>
 
       <PendapatanGraph trayekDates={trayekDates} sData={sData} />
+
+      <PendapatanGraph trayekDates={trayekDates} sData={transaksiData} />
+
       {/* <KaryawanTable /> */}
 
       {/* <h1 className="mt-5">List Kendaraan</h1>
