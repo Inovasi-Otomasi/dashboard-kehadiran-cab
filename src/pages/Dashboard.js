@@ -134,6 +134,51 @@ function Dashboard() {
     // console.log(statusArray);
   };
 
+  const combineData = (data) => {
+    const combinedData = {};
+    const dates = new Set(); // Use a Set to automatically handle unique dates
+
+    data.forEach((item) => {
+      const formattedDate = moment(item.tanggal).format("YYYY-MM-DD");
+      dates.add(formattedDate); // Add each formatted date to the Set
+
+      const key = `${formattedDate}-${item.trayek}`;
+
+      // If this date and trayek combination doesn't exist yet, initialize it
+      if (!combinedData[key]) {
+        combinedData[key] = {
+          tanggal: formattedDate,
+          trayek: item.trayek,
+          total_transaksi: 0,
+          total_pendapatan: 0,
+          transaksi: [],
+          pendapatan: [],
+        };
+      }
+
+      // Accumulate total_transaksi and total_pendapatan
+      combinedData[key].total_transaksi += item.total_transaksi;
+      combinedData[key].total_pendapatan += item.total_pendapatan;
+
+      // Merge transaksi and pendapatan arrays
+      combinedData[key].transaksi = [
+        ...combinedData[key].transaksi,
+        ...item.transaksi,
+      ];
+      combinedData[key].pendapatan = [
+        ...combinedData[key].pendapatan,
+        ...item.pendapatan,
+      ];
+    });
+
+    // Convert the combined data object back into an array and extract unique dates as an array
+    return {
+      combinedDataArray: Object.values(combinedData),
+      uniqueDates: Array.from(dates),
+    };
+  };
+
+  // Update getData function
   const getData = async () => {
     const tempData = [];
 
@@ -142,30 +187,24 @@ function Dashboard() {
       await delamenta
         .get(`/trayek/table?startDate=${startDate}&endDate=${endDate}`)
         .then((res) => {
-          res.data.data.forEach((item) => {
-            if (!dates.includes(moment(item.tanggal).format("YYYY-MM-DD"))) {
-              dates.push(moment(item.tanggal).format("YYYY-MM-DD"));
-            }
-          });
+          const { combinedDataArray, uniqueDates } = combineData(res.data.data);
 
           const tanggalSaved = {};
           const hasil = {}; // For total_pendapatan
           const trak = {}; // For total_transaksi
 
-          for (const data of res.data.data) {
-            if (!hasil.hasOwnProperty(data.trayek)) {
+          combinedDataArray.forEach((data) => {
+            if (!hasil[data.trayek]) {
               hasil[data.trayek] = {};
             }
-
-            if (!trak.hasOwnProperty(data.trayek)) {
+            if (!trak[data.trayek]) {
               trak[data.trayek] = {};
             }
 
-            const tanggal = data.tanggal;
-            tanggalSaved[tanggal] = true;
-            hasil[data.trayek][tanggal] = data.total_pendapatan;
-            trak[data.trayek][tanggal] = data.total_transaksi;
-          }
+            tanggalSaved[data.tanggal] = true;
+            hasil[data.trayek][data.tanggal] = data.total_pendapatan;
+            trak[data.trayek][data.tanggal] = data.total_transaksi;
+          });
 
           const tanggalArr = Object.keys(tanggalSaved);
 
@@ -174,7 +213,6 @@ function Dashboard() {
               (tanggal) => hasil[trayek][tanggal] ?? 0
             );
           }
-
           for (const trayek in trak) {
             trak[trayek] = tanggalArr.map(
               (tanggal) => trak[trayek][tanggal] ?? 0
@@ -182,18 +220,7 @@ function Dashboard() {
           }
 
           const keys = Object.keys(hasil);
-          const key = Object.keys(trak);
-          console.log(keys, key);
-
-          //line chart
-          keys.forEach((key, index) => {
-            temp.push({ name: key, data: hasil[key] });
-          });
-
-          setSData(temp);
-          setTrayekDates(dates);
-
-          const tempTransaksiData = []; // For total_transaksi line chart
+          const tempTransaksiData = [];
 
           keys.forEach((key) => {
             temp.push({ name: key, data: hasil[key] }); // Existing pendapatan line
@@ -203,25 +230,14 @@ function Dashboard() {
           setSData(temp); // Set pendapatan data
           setTransaksiData(tempTransaksiData); // Set transaksi data
 
-          //pie chart
-          keys.forEach((key, index) => {
-            tempData.push({ value: trak[key], name: key });
+          const pieData = keys.map((key) => {
+            const sumTransaksi = trak[key].reduce((acc, val) => acc + val, 0);
+            return { name: key, value: sumTransaksi };
           });
 
-          tempData.forEach((obj) => {
-            const sum = obj.value.reduce((acc, curr) => acc + curr, 0);
-            obj.value = sum;
-          });
-          tempData.forEach((obj) => {
-            codes.push(obj.name);
-            numbers.push(obj.value);
-          });
-
-          console.log(tempData);
-
-          setTrayekData(tempData);
-          setTrayekCodes(codes);
-          setTrayekNumbers(numbers);
+          setTrayekData(pieData);
+          setTrayekCodes(keys);
+          setTrayekNumbers(pieData.map((d) => d.value));
         });
     } catch (error) {
       console.log(error);
@@ -233,61 +249,44 @@ function Dashboard() {
         title: "Error",
         text: "Data Reader tidak ada",
       });
-      setTimeout(function () {
+      setTimeout(() => {
         window.location.reload(true);
       }, 1000);
     }
   };
 
+  // Update getDataByRange function
   const getDataByRange = async () => {
     delamenta.defaults.headers.common["Authorization"] = `Bearer ${dmtoken}`;
     try {
-      const rnumbers = [];
-      const rcodes = [];
-
-      const rdates = [];
-      const rtemp = [];
-
-      const rTrayekData = [];
-
       await delamenta
         .get(`/trayek/table?startDate=${startDate}&endDate=${endDate}`)
         .then((res) => {
-          res.data.data.forEach((item) => {
-            if (!rdates.includes(moment(item.tanggal).format("YYYY-MM-DD"))) {
-              rdates.push(moment(item.tanggal).format("YYYY-MM-DD"));
-            }
-          });
-
+          const { combinedDataArray, uniqueDates } = combineData(res.data.data);
           const tanggalSaved = {};
           const hasil = {}; // For total_pendapatan
           const trak = {}; // For total_transaksi
 
-          for (const data of res.data.data) {
-            if (!hasil.hasOwnProperty(data.trayek)) {
+          combinedDataArray.forEach((data) => {
+            if (!hasil[data.trayek]) {
               hasil[data.trayek] = {};
             }
-
-            if (!trak.hasOwnProperty(data.trayek)) {
+            if (!trak[data.trayek]) {
               trak[data.trayek] = {};
             }
 
-            const tanggal = data.tanggal;
-            tanggalSaved[tanggal] = true;
-            hasil[data.trayek][tanggal] = data.total_pendapatan;
-            trak[data.trayek][tanggal] = data.total_transaksi;
-          }
+            tanggalSaved[data.tanggal] = true;
+            hasil[data.trayek][data.tanggal] = data.total_pendapatan;
+            trak[data.trayek][data.tanggal] = data.total_transaksi;
+          });
 
           const tanggalArr = Object.keys(tanggalSaved);
-
-          console.log(tanggalArr);
 
           for (const trayek in hasil) {
             hasil[trayek] = tanggalArr.map(
               (tanggal) => hasil[trayek][tanggal] ?? 0
             );
           }
-
           for (const trayek in trak) {
             trak[trayek] = tanggalArr.map(
               (tanggal) => trak[trayek][tanggal] ?? 0
@@ -295,22 +294,7 @@ function Dashboard() {
           }
 
           const keys = Object.keys(hasil);
-          const key = Object.keys(trak);
-
-          console.log(keys);
-          console.log(key);
-
-          //line chart
-          keys.forEach((key, index) => {
-            rtemp.push({ name: key, data: hasil[key] });
-          });
-
-          console.log(rtemp);
-
-          setSData(rtemp);
-          setTrayekDates(rdates);
-
-          const tempTransaksiData = []; // For total_transaksi line chart
+          const tempTransaksiData = [];
 
           keys.forEach((key) => {
             temp.push({ name: key, data: hasil[key] }); // Existing pendapatan line
@@ -320,27 +304,18 @@ function Dashboard() {
           setSData(temp); // Set pendapatan data
           setTransaksiData(tempTransaksiData); // Set transaksi data
 
-          //pie chart
-          keys.forEach((key, index) => {
-            rTrayekData.push({ value: trak[key], name: key });
+          const pieData = keys.map((key) => {
+            const sumTransaksi = trak[key].reduce((acc, val) => acc + val, 0);
+            return { name: key, value: sumTransaksi };
           });
 
-          rTrayekData.forEach((obj) => {
-            const sum = obj.value.reduce((acc, curr) => acc + curr, 0);
-            obj.value = sum;
-          });
-
-          rTrayekData.forEach((obj) => {
-            rcodes.push(obj.name);
-            rnumbers.push(obj.value);
-          });
-          setTrayekData(rTrayekData);
-          setTrayekCodes(rcodes);
-          setTrayekNumbers(rnumbers);
+          setTrayekData(pieData);
+          setTrayekCodes(keys);
+          setTrayekNumbers(pieData.map((d) => d.value));
           Swal.fire({
             icon: "success",
             title: "Load Data Dashboard",
-            text: `Berhasil load data!`,
+            text: "Berhasil load data!",
           });
         });
     } catch (error) {
@@ -352,7 +327,6 @@ function Dashboard() {
       });
     }
   };
-
   const handleChangeDebut = (range) => {
     setStartDate(range[0].format("YYYY-MM-DD"));
     setEndDate(range[1].format("YYYY-MM-DD"));
@@ -415,8 +389,6 @@ function Dashboard() {
 
         <AbsenPie absenData={absenData} />
       </div>
-
-      <PendapatanGraph trayekDates={trayekDates} sData={sData} />
 
       <PendapatanGraph trayekDates={trayekDates} sData={transaksiData} />
 
