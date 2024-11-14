@@ -23,11 +23,11 @@ function LogAbsen() {
 
   const [isLoaded, setIsLoaded] = useState(false);
 
-  const [page, setPage] = useState(1);
-  const [start, setStart] = useState(0);
-  const [sortColumn, setSortColumn] = useState(0);
-  const [dir, setDir] = useState("desc");
-  const countPerPage = 10;
+  // const [page, setPage] = useState(1);
+  // const [start, setStart] = useState(0);
+  // const [sortColumn, setSortColumn] = useState(0);
+  // const [dir, setDir] = useState("desc");
+  // const countPerPage = 10;
 
   const date = new Date();
 
@@ -42,52 +42,81 @@ function LogAbsen() {
   const [startDate, setStartDate] = useState(startofMonth);
   const [endDate, setEndDate] = useState(currentDate);
 
-  const [logAbsen, setLogAbsen] = useState([]);
-  const [filterLog, setFilterLog] = useState("");
+  // const [logAbsen, setLogAbsen] = useState([]);
+  // const [filterLog, setFilterLog] = useState("");
+  const [filterData, setFilterData] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
   const [logsExcel, setLogsExcel] = useState([]);
 
-  var bodyFormData = new FormData();
+  // var bodyFormData = new FormData();
 
-  bodyFormData.append("draw", page);
-  bodyFormData.append("length", countPerPage);
-  bodyFormData.append("order[0][column]", sortColumn);
-  bodyFormData.append("order[0][dir]", dir);
-  bodyFormData.append("start", start);
-  bodyFormData.append("search[value]", filterLog);
-  // bodyFormData.append("columns[0][search][value]", "");
-  bodyFormData.append("start_date", startDate);
-  bodyFormData.append("end_date", endDate);
+  // bodyFormData.append("draw", page);
+  // bodyFormData.append("length", countPerPage);
+  // bodyFormData.append("order[0][column]", sortColumn);
+  // bodyFormData.append("order[0][dir]", dir);
+  // bodyFormData.append("start", start);
+  // bodyFormData.append("search[value]", filterLog);
+  // // bodyFormData.append("columns[0][search][value]", "");
+  // bodyFormData.append("start_date", startDate);
+  // bodyFormData.append("end_date", endDate);
 
   const columns = [
-    { name: "ID", selector: (row) => row[0], sortable: true, wrap: true },
+    { name: "ID", selector: (row) => row.id, sortable: true, wrap: true },
     // {
     //   name: "ID Driver",
     //   selector: (row) => row[2],
     //   sortable: true,
     //   wrap: true,
     // },
-    { name: "Nama", selector: (row) => row[1], sortable: true, wrap: true },
-    { name: "Tanggal", selector: (row) => row[3], sortable: true, wrap: true },
-    { name: "Tap-In", selector: (row) => row[4], sortable: true, wrap: true },
-    { name: "Tap-Out", selector: (row) => row[5], sortable: true, wrap: true },
+    { name: "Nama", selector: (row) => row.name, sortable: true, wrap: true },
     {
-      name: "Jam Kerja",
-      selector: (row) => {
-        return moment
-          .utc(moment(row[5], "HH:mm:ss").diff(moment(row[4], "HH:mm:ss")))
-          .format("HH:mm:ss");
-      },
+      name: "Tanggal",
+      selector: (row) => row.date,
       sortable: true,
       wrap: true,
     },
-    { name: "Remark", selector: (row) => row[6], sortable: true, wrap: true },
-    { name: "Notes", selector: (row) => row[7], sortable: true, wrap: true },
+    {
+      name: "Tap-In",
+      selector: (row) => row.tap_in_time,
+      sortable: true,
+      wrap: true,
+    },
+    {
+      name: "Tap-Out",
+      selector: (row) => row.tap_out_time,
+      sortable: true,
+      wrap: true,
+    },
+    {
+      name: "Jam Kerja",
+      selector: (row) => {
+        const tapInTime = moment(row.tap_in_time, "HH:mm:ss");
+        const tapOutTime = moment(row.tap_out_time, "HH:mm:ss");
+
+        if (tapInTime.isValid() && tapOutTime.isValid()) {
+          const duration = moment.duration(tapOutTime.diff(tapInTime));
+          return moment.utc(duration.asMilliseconds()).format("HH:mm:ss");
+        } else {
+          return "Invalid time";
+        }
+      },
+
+      sortable: true,
+      wrap: true,
+    },
+    {
+      name: "Remark",
+      selector: (row) => row.remark,
+      sortable: true,
+      wrap: true,
+    },
+    { name: "Notes", selector: (row) => row.notes, sortable: true, wrap: true },
     {
       name: "Edit",
       cell: (row) => (
         <button
           className="btn btn-primary btn-sm shadow rounded"
-          onClick={() => navigate(`/log-absen/edit/${row[0]}`)}
+          onClick={() => navigate(`/log-absen/edit/${row.id}`)}
           id={row[0]}>
           <i className="fa fa-edit"></i>
         </button>
@@ -95,30 +124,27 @@ function LogAbsen() {
     },
   ];
 
-  const handleSort = async (column, sortDirection) => {
-    setSortColumn(column.id - 1);
-    setDir(sortDirection);
-  };
+  // const handleSort = async (column, sortDirection) => {
+  //   setSortColumn(column.id - 1);
+  //   setDir(sortDirection);
+  // };
 
-  const handleFilter = (e) => {
-    setSortColumn(1);
-    setPage(1);
-    setStart(0);
-    setFilterLog(e.target.value);
-  };
+  // const handleFilter = (e) => {
+  //   setSortColumn(1);
+  //   setPage(1);
+  //   setStart(0);
+  //   setFilterLog(e.target.value);
+  // };
 
   const getData = async () => {
     try {
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-      await axios({
-        method: "post",
-        url: GET_URL,
-        data: bodyFormData,
-        headers: { "Content-Type": "multipart/form-data" },
-      }).then((response) => {
-        setLogAbsen(response.data);
-        console.log(response.data);
-      });
+      await axios
+        .get(`/1.0.0/shifts?start_date=${startDate}&end_date=${endDate}`)
+        .then((response) => {
+          setLogsExcel(response.data);
+          setFilterData(response.data);
+        });
     } catch (error) {
       console.log(error);
       // setIsLoading(false)
@@ -144,19 +170,17 @@ function LogAbsen() {
   const getDataByRange = async () => {
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
     try {
-      await axios({
-        method: "post",
-        url: GET_URL,
-        data: bodyFormData,
-        headers: { "Content-Type": "multipart/form-data" },
-      }).then((response) => {
-        setLogAbsen(response.data);
-        Swal.fire({
-          icon: "success",
-          title: "Load Data Log Absen",
-          text: `Range dari ${startDate} hingga ${endDate} `,
+      await axios
+        .get(`/1.0.0/shifts?start_date=${startDate}&end_date=${endDate}`)
+        .then((response) => {
+          setLogsExcel(response.data);
+          setFilterData(response.data);
+          Swal.fire({
+            icon: "success",
+            title: "Load Data Log Absen",
+            text: `Range dari ${startDate} hingga ${endDate} `,
+          });
         });
-      });
     } catch (error) {
       Swal.fire({
         icon: "error",
@@ -171,30 +195,44 @@ function LogAbsen() {
     setEndDate(range[1].format("YYYY-MM-DD"));
   };
 
-  const getExcel = async () => {
-    try {
-      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-      await axios
-        .get(`/1.0.0/shifts?start_date=${startDate}&end_date=${endDate}`)
-        .then((response) => {
-          setLogsExcel(response.data);
-        });
-    } catch (error) {
-      console.log(error);
+  const handleSearch = (event) => {
+    const keyword = event.target.value.toLowerCase();
+    setSearchTerm(keyword); // Update search term state
+
+    if (keyword.trim() === "") {
+      setFilterData(logsExcel); // Revert to original data when search bar is empty
+    } else {
+      const filteredData = logsExcel.filter((item) =>
+        item.name.toLowerCase().includes(keyword)
+      );
+      setFilterData(filteredData);
     }
   };
+
+  // const getExcel = async () => {
+  //   try {
+  //     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+  //     await axios
+  //       .get(`/1.0.0/shifts?start_date=${startDate}&end_date=${endDate}`)
+  //       .then((response) => {
+  //         setLogsExcel(response.data);
+  //       });
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   useEffect(() => {
     if (!token) {
       navigate("/");
     }
     if (!isLoaded) {
-      getExcel();
+      // getExcel();
       getData();
 
       setIsLoaded(true);
     }
-  }, [page, filterLog, dir, sortColumn, start]);
+  }, []);
 
   const renderTable = (
     <div>
@@ -203,7 +241,7 @@ function LogAbsen() {
           type="text"
           placeholder="Search"
           className="form-control mb-3"
-          onChange={handleFilter}
+          onChange={handleSearch}
         />
       </div>
 
@@ -211,23 +249,15 @@ function LogAbsen() {
         <div className="card-body">
           <DataTable
             columns={columns}
-            data={logAbsen.data}
+            data={filterData}
             pagination
-            paginationServer
             highlightOnHover
             fixedHeader
             fixedHeaderScrollHeight="400px"
-            paginationTotalRows={logAbsen.recordsFiltered}
-            paginationPerPage={countPerPage}
-            paginationComponentOptions={{
-              noRowsPerPage: true,
-            }}
-            onSort={handleSort}
-            sortServer
-            onChangePage={(page) => {
-              setPage(page);
-              setStart(countPerPage * page - countPerPage);
-            }}
+            responsive={true}
+            defaultSortAsc={true}
+            defaultSortFieldId="Tanggal"
+            striped
           />
         </div>
       </div>
@@ -255,7 +285,6 @@ function LogAbsen() {
             className="btn btn-success btn-sm shadow rounded"
             onClick={() => {
               getDataByRange();
-              getExcel();
             }}>
             Set
           </button>
